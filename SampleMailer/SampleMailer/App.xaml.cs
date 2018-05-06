@@ -5,12 +5,15 @@ using SampleMailer.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Prism.Unity;
+using SampleMailer.Models;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace SampleMailer
 {
     public partial class App : PrismApplication
     {
+        public static UserAccount Account;
+
         /* 
          * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
          * This imposes a limitation in which the App class must have a default constructor. 
@@ -31,6 +34,8 @@ namespace SampleMailer
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage>();
+            containerRegistry.RegisterForNavigation<SettingsPage>();
+            containerRegistry.RegisterForNavigation<NewMailPage>();
         }
     }
 }
