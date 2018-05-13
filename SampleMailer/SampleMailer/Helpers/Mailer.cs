@@ -1,28 +1,27 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using SampleMailer.Models;
 using System.Collections.Generic;
 
-namespace SampleMailer.Models
+namespace SampleMailer.Helpers
 {
     public class Mailer
     {
         private readonly string SmtpHost = "smtp.gmail.com";
-
         private readonly int SmtpPort = 465;
+        private Account User;
 
-        private UserAccount FromAccount;
 
-
-        public Mailer(UserAccount account)
+        public Mailer(Account account)
         {
-            FromAccount = account;
+            User = account;
         }
 
         public void Send(List<MailboxAddress> toList, List<MailboxAddress> ccList, List<MailboxAddress> bccList, string subject, string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(FromAccount.Name, FromAccount.Address));
+            message.From.Add(new MailboxAddress(User.Name, User.Address));
 
             toList.ForEach(to => message.To.Add(to));
             ccList?.ForEach(cc => message.Cc.Add(cc));
@@ -38,7 +37,7 @@ namespace SampleMailer.Models
                 {
                     client.Connect(SmtpHost, SmtpPort, SecureSocketOptions.SslOnConnect);
 
-                    client.Authenticate(FromAccount.Address, FromAccount.Password);
+                    client.Authenticate(User.Address, User.Password);
 
                     client.Send(message);
 

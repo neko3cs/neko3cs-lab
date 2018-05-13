@@ -1,8 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using SampleMailer.Models;
-using System;
 
 namespace SampleMailer.ViewModels
 {
@@ -10,8 +8,6 @@ namespace SampleMailer.ViewModels
     {
         private INavigationService NavigationService { get; set; }
         private IPageDialogService PageDialogService { get; set; }
-
-        //private UserAccountRepo AccountRepo = new UserAccountRepo();
 
         public string Name { get => name; set => SetProperty(ref name, value); }
         private string name;
@@ -29,12 +25,6 @@ namespace SampleMailer.ViewModels
             NavigationService = navigationService;
             PageDialogService = pageDialogService;
 
-            // TODO : SQLiteでユーザ情報保存しようと思ったけどめんどいのでやめた _(:3_ z)_
-            //if (App.Account == null)
-            //{
-            //    App.Account = AccountRepo.GetUserAccounts()?.First();
-            //}
-
             if (App.Account != null)
             {
                 Name = App.Account.Name;
@@ -43,37 +33,17 @@ namespace SampleMailer.ViewModels
             }
         }
 
-        public DelegateCommand SaveUserInfoCommand => new DelegateCommand(async() =>
+        public DelegateCommand SaveUserInfoCommand => new DelegateCommand(async () =>
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Address) || string.IsNullOrEmpty(Password))
             {
                 await PageDialogService.DisplayAlertAsync("There is blank area.", "Please check input area.", "OK");
                 return;
             }
-            if (Name == App.Account.Name && Address == App.Account.Address && Password == App.Account.Password) { return; }
 
-
-            if (App.Account == null)
-            {
-                App.Account = new UserAccount()
-                {
-                    ID = 0,
-                    Name = Name,
-                    Address = Address,
-                    Password = Password,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = null
-                };
-            }
-            else
-            {
-                App.Account.Name = Name;
-                App.Account.Address = Address;
-                App.Account.Password = Password;
-                App.Account.UpdatedAt = DateTime.Now;
-            }
-
-            //AccountRepo.SaveUserAccount(Account);
+            App.Account.Name = Name;
+            App.Account.Address = Address;
+            App.Account.Password = Password;
         });
     }
 }

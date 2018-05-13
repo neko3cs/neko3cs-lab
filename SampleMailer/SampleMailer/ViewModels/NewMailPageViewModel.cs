@@ -2,6 +2,7 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using SampleMailer.Helpers;
 using SampleMailer.Models;
 using System;
 using System.Collections.Generic;
