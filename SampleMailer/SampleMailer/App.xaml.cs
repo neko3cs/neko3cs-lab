@@ -1,18 +1,17 @@
 ﻿using Prism;
 using Prism.Ioc;
-using SampleMailer.ViewModels;
+using Prism.Unity;
+using SampleMailer.Models;
 using SampleMailer.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Prism.Unity;
-using SampleMailer.Models;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace SampleMailer
 {
     public partial class App : PrismApplication
     {
-        public static UserAccount Account;
+        public static Account Account { get; set; }
 
         /* 
          * The Xamarin Forms XAML Previewer in Visual Studio uses System.Activator.CreateInstance.
