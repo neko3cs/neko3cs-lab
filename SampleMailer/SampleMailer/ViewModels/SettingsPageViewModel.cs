@@ -41,28 +41,9 @@ namespace SampleMailer.ViewModels
                 return;
             }
 
-
-            if (App.Account == null)
-            {
-                App.Account = new UserAccount()
-                {
-                    ID = 0,
-                    Name = Name,
-                    Address = Address,
-                    Password = Password,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = null
-                };
-            }
-            else
-            {
-                App.Account.Name = Name;
-                App.Account.Address = Address;
-                App.Account.Password = Password;
-                App.Account.UpdatedAt = DateTime.Now;
-            }
-
-            //AccountRepo.SaveUserAccount(Account);
+            App.Account.Name = Name;
+            App.Account.Address = Address;
+            App.Account.Password = Password;
         });
     }
 }
