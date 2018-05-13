@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
@@ -10,7 +10,7 @@
         <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0"/>
     </ContentPage.Padding>
 
-    <StackLayout VerticalOptions="Start">
+    <StackLayout HorizontalOptions="Fill" VerticalOptions="Start">
 
         <Label Text="To:" FontSize="Small" Margin="5,0,0,0"/>
         <Entry Text="{Binding To}" Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
