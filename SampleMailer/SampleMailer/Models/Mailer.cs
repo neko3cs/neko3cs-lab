@@ -1,27 +1,31 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using SampleMailer.Models;
+using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
-namespace SampleMailer.Helpers
+namespace SampleMailer.Models
 {
     public class Mailer
     {
         private readonly string SmtpHost = "smtp.gmail.com";
+
         private readonly int SmtpPort = 465;
-        private Account User;
+
+        private UserAccount FromAccount;
 
 
-        public Mailer(Account account)
+        public Mailer(UserAccount account)
         {
-            User = account;
+            FromAccount = account;
         }
 
-        public void Send(List<MailboxAddress> toList, List<MailboxAddress> ccList, List<MailboxAddress> bccList, string subject, string body)
+        public async Task SendAsync(List<MailboxAddress> toList, List<MailboxAddress> ccList, List<MailboxAddress> bccList, string subject, string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(User.Name, User.Address));
+            message.From.Add(new MailboxAddress(FromAccount.Name, FromAccount.Address));
 
             toList.ForEach(to => message.To.Add(to));
             ccList?.ForEach(cc => message.Cc.Add(cc));
@@ -35,16 +39,16 @@ namespace SampleMailer.Helpers
             {
                 using (var client = new SmtpClient())
                 {
-                    client.Connect(SmtpHost, SmtpPort, SecureSocketOptions.SslOnConnect);
+                    await client.ConnectAsync(SmtpHost, SmtpPort, SecureSocketOptions.SslOnConnect);
 
-                    client.Authenticate(User.Address, User.Password);
+                    await client.AuthenticateAsync(FromAccount.Address, FromAccount.Password);
 
-                    client.Send(message);
+                    await client.SendAsync(message);
 
-                    client.Disconnect(true);
+                    await client.DisconnectAsync(true);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 throw;
             }

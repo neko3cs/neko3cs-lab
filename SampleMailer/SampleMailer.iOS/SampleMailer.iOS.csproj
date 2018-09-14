@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="LocalDB_iOS.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -190,20 +191,23 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit">
-      <Version>2.0.3</Version>
+      <Version>2.0.6</Version>
     </PackageReference>
     <PackageReference Include="MimeKit">
-      <Version>2.0.3</Version>
+      <Version>2.0.6</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
+    <PackageReference Include="SQLite.Net-PCL">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
     <PackageReference Include="Prism.Unity.Forms" Version="7.0.0.396" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SampleMailer\SampleMailer.csproj">
-      <Project>{A682884C-CB44-4A89-B752-27BB634E0ABE}</Project>
+      <Project>{C69A7538-CCC9-4682-9F1E-C202F3CFA6DB}</Project>
       <Name>SampleMailer</Name>
     </ProjectReference>
   </ItemGroup>
