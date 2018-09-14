@@ -14,19 +14,20 @@
 
         <Label Text="To:" FontSize="Small" Margin="5,0,0,0"/>
         <Entry Text="{Binding To}" Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
-               HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
+               Keyboard="Email" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
         <Label Text="Cc: " FontSize="Small" Margin="5,0,0,0"/>
         <Entry Text="{Binding Cc}" Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
-               HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
+               Keyboard="Email" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
         <Label Text="Bcc: " FontSize="Small" Margin="5,0,0,0"/>
         <Entry Text="{Binding Bcc}" Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
-               HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
+               Keyboard="Email" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
-        <Entry Text="{Binding Subject}" Placeholder="Subject" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
+        <Entry Text="{Binding Subject}" Placeholder="Subject" Keyboard="Text" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
-        <Entry Text="{Binding Body}" Placeholder="Body" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,5,5,5"/>
+        <Entry Text="{Binding Body}" Placeholder="Body" Keyboard="Text" HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
         <Button Text="Send" Command="{Binding SendMailCommand}" BackgroundColor="LightGray"
                 HorizontalOptions="End" WidthRequest="100" HeightRequest="40" Margin="0,0,20,0" />
