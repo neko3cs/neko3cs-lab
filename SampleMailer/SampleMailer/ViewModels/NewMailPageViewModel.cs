@@ -2,7 +2,6 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
-using SampleMailer.Helpers;
 using SampleMailer.Models;
 using System;
 using System.Collections.Generic;
@@ -37,14 +36,18 @@ namespace SampleMailer.ViewModels
             NavigationService = navigationService;
         }
 
-        public DelegateCommand SendMailCommand => new DelegateCommand(() =>
+        public DelegateCommand SendMailCommand => new DelegateCommand(async () =>
         {
             List<MailboxAddress> toList = To.Split(new char[] { ',' }).Select(address => new MailboxAddress(address.Trim())).ToList();
-            List<MailboxAddress> ccList = Cc.Split(new char[] { ',' }).Select(address => new MailboxAddress(address.Trim())).ToList();
-            List<MailboxAddress> bccList = Bcc.Split(new char[] { ',' }).Select(address => new MailboxAddress(address.Trim())).ToList();
+            List<MailboxAddress> ccList = Cc.Split(new char[] { ',' })?.Select(address => new MailboxAddress(address.Trim())).ToList();
+            List<MailboxAddress> bccList = Bcc.Split(new char[] { ',' })?.Select(address => new MailboxAddress(address.Trim())).ToList();
 
             var mailer = new Mailer(App.Account);
-            mailer.Send(toList, ccList, bccList, Subject, Body);
+            try
+            {
+                await mailer.SendAsync(toList, ccList, bccList, Subject, Body);
+            }
+            catch { /* もみ消し */ }
         });
     }
 }
