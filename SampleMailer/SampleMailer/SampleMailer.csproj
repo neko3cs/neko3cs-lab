@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\UserAccountRepo.cs" />
+    <Compile Remove="Interface\ILocalDB.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="Views\NewMailPage.xaml.cs">
       <DependentUpon>NewMailPage.xaml</DependentUpon>
     </Compile>

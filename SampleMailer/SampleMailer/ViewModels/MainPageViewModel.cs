@@ -1,31 +1,27 @@
 ﻿using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
-using SampleMailer.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SampleMailer.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        private INavigationService NavigationService { get; set; }
-
-
         public MainPageViewModel(INavigationService navigationService)
             : base(navigationService)
         {
             Title = "Menu";
-            NavigationService = navigationService;
         }
 
+        /// <summary>
+        /// 設定画面へ遷移します。
+        /// </summary>
         public DelegateCommand GoToSettingsPageCommand => new DelegateCommand(async () =>
         {
             await NavigationService.NavigateAsync("SettingsPage");
         });
 
+        /// <summary>
+        /// メール送信画面へ遷移します。
+        /// </summary>
         public DelegateCommand GoToNewMailPageCommand => new DelegateCommand(async () =>
         {
             await NavigationService.NavigateAsync("NewMailPage");
