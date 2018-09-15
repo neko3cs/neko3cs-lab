@@ -1,9 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace SampleMailer.Models
@@ -11,18 +9,20 @@ namespace SampleMailer.Models
     public class Mailer
     {
         private readonly string SmtpHost = "smtp.gmail.com";
-
         private readonly int SmtpPort = 465;
+        private readonly Account FromAccount;
 
-        private UserAccount FromAccount;
-
-
-        public Mailer(UserAccount account)
+        public Mailer(Account account)
         {
             FromAccount = account;
         }
 
-        public async Task SendAsync(List<MailboxAddress> toList, List<MailboxAddress> ccList, List<MailboxAddress> bccList, string subject, string body)
+        /// <summary>
+        /// メールを送信します。
+        /// 宛先、件名、本文は必須項目です。
+        /// </summary>
+        public async Task SendAsync(string subject, string body, List<MailboxAddress> toList,
+                                    List<MailboxAddress> ccList = null, List<MailboxAddress> bccList = null)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(FromAccount.Name, FromAccount.Address));
@@ -39,16 +39,17 @@ namespace SampleMailer.Models
             {
                 using (var client = new SmtpClient())
                 {
+                    // サーバ接続
                     await client.ConnectAsync(SmtpHost, SmtpPort, SecureSocketOptions.SslOnConnect);
-
+                    // SMTP認証
                     await client.AuthenticateAsync(FromAccount.Address, FromAccount.Password);
-
+                    // メール送信
                     await client.SendAsync(message);
-
+                    // サーバ接続解除
                     await client.DisconnectAsync(true);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
