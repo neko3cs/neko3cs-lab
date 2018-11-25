@@ -1,1 +1,2 @@
 # SampleEntityFrameworkCore
+dotnet cliを使ったEntityFrameworkCoreの導入サンプル
