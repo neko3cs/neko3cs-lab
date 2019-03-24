@@ -23,9 +23,13 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/metro4/build/css/metro-all.min.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/metro4/build/js/metro.min.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {

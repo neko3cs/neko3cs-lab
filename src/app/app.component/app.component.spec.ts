@@ -32,4 +32,9 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('Welcome to ng-practice-app!');
   });
+
+  // テストサンプル
+  it('サンプルテスト', () => {
+    expect(1 + 1).toEqual(2);
+  });
 });
