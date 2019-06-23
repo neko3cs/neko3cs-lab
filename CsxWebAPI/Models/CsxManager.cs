@@ -23,7 +23,7 @@ namespace CsxWebAPI.Models
             return result.ReturnValue;
         }
 
-        public static async Task<T> RunScriptAsync<T>(string scriptId, dynamic args)
+        public static async Task<T> RunScriptAsync<T>(string scriptId, string[] args)
         {
             var settings = AppSettings.Instance;
 
@@ -32,6 +32,7 @@ namespace CsxWebAPI.Models
 
             var script = CSharpScript.Create<T>(scriptText);
 
+            // TODO: 引数を渡せない（もしかして本当に渡す手段がない？）
             var result = await script.RunAsync(args);
             return result.ReturnValue;
         }
