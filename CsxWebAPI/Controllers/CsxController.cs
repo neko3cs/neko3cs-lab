@@ -17,6 +17,6 @@ namespace CsxWebAPI.Controllers
 
         [HttpGet("login")]
         public async Task<ActionResult<bool>> CanLogin([FromQuery] string id, [FromQuery] string password)
-            => await CsxManager.RunScriptAsync<bool>("Login", new { id, password });
+            => await CsxManager.RunScriptAsync<bool>("Login", new string[] { id, password });
     }
 }

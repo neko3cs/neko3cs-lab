@@ -3,18 +3,13 @@
 using System;
 
 // Define Section.
-public class User
-{
-    public string Id { get; set; }
-    public string Password { get; set; }
-}
 public static class Script
 {
     public static bool Run(string[] args)
     {
         var userID = args[0];
-        var userPW =  args[1];
-        
+        var userPW = args[1];
+
         var isValidAccount = false;
         using (var client = new Redis.Protocol.RespClient())
         {
@@ -22,13 +17,13 @@ public static class Script
                                 .QueueCommand($"get user:id:{userID}", Encoding.UTF8.GetString)
                                 .Execute();
             try
-            { 
+            {
                 var pw = (string)results[0];
                 isValidAccount = userPW.Equals(pw);
             }
             catch { isValidAccount = false; }
         }
-    
+
         return isValidAccount;
     }
 }
