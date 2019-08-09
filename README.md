@@ -1,0 +1,3 @@
+# PlayMicroBatchFramework
+
+MicroBatchFrameworkで遊んでみた
