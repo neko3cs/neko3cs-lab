@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MicroBatchFramework;
 
 namespace PlayMicroBatchFramework
 {
     public class Sort : BatchBase
     {
-        private List<int> Source { get; set; } = new List<int> { 5, 9, 3, 1, 2, 8, 4, 7, 6 };
+        private List<int> Source { get; set; } = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+                                                        .OrderBy(num => Guid.NewGuid())
+                                                        .ToList();
 
         private void ShowSource()
         {
