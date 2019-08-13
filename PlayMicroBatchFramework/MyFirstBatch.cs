@@ -15,7 +15,7 @@ namespace PlayMicroBatchFramework
         {
             for (int i = 0; i < repeat; i++)
             {
-                this.Context.Logger.LogInformation($"Hello My Batch from {name}");
+                this.Context.Logger.LogInformation(Figgle.FiggleFonts.Standard.Render($"Hello My Batch from {name}"));
             }
         }
 
