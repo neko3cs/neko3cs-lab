@@ -1,0 +1,1 @@
+# rails_6_tutorial
