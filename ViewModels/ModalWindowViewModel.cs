@@ -21,6 +21,8 @@ namespace XamNumericEditorFocusSample.ViewModels
             {
                 NumberOutput.Value = NumberInput.Value;
                 NumberInput.Value = null;
+
+                FocusTextBoxCommand.Execute();
             });
 
             ClearTextCommand = NumberOutput
@@ -30,6 +32,8 @@ namespace XamNumericEditorFocusSample.ViewModels
             {
                 NumberOutput.Value = null;
                 NumberInput.Value = null;
+
+                FocusTextBoxCommand.Execute();
             });
         }
     }
