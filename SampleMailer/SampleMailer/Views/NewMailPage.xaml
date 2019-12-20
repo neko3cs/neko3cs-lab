@@ -24,9 +24,9 @@
         <Entry Text="{Binding Bcc}" Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
                Keyboard="Email" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
-        <Entry Text="{Binding Subject}" Placeholder="Subject" Keyboard="Text" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
+        <Entry Text="{Binding Subject}" Placeholder="Subject" Keyboard="Chat" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
-        <Entry Text="{Binding Body}" Placeholder="Body" Keyboard="Text" HorizontalOptions="FillAndExpand"
+        <Entry Text="{Binding Body}" Placeholder="Body" Keyboard="Chat" HorizontalOptions="FillAndExpand"
                VerticalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
         <Button Text="Send" Command="{Binding SendMailCommand}" BackgroundColor="LightGray"

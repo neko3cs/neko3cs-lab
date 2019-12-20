@@ -15,7 +15,7 @@
         <Label Text="User Info" FontSize="Medium" Margin="5,0,0,0"/>
 
         <Label Text="Account Name" FontSize="Small" Margin="10,0,0,0"/>
-        <Entry Text="{Binding Name}" Placeholder="Input account name..." Keyboard="Default" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
+        <Entry Text="{Binding Name}" Placeholder="Input account name..." Keyboard="Text" HorizontalOptions="FillAndExpand" Margin="10,5,5,5"/>
 
         <Label Text="Account Address" FontSize="Small" Margin="10,0,0,0"/>
         <Entry Text="{Binding Address}" Placeholder="Input account address..."
