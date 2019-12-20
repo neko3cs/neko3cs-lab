@@ -30,9 +30,6 @@ namespace SampleMailer.ViewModels
             }
         }
 
-        /// <summary>
-        /// ユーザ情報を保存します。
-        /// </summary>
         public DelegateCommand SaveUserInfoCommand => new DelegateCommand(async () =>
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Address) || string.IsNullOrEmpty(Password))

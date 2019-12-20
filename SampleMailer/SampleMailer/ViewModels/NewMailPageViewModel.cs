@@ -33,9 +33,6 @@ namespace SampleMailer.ViewModels
             Title = "New Mail";
         }
 
-        /// <summary>
-        /// メールを送信します。
-        /// </summary>
         public DelegateCommand SendMailCommand => new DelegateCommand(async () =>
         {
             List<MailboxAddress> toList = To.Split(new char[] { ',' }).Select(address => new MailboxAddress(address.Trim())).ToList();
