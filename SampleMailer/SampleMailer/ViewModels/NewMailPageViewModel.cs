@@ -1,11 +1,11 @@
-﻿using MimeKit;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MimeKit;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using SampleMailer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SampleMailer.ViewModels
 {
