@@ -1,6 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,10 +18,6 @@ namespace SampleMailer.Models
             FromAccount = account;
         }
 
-        /// <summary>
-        /// メールを送信します。
-        /// 宛先、件名、本文は必須項目です。
-        /// </summary>
         public async Task SendAsync(string subject, string body, List<MailboxAddress> toList,
                                     List<MailboxAddress> ccList = null, List<MailboxAddress> bccList = null)
         {
@@ -49,7 +46,7 @@ namespace SampleMailer.Models
                     await client.DisconnectAsync(true);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 throw;
             }

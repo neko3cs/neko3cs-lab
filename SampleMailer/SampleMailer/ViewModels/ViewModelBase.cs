@@ -27,19 +27,14 @@ namespace SampleMailer.ViewModels
             PageDialogService = pageDialogService;
         }
 
-        public virtual void OnNavigatedFrom(NavigationParameters parameters)
+        public void OnNavigatedFrom(INavigationParameters parameters)
         {
-
+            throw new System.NotImplementedException();
         }
 
-        public virtual void OnNavigatedTo(NavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-
-        }
-
-        public virtual void OnNavigatingTo(NavigationParameters parameters)
-        {
-
+            throw new System.NotImplementedException();
         }
 
         public virtual void Destroy()
