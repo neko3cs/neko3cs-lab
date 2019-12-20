@@ -1,9 +1,9 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 
 namespace SampleMailer.Models
 {
@@ -18,8 +18,13 @@ namespace SampleMailer.Models
             FromAccount = account;
         }
 
-        public async Task SendAsync(string subject, string body, List<MailboxAddress> toList,
-                                    List<MailboxAddress> ccList = null, List<MailboxAddress> bccList = null)
+        public async Task SendAsync(
+            string subject,
+            string body,
+            List<MailboxAddress> toList,
+            List<MailboxAddress> ccList = null,
+            List<MailboxAddress> bccList = null
+        )
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(FromAccount.Name, FromAccount.Address));
