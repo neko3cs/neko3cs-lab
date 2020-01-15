@@ -9,8 +9,8 @@ namespace SampleQueryNotification
         {
             var queryNotify = new QueryNotify
             {
-                ConnectionString = "conn;hogehoge;fugafuga;piyopiyo;",
-                NotificationQuery = "select * from t_buy_hist"
+                ConnectionString = "Data Source=localhost;User ID=sa;Password=hogehoge",
+                NotificationQuery = "select * from News"
             };
             queryNotify.MessageReceived += OnMessageReceived;
             queryNotify.ReceiveStart();
