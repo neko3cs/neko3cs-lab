@@ -10,18 +10,11 @@ namespace SampleQueryNotification
 
     public class QueryNotify
     {
-        /// <summary> クエリ通知が開始されているかどうかを判断します。 </summary>
         private static bool SqlDependency_Started { get; set; } = false;
-        /// <summary> クエリ通知を要求するデータベースの接続文字列。 </summary>
         public string ConnectionString { get; set; }
-        /// <summary> クエリ通知に用いるSQL。 </summary>
         public string NotificationQuery { get; set; }
-        /// <summary> クエリ通知を受信した際に実行するイベント。 </summary>
         public event MessageReceivedEventHandler MessageReceived;
 
-        /// <summary>
-        /// データベースに対してクエリ通知のアクセス許可を申請します。
-        /// </summary>
         private bool CanRequestNotifications()
         {
             var permission = new SqlClientPermission(PermissionState.Unrestricted);
@@ -36,18 +29,15 @@ namespace SampleQueryNotification
             }
         }
 
-        /// <summary>
-        /// クエリ通知の受信を開始します。
-        /// </summary>
         public void ReceiveStart()
         {
             if (string.IsNullOrEmpty(this.ConnectionString) || string.IsNullOrEmpty(this.NotificationQuery))
             {
-                throw new InvalidOperationException("クエリ通知を登録する前に接続文字列と通知用クエリを設定してください。");
+                throw new InvalidOperationException("Need to set connection string and query for notification before register query notification.");
             }
             if (this.CanRequestNotifications())
             {
-                throw new SecurityException("指定のデータベースへのアクセス許可を得られませんでした。");
+                throw new SecurityException("Access denied by database.");
             }
 
             if (!SqlDependency_Started)
@@ -58,9 +48,6 @@ namespace SampleQueryNotification
             this.SubscribeNotification();
         }
 
-        /// <summary>
-        /// クエリ通知をデータベースへ登録します。
-        /// </summary>
         private void SubscribeNotification()
         {
             using (var conn = new SqlConnection(this.ConnectionString))
@@ -77,9 +64,6 @@ namespace SampleQueryNotification
             }
         }
 
-        /// <summary>
-        /// クエリが変更された際に次戦に登録した<code>MessageReceived</code>イベントを実行し、クエリ通知を再度登録します。
-        /// </summary>
         private void OnDependencyChange(object sender, SqlNotificationEventArgs e)
         {
             this.MessageReceived?.Invoke(sender, e);
