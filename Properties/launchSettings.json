@@ -2,7 +2,7 @@
   "profiles": {
     "TryDotNetFive": {
       "commandName": "Project",
-      "commandLineArgs": "greet --number 1 --name john --age 25"
+      "commandLineArgs": "greet"
     }
   }
 }

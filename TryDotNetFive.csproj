@@ -9,4 +9,6 @@
     <PackageReference Include="Cocona.Lite" Version="1.5.0" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>
