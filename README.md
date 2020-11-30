@@ -1,0 +1,2 @@
+# AnnotationInConsoleAppFramework
+ConsoleAppFramework で属性アノテーションを使って遊ぶの巻。
