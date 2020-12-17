@@ -3,7 +3,7 @@ using System.IO;
 
 namespace AnnotationInConsoleAppFramework
 {
-    public class PathExistsValidation : ValidationAttribute
+    public class PathExists : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

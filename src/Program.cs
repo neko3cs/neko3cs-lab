@@ -14,7 +14,9 @@ namespace AnnotationInConsoleAppFramework
             .RunConsoleAppFrameworkAsync<Program>(args);
 
         public void Run(
-            [PathExistsValidation]
+            // ConsoleAppFramework ではアノテーションは使えないので、
+            // アノテーション使いたかったら Cocona 使った方がいいかも
+            [PathExists]
             [Option("path")] string filePath
         )
         {
