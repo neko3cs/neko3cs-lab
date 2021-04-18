@@ -1,0 +1,2 @@
+# SampleRunAppInWindowsDockerContainer
+WindowsコンテナーでSQL ServerやWindows Service、WebAppが起動することを確認する用
