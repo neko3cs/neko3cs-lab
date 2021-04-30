@@ -22,7 +22,7 @@ namespace SampleRunAppInWindowsDockerContainer.Service
         {
             _timer = new Timer()
             {
-                Interval = TimeSpan.FromSeconds(1).TotalSeconds,
+                Interval = TimeSpan.FromSeconds(1).TotalMilliseconds,
                 Enabled = true,
                 AutoReset = true
             };
