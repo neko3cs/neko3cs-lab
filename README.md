@@ -6,7 +6,7 @@ React Native Windows 学習用 Repository
 
 ## ToDo
 
-- [ ] react-native-windows を起動する
+- [x] react-native-windows を起動する
 - [ ] それっぽいアプリを作ってみる
     - ボタン押したらなんかアクションする程度
 - [ ] seleniumを組み込んでみる
