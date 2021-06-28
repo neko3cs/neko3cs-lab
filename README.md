@@ -10,3 +10,4 @@ React Native Windows 学習用 Repository
 - [ ] それっぽいアプリを作ってみる
     - ボタン押したらなんかアクションする程度
 - [ ] seleniumを組み込んでみる
+- [ ] fluent-ui を適用してみる
