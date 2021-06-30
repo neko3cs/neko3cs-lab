@@ -1,0 +1,5 @@
+<user-list-filter [value]="userListFilter$ | async" (valueChange)="setUserListFilter($event)">
+</user-list-filter>
+<user-list [users]="users$ | async"></user-list>
+
+<router-outlet></router-outlet>
