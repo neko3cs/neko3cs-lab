@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaySystemTextJson", "PlaySystemTextJson.csproj", "{FCB3C3E1-4BE8-48B2-8046-08FF2FE2041A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCB3C3E1-4BE8-48B2-8046-08FF2FE2041A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCB3C3E1-4BE8-48B2-8046-08FF2FE2041A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCB3C3E1-4BE8-48B2-8046-08FF2FE2041A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB3C3E1-4BE8-48B2-8046-08FF2FE2041A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E53A90C4-2DDA-4188-A128-7AB7D58628DA}
+	EndGlobalSection
+EndGlobal
