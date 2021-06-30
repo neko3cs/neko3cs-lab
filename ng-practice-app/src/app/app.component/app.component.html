@@ -1,0 +1,39 @@
+<div class="two-column-box">
+    <ul class="two-column-box__left">
+        <li [routerLinkActive]="'current'" [routerLinkActiveOptions]="{exact: true}">
+            <a [routerLink]="['/']">Main Page</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/book-list']">Book List Page</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/hatena', 'http://gihyo.jp/']">ブックマークコメント</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/pipe']">Pipeサンプル</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/directive']">Directiveサンプル</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/test']">Testサンプル</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/article', 13]">記事 No.13</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/article', 100]">記事 No.100</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/param']" [queryParams]="{ category: 'Angular', keyword: 'Routing' }"
+                [fragment]="'hoge'">クエリ情報/フラグメント</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/data']">データ</a>
+        </li>
+        <li [routerLinkActive]="'current'">
+            <a [routerLink]="['/dummy']">Error Page</a>
+        </li>
+    </ul>
+    <router-outlet class="two-colmun-box__right"></router-outlet>
+</div>

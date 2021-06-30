@@ -1,0 +1,12 @@
+<h1>はてなサービス</h1>
+
+<div class="form">
+  <input type="text" class="input-control text" [(ngModel)]="url" />
+  <input type="button" class="input-control button" value="取得" (click)="onclick();" />
+</div>
+
+<hr />
+
+<ul>
+  <li *ngFor="let comment of comments">{{comment}}</li>
+</ul>
