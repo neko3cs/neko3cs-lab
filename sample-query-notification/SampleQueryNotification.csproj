@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+    <PackageReference Include="System.Security.Permissions" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="xs\UserPrefs.xml" />
+    <None Remove="xs\sqlite3\storage.ide" />
+    <None Remove="xs\sqlite3\db.lock" />
+    <None Remove="xs\project-cache\SampleQueryNotify-Debug.json" />
+  </ItemGroup>
+</Project>
