@@ -13,32 +13,23 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
 } from 'react-native';
+import TodoInput from './components/TodoInput';
 
 import {
   Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
-
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
-  const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' +
-      'Cmd+D or shake for dev menu',
-    android: 'Double tap R on your keyboard to reload,\n' +
-      'Shake or press menu button for dev menu',
-  });
+  _onPress = (text) => {
+    console.log(text);
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -46,41 +37,28 @@ const App: () => Node = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
-        <View style={style.container}>
-          <Text style={style.welcome}>
-            React Nativeへようこそ!
-          </Text>
-          <Text style={style.instructions}>
-            React Nativeで広がるアプリの世界
-          </Text>
-          <Text style={style.instructions}>
-            {instructions}
-          </Text>
+        <View style={styles.container}>
+          <View style={styles.main}>
+            <TodoInput onPress={this._onPress} />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#333',
+    paddingTop: 40,
+    alignItems: 'center',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    color: '#FFF',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#FFF',
-    marginBottom: 5,
-  },
+  main: {
+    flex: 1,
+    maxWidth: 400,
+    alignItems: 'center',
+  }
 });
 
 export default App;
