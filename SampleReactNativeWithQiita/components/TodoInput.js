@@ -57,6 +57,7 @@ export default class TodoInput extends Component {
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
+          value={this.state.text}
           onChangeText={text => this.setState({ text })}
         />
         <TouchableOpacity
