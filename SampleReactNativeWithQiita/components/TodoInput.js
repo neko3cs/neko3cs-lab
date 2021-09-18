@@ -36,24 +36,28 @@ export default class TodoInput extends Component {
   constructor(props) {
     super(props);
 
-    this.ref = {};
+    this.state = {
+      text: ''
+    }
   }
 
   _onPress = () => {
-    this.props.onPress(this.ref._lastNativeText);
-    this.ref.setNativeProps({ text: '' });
+    let text = this.state.text;
+    this.props.onPress(text);
+    text = '';
+    this.setState({ text });
   }
 
   render() {
     const {
       onPress,
-    } = this.props;
+    } = this.state;
 
     return (
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
-          ref={(ref) => { this.ref = ref; }}
+          onChangeText={text => this.setState({ text })}
         />
         <TouchableOpacity
           style={styles.button}
