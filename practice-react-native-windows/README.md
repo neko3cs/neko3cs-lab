@@ -12,9 +12,9 @@ React Native Windows 学習用 Repository
 - [ ] selenium を組み込んでみる
 - [ ] fluent-ui を適用してみる
 
-# メモ
+## メモ
 
-## プロジェクトの生成方法
+### プロジェクトの生成方法
 
 以下のコマンドで ReactNative アプリケーションを生成する。
 
