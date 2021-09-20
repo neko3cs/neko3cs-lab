@@ -2,15 +2,7 @@
 
 React Native Windows 学習用 Repository
 
-以下を試してみる。
-
-## ToDo
-
-- [x] react-native-windows を起動する
-- [ ] それっぽいアプリを作ってみる
-  - ボタン押したらなんかアクションする程度
-- [ ] selenium を組み込んでみる
-- [ ] fluent-ui を適用してみる
+適当に簡単なアプリでも作って試してみる。
 
 ## メモ
 
