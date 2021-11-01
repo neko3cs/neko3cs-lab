@@ -1,0 +1,24 @@
+{
+  "name": "Chrome拡張機能学習用アプリ",
+  "version": "1.0",
+  "description": "Chrome拡張の機能を確認する用のアプリです。",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "file:///C:/src/neko3cs-lab/sample-chrome-extensions/src/index.html"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {}
+}
