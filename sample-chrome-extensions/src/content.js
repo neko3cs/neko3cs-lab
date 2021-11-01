@@ -1,5 +1,5 @@
 const confirmTweet = (e) => {
-  if (confirm('投稿します。よろしいですか？') === false) {
+  if (confirm('送信します。よろしいですか？') === false) {
     e.stopPropagation();
   }
 };
