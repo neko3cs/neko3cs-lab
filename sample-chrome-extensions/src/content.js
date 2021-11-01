@@ -4,18 +4,15 @@ const confirmTweet = (e) => {
   }
 };
 
-const setAlertToAlertButton = () => {
+const onLoad = () => {
   const alertButton = document.querySelector('button#alertButton');
+
   if (alertButton) {
     console.log('ボタン見つけた！ダイアログを埋め込むね！');
     alertButton.addEventListener('click', confirmTweet, { capture: true });
   } else {
     console.log('ボタン見つからなかった！');
   }
-};
-
-const onLoad = () => {
-  setAlertToAlertButton();
 };
 
 window.addEventListener('load', onLoad);
