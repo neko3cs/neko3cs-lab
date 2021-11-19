@@ -11,7 +11,7 @@ const app: express.Express = createExpressServer({
   ]
 });
 
-app.use(cors());
+app.use(cors());  // FIXME: 'Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client'
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
