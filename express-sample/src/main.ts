@@ -1,6 +1,7 @@
 import * as express from 'express';
-import "reflect-metadata";
 import { createExpressServer } from 'routing-controllers';
+import "reflect-metadata";
+import * as cors from 'cors';
 import { GreetController } from './controllers/greet-controller';
 
 const app: express.Express = createExpressServer({
@@ -10,11 +11,7 @@ const app: express.Express = createExpressServer({
   ]
 });
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
