@@ -10,7 +10,6 @@
 
 import React, { useState } from 'react';
 import {
-  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -18,23 +17,21 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import dayjs from 'dayjs';
-
-
 import {
   Colors,
   Header,
 } from 'react-native/Libraries/NewAppScreen';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import dayjs from 'dayjs';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const [date, setDate] = useState(dayjs('2021/9/20 00:00:00').toDate());
+  const [date, setDate] = useState(dayjs().toDate());
 
-  const onChange = (event: Event, selectedDate: Date) => {
+  const onChange = (event: Event, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
   };
@@ -50,7 +47,7 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <DateTimePicker
+          <RNDateTimePicker
             testID="dateTimePicker"
             value={date}
             mode="date"
