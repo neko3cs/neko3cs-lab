@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29215.179
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "practicereactnativewindows", "practicereactnativewindows\practicereactnativewindows.csproj", "{A593EB11-0500-45D0-BB51-29C44E9E6AF1}"
 EndProject
@@ -36,8 +36,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.ReactNative.Manag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.ReactNative.Managed.CodeGen", "..\node_modules\react-native-windows\Microsoft.ReactNative.Managed.CodeGen\Microsoft.ReactNative.Managed.CodeGen.csproj", "{ADED4FBE-887D-4271-AF24-F0823BCE7961}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DateTimePickerWindows", "..\node_modules\@react-native-community\datetimepicker\windows\DateTimePickerWindows\DateTimePickerWindows.vcxproj", "{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\node_modules\react-native-windows\Microsoft.ReactNative.Cxx\Microsoft.ReactNative.Cxx.vcxitems*{0986a4db-8e72-4bb7-ae32-7d9df1758a9d}*SharedItemsImports = 4
 		..\node_modules\react-native-windows\JSI\Shared\JSI.Shared.vcxitems*{0cc28589-39e4-4288-b162-97b959f8b843}*SharedItemsImports = 9
 		..\node_modules\react-native-windows\Shared\Shared.vcxitems*{2049dbe9-8d13-42c9-ae4b-413ae38fffd0}*SharedItemsImports = 9
 		..\node_modules\react-native-windows\Mso\Mso.vcxitems*{84e05bfa-cbaf-4f0d-bfb6-4ce85742a57e}*SharedItemsImports = 9
@@ -197,6 +200,24 @@ Global
 		{ADED4FBE-887D-4271-AF24-F0823BCE7961}.Release|x64.Build.0 = Release|x64
 		{ADED4FBE-887D-4271-AF24-F0823BCE7961}.Release|x86.ActiveCfg = Release|x86
 		{ADED4FBE-887D-4271-AF24-F0823BCE7961}.Release|x86.Build.0 = Release|x86
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|ARM.ActiveCfg = Debug|ARM
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|ARM.Build.0 = Debug|ARM
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|ARM64.ActiveCfg = Debug|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|ARM64.Build.0 = Debug|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|x64.ActiveCfg = Debug|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|x64.Build.0 = Debug|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|x86.ActiveCfg = Debug|Win32
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|x86.Build.0 = Debug|Win32
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Debug|x86.Deploy.0 = Debug|Win32
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|ARM.ActiveCfg = Release|ARM
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|ARM.Build.0 = Release|ARM
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|ARM64.ActiveCfg = Release|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|ARM64.Build.0 = Release|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|x64.ActiveCfg = Release|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|x64.Build.0 = Release|x64
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|x86.ActiveCfg = Release|Win32
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|x86.Build.0 = Release|Win32
+		{0986A4DB-8E72-4BB7-AE32-7D9DF1758A9D}.Release|x86.Deploy.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
