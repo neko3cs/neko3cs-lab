@@ -14,10 +14,8 @@ import (
 
 var filePath = flag.String("filePath", "", "ファイルパス")
 
-func main() {
-	flag.Parse()
-
-	jpgFile, err := os.Open(*filePath)
+func convertJPG2PNG(jpgFilePath string) {
+	jpgFile, err := os.Open(jpgFilePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,7 +26,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pngFileName := strings.Replace(filepath.Base(*filePath), ".JPG", ".PNG", -1)
+	pngFileName := strings.Replace(filepath.Base(jpgFilePath), ".JPG", ".PNG", -1)
 	fmt.Println("PNG Name: " + pngFileName)
 
 	pngFile, err := os.Create(pngFileName)
@@ -38,4 +36,9 @@ func main() {
 	defer pngFile.Close()
 
 	png.Encode(pngFile, image)
+}
+
+func main() {
+	flag.Parse()
+	convertJPG2PNG(*filePath)
 }
