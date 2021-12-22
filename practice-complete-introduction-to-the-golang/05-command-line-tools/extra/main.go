@@ -14,6 +14,9 @@ import (
 
 var dirPath = flag.String("dir", "", "JPGイメージのあるフォルダパス")
 
+/*
+	指定のJPGファイルをPNGファイルに変換します。
+*/
 func convertJPG2PNG(jpgFilePath string) {
 	jpgFile, err := os.Open(jpgFilePath)
 	if err != nil {
@@ -38,6 +41,9 @@ func convertJPG2PNG(jpgFilePath string) {
 	png.Encode(pngFile, image)
 }
 
+/*
+	指定のフォルダからJPGファイルを取得します。
+*/
 func getJPGFilePaths(targetDirPath string) []string {
 	jpgFilePaths := []string{}
 
@@ -55,6 +61,9 @@ func getJPGFilePaths(targetDirPath string) []string {
 	return jpgFilePaths
 }
 
+/*
+	エントリーポイントです。
+*/
 func main() {
 	flag.Parse()
 
