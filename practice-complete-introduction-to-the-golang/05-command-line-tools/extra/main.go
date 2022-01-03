@@ -16,7 +16,7 @@ import (
 		- 'JPG2PNG'
 		- 'PNG2JPG'
 */
-var convertFrom = flag.String("c", "JPG2PNG", "変換先フォーマット。'JPG2PNG', 'PNG2JPG'から指定する。")
+var convertFrom = flag.String("c", "JPG2PNG", "変換先フォーマット。'JPG2PNG', 'PNG2JPG'から指定する。") // FIXME: なぜかコマンドラインからフラグ取得出来ない
 
 /*
 	エントリーポイントです。
