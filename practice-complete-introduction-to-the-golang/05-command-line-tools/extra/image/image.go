@@ -1,4 +1,4 @@
-package imgconv
+package image
 
 import (
 	"image"
@@ -10,10 +10,15 @@ import (
 	"strings"
 )
 
+type Img struct {
+	SrcPath string
+	Value   image.Image
+}
+
 /*
 	指定のパスの画像を取得します。
 */
-func getImage(src string) image.Image {
+func GetImage(src string) Img {
 	file, err := os.Open(src)
 	if err != nil {
 		log.Fatal(err)
@@ -25,29 +30,29 @@ func getImage(src string) image.Image {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return image
+	return Img{SrcPath: src, Value: image}
 }
 
 /*
 	指定のJPGファイルをPNGファイルに変換します。
 */
-func ConvertJPG2PNG(src string) {
-	file, err := os.Create(strings.Replace(src, ".JPG", ".PNG", -1))
+func (img *Img) ConvertJPG2PNG() {
+	file, err := os.Create(strings.Replace(img.SrcPath, ".JPG", ".PNG", -1))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	png.Encode(file, getImage(src))
+	png.Encode(file, img.Value)
 }
 
 /*
 	指定のPNGファイルをJPGファイルに変換します。
 */
-func ConvertPNG2JPG(src string) {
-	file, err := os.Create(strings.Replace(src, ".PNG", ".JPG", -1))
+func (img *Img) ConvertPNG2JPG() {
+	file, err := os.Create(strings.Replace(img.SrcPath, ".PNG", ".JPG", -1))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	jpeg.Encode(file, getImage(src), &jpeg.Options{Quality: 100})
+	jpeg.Encode(file, img.Value, &jpeg.Options{Quality: 100})
 }
