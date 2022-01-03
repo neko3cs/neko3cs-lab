@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"neko3cs/jpg2png/imgconv"
+	"neko3cs/jpg2png/image"
 	"neko3cs/jpg2png/util"
 )
 
@@ -31,11 +31,13 @@ func main() {
 
 	filePaths := util.GetFilePaths(root)
 	for _, path := range filePaths {
+		img := image.GetImage(path)
+
 		switch *convertFrom {
 		case "JPG2PNG":
-			imgconv.ConvertJPG2PNG(path)
+			img.ConvertJPG2PNG()
 		case "PNG2JPG":
-			imgconv.ConvertPNG2JPG(path)
+			img.ConvertPNG2JPG()
 		default:
 			log.Fatal("unsupported format specified.")
 		}
