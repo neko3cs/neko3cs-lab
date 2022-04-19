@@ -35,28 +35,28 @@
         private void InitializeComponent()
         {
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
+            this.MainGroup = this.Factory.CreateRibbonGroup();
             this.RunButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
+            this.MainGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.MainGroup);
             this.tab1.Label = "TabAddIns";
             this.tab1.Name = "tab1";
             // 
-            // group1
+            // MainGroup
             // 
-            this.group1.Items.Add(this.RunButton);
-            this.group1.Label = "group1";
-            this.group1.Name = "group1";
+            this.MainGroup.Items.Add(this.RunButton);
+            this.MainGroup.Label = "テストデータ作成アドイン";
+            this.MainGroup.Name = "MainGroup";
             // 
             // RunButton
             // 
-            this.RunButton.Label = "実行";
+            this.RunButton.Label = "実行!!";
             this.RunButton.Name = "RunButton";
             this.RunButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.RunButton_Click);
             // 
@@ -68,8 +68,8 @@
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.MainRibbon_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
+            this.MainGroup.ResumeLayout(false);
+            this.MainGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -77,7 +77,7 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup MainGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton RunButton;
     }
 
