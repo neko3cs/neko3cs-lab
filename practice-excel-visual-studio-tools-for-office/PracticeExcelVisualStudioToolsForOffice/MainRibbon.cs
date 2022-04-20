@@ -25,7 +25,7 @@ namespace PracticeExcelVisualStudioToolsForOffice
         private FileStream GetStreamFromFileDialog()
         {
             var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog.Filter = @"txt files (*.txt)|*.txt|All files (*.*)|*.*";
             saveFileDialog.FilterIndex = 2;
             saveFileDialog.RestoreDirectory = true;
 
@@ -51,7 +51,7 @@ namespace PracticeExcelVisualStudioToolsForOffice
                     {
                         for (int columnIndex = 0; columnIndex < sheet.UsedRange.Columns.Count; columnIndex++)
                         {
-                            table.Columns.Add(sheet.UsedRange[rowIndex, columnIndex].ToString(), typeof(string));
+                            table.Columns.Add(sheet.UsedRange[rowIndex, columnIndex].ToString(), typeof(string));  // FIXME: ここで落ちる。多分Excelにアクセス出来ていない
                         }
 
                         rowIndex++; // 2行目は型が入ってる。今回は無視
