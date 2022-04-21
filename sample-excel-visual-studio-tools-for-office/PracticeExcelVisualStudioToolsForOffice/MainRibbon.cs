@@ -45,13 +45,13 @@ namespace PracticeExcelVisualStudioToolsForOffice
             {
                 var table = new DataTable();
 
-                for (int rowIndex = 0; rowIndex < sheet.UsedRange.Rows.Count; rowIndex++)
+                for (int rowIndex = 1; rowIndex < sheet.UsedRange.Rows.Count; rowIndex++)
                 {
-                    if (rowIndex is 0)
+                    if (rowIndex is 1)
                     {
-                        for (int columnIndex = 0; columnIndex < sheet.UsedRange.Columns.Count; columnIndex++)
+                        for (int columnIndex = 1; columnIndex <= sheet.UsedRange.Columns.Count; columnIndex++)
                         {
-                            table.Columns.Add(sheet.UsedRange[rowIndex, columnIndex].ToString(), typeof(string));  // FIXME: ここで落ちる。多分Excelにアクセス出来ていない
+                            table.Columns.Add(sheet.Cells[rowIndex, columnIndex].Value.ToString(), typeof(string));
                         }
 
                         rowIndex++; // 2行目は型が入ってる。今回は無視
@@ -59,9 +59,9 @@ namespace PracticeExcelVisualStudioToolsForOffice
                     else
                     {
                         var row = table.NewRow();
-                        for (int columnIndex = 0; columnIndex < sheet.UsedRange.Columns.Count; columnIndex++)
+                        for (int columnIndex = 1; columnIndex <= sheet.UsedRange.Columns.Count; columnIndex++)
                         {
-                            row[columnIndex] = sheet.UsedRange[rowIndex, columnIndex].ToString();
+                            row[columnIndex] = sheet.UsedRange[rowIndex, columnIndex].Value.ToString();  // FIXME: ここで'IndexOutOfRangeException'になっちゃう
                         }
                     }
                 }
