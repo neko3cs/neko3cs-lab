@@ -1,10 +1,12 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using System.Data;
+using PracticeExcelVisualStudioToolsForOffice.Extensions;
+using PracticeExcelVisualStudioToolsForOffice.Models;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
-using DataTable = System.Data.DataTable;
 
 namespace PracticeExcelVisualStudioToolsForOffice
 {
@@ -14,12 +16,13 @@ namespace PracticeExcelVisualStudioToolsForOffice
 
         private void RunButton_Click(object sender, RibbonControlEventArgs e)
         {
-            var sheets = Globals.ThisAddIn.Application.Sheets;
+            using (var stream = GetStreamFromFileDialog())
+            {
+                var tables = ConvertToTables(Globals.ThisAddIn.Application.Sheets);
+                Save(stream, tables);
 
-            var stream = GetStreamFromFileDialog();
-            var dataSet = ConvertToDataSet(sheets);
-
-            Save(stream, dataSet);
+                MessageBox.Show(@"テストデータ作成ツール", @"出力が完了しました。", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private FileStream GetStreamFromFileDialog()
@@ -37,70 +40,44 @@ namespace PracticeExcelVisualStudioToolsForOffice
             return stream as FileStream;
         }
 
-        private DataSet ConvertToDataSet(Sheets sheets)
+        private IEnumerable<Table> ConvertToTables(Sheets sheets)
         {
-            var dataSet = new DataSet();
-
             foreach (Worksheet sheet in sheets)
             {
-                var table = new DataTable();
-
-                for (int rowIndex = 1; rowIndex < sheet.UsedRange.Rows.Count; rowIndex++)
+                var table = new Table(sheet.Name);
+                for (int rowIndex = 3; rowIndex < sheet.UsedRange.Rows.Count; rowIndex++) // データは3行目から入ってる
                 {
-                    if (rowIndex is 1)
+                    var row = new Row();
+                    for (int columnIndex = 1; columnIndex <= sheet.UsedRange.Columns.Count; columnIndex++)
                     {
-                        for (int columnIndex = 1; columnIndex <= sheet.UsedRange.Columns.Count; columnIndex++)
-                        {
-                            table.Columns.Add(sheet.Cells[rowIndex, columnIndex].Value.ToString(), typeof(string));
-                        }
-
-                        rowIndex++; // 2行目は型が入ってる。今回は無視
+                        row.AddColumn(
+                            columnName: sheet.Cells[1, columnIndex].Value.ToString(),
+                            value: sheet.Cells[rowIndex, columnIndex].Value.ToString()
+                        );
                     }
-                    else
-                    {
-                        var row = table.NewRow();
-                        for (int columnIndex = 1; columnIndex <= sheet.UsedRange.Columns.Count; columnIndex++)
-                        {
-                            row[columnIndex] = sheet.UsedRange[rowIndex, columnIndex].Value.ToString();  // FIXME: ここで'IndexOutOfRangeException'になっちゃう
-                        }
-                    }
+                    table.AddRow(row);
                 }
-
-                dataSet.Tables.Add(table);
+                yield return table;
             }
-
-            return dataSet;
         }
 
-        private void Save(FileStream stream, DataSet dataSet)
+        private void Save(FileStream stream, IEnumerable<Table> tables)
         {
-            foreach (DataTable table in dataSet.Tables)
+            foreach (Table table in tables)
             {
-                var header = new StringBuilder();
-                foreach (DataColumn column in table.Columns)
-                {
-                    header.Append($"{column.ColumnName}, ");
-                }
-                header.Remove(header.Length - 2, 2);
-                WriteToStream(stream, header.ToString());
+                stream.WriteTextLine($"◆{table.Name}");
 
-                var record = new StringBuilder();
-                foreach (DataRow row in table.Rows)
+                var csvHeader = string.Join(",", table.Rows.First().Columns.Keys);
+                stream.WriteTextLine(csvHeader);
+
+                foreach (Row row in table.Rows)
                 {
-                    for (var i = 0; i < 10; i++)
-                    {
-                        record.Append($"{row[i]}, ");
-                    }
+                    var csvRecord = string.Join(",", row.Columns.Values);
+                    stream.WriteTextLine(csvRecord);
                 }
-                record.Remove(header.Length - 2, 2);
-                WriteToStream(stream, record.ToString());
+
+                stream.WriteTextLine();
             }
-        }
-
-        private void WriteToStream(FileStream stream, string value)
-        {
-            var info = new UTF8Encoding(true).GetBytes(value);
-            stream.Write(info, 0, info.Length);
         }
     }
 }
