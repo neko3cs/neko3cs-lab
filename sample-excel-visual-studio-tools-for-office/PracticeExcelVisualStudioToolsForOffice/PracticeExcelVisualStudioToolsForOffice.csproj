@@ -180,6 +180,7 @@
   -->
   <ItemGroup>
     <Compile Include="Extensions\FileStreamExtensions.cs" />
+    <Compile Include="Extensions\SheetsExtensions.cs" />
     <Compile Include="MainRibbon.cs">
       <SubType>Component</SubType>
     </Compile>
