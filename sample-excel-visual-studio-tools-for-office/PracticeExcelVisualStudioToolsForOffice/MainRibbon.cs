@@ -1,5 +1,7 @@
 ﻿using Microsoft.Office.Tools.Ribbon;
 using PracticeExcelVisualStudioToolsForOffice.Extensions;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -23,12 +25,18 @@ namespace PracticeExcelVisualStudioToolsForOffice
 
             using (var stream = saveFileDialog.OpenFile() as FileStream)
             {
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+
                 var tables = Excel.Sheets.ConvertToTables();
                 stream.SaveAsCsv(tables);
 
+                stopwatch.Stop();
+                stream.WriteTextLine($@"★処理時間：{stopwatch.Elapsed:g}");
+
                 MessageBox.Show(
-                    text: @"テストデータ作成ツール",
-                    caption: @"出力が完了しました。",
+                    text: $@"出力が完了しました。{Environment.NewLine}処理時間：{stopwatch.Elapsed:g}",
+                    caption: @"テストデータ作成ツール",
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Information
                 );
