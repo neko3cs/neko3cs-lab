@@ -16,7 +16,7 @@ namespace PracticeExcelVisualStudioToolsForOffice
         {
             var saveFileDialog = new SaveFileDialog
             {
-                Filter = @"csv files (*.csv)|*.csv",
+                Filter = @"Text files (*.txt)|*.txt",
                 RestoreDirectory = true
             };
             if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
