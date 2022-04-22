@@ -1,4 +1,4 @@
-﻿namespace PracticeExcelVisualStudioToolsForOffice
+﻿namespace SampleExcelVisualStudioToolsForOffice
 {
     public partial class ThisAddIn
     {

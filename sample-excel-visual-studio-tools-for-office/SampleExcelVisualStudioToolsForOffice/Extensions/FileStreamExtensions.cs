@@ -1,11 +1,11 @@
-﻿using PracticeExcelVisualStudioToolsForOffice.Models;
+﻿using SampleExcelVisualStudioToolsForOffice.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace PracticeExcelVisualStudioToolsForOffice.Extensions
+namespace SampleExcelVisualStudioToolsForOffice.Extensions
 {
     public static class FileStreamExtensions
     {
