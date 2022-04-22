@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PracticeExcelVisualStudioToolsForOffice.Models
+namespace SampleExcelVisualStudioToolsForOffice.Models
 {
     public class Table
     {

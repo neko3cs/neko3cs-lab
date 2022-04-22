@@ -1,12 +1,12 @@
 ﻿using Microsoft.Office.Tools.Ribbon;
-using PracticeExcelVisualStudioToolsForOffice.Extensions;
+using SampleExcelVisualStudioToolsForOffice.Extensions;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Application = Microsoft.Office.Interop.Excel.Application;
 
-namespace PracticeExcelVisualStudioToolsForOffice
+namespace SampleExcelVisualStudioToolsForOffice
 {
     public partial class MainRibbon
     {

@@ -1,4 +1,4 @@
-﻿namespace PracticeExcelVisualStudioToolsForOffice
+﻿namespace SampleExcelVisualStudioToolsForOffice
 {
     partial class MainRibbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
