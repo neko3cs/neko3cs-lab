@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PracticeExcelVisualStudioToolsForOffice.Properties {
+namespace SampleExcelVisualStudioToolsForOffice.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

@@ -24,8 +24,8 @@
     <ProjectGuid>{4C3EEDCB-3F94-4FF2-ACB3-42E4AE0B6765}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <RootNamespace>PracticeExcelVisualStudioToolsForOffice</RootNamespace>
-    <AssemblyName>PracticeExcelVisualStudioToolsForOffice</AssemblyName>
+    <RootNamespace>SampleExcelVisualStudioToolsForOffice</RootNamespace>
+    <AssemblyName>SampleExcelVisualStudioToolsForOffice</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -38,10 +38,10 @@
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <IsWebBootstrapper>False</IsWebBootstrapper>
-    <ProductName>PracticeExcelVisualStudioToolsForOffice</ProductName>
+    <ProductName>SampleExcelVisualStudioToolsForOffice</ProductName>
     <PublisherName />
     <SupportUrl />
-    <FriendlyName>PracticeExcelVisualStudioToolsForOffice</FriendlyName>
+    <FriendlyName>SampleExcelVisualStudioToolsForOffice</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
@@ -204,7 +204,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="PracticeExcelVisualStudioToolsForOffice_TemporaryKey.pfx" />
+    <None Include="SampleExcelVisualStudioToolsForOffice_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -233,7 +233,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PracticeExcelVisualStudioToolsForOffice_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SampleExcelVisualStudioToolsForOffice_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E51F1494C465C1C23501D4ADDDB5B6BB3AA13D4A</ManifestCertificateThumbprint>
@@ -247,7 +247,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
-        <Host Name="Excel" GeneratedCodeNamespace="PracticeExcelVisualStudioToolsForOffice" IconIndex="0">
+        <Host Name="Excel" GeneratedCodeNamespace="SampleExcelVisualStudioToolsForOffice" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
