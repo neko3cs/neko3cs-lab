@@ -9,6 +9,16 @@ namespace PracticeExcelVisualStudioToolsForOffice.Extensions
 {
     public static class FileStreamExtensions
     {
+        private static void WriteText(this FileStream stream, string value)
+        {
+            var info = new UTF8Encoding(true).GetBytes(value);
+            stream.Write(info, 0, info.Length);
+        }
+
+        public static void WriteTextLine(this FileStream stream, string value = "") =>
+            stream.WriteText($"{value}{Environment.NewLine}");
+
+
         public static void SaveAsCsv(this FileStream stream, IEnumerable<Table> tables)
         {
             foreach (Table table in tables)
@@ -27,13 +37,5 @@ namespace PracticeExcelVisualStudioToolsForOffice.Extensions
                 stream.WriteTextLine();
             }
         }
-        private static void WriteText(this FileStream stream, string value)
-        {
-            var info = new UTF8Encoding(true).GetBytes(value);
-            stream.Write(info, 0, info.Length);
-        }
-
-        private static void WriteTextLine(this FileStream stream, string value = "") =>
-            WriteText(stream, $"{value}{Environment.NewLine}");
     }
 }
