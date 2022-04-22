@@ -32,7 +32,7 @@ namespace PracticeExcelVisualStudioToolsForOffice
                 stream.SaveAsCsv(tables);
 
                 stopwatch.Stop();
-                stream.WriteTextLine($@"★処理時間：{stopwatch.Elapsed:g}");
+                stream.WriteTextLine($@"★処理時間(ms)：{stopwatch.Elapsed.TotalMilliseconds:g}");
 
                 MessageBox.Show(
                     text: $@"出力が完了しました。{Environment.NewLine}処理時間：{stopwatch.Elapsed:g}",
