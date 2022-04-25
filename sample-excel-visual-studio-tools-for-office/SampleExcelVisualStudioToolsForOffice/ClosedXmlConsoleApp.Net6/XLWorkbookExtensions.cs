@@ -1,30 +1,34 @@
 ﻿using ClosedXML.Excel;
 
-namespace ClosedXmlConsoleApp.Net6
-{
-    public static class XLWorkbookExtensions
-    {
-        public static IEnumerable<Table> Load(this XLWorkbook workbook)
-        {
-            foreach (var worksheet in workbook.Worksheets)
-            {
-                var range = worksheet.RangeUsed();
-                if (range is null) continue;
+namespace ClosedXmlConsoleApp.Net6;
 
-                var table = new Table(worksheet.Name);
-                for (int row_i = 1; row_i <= range.RowCount(); row_i++)
+public static class XlWorkbookExtensions
+{
+    private const int HeaderRowIndex = 1;
+    private const int IndexHeaderRowStartAt = 1;
+    private const int IndexHeaderColumnStartAt = 1;
+
+    public static IEnumerable<Table> Load(this XLWorkbook workbook)
+    {
+        foreach (var worksheet in workbook.Worksheets)
+        {
+            var range = worksheet.RangeUsed();
+            if (range is null) continue;
+
+            var table = new Table(worksheet.Name);
+            for (var rowIndex = IndexHeaderRowStartAt; rowIndex <= range.RowCount(); rowIndex++)
+            {
+                var row = new Row();
+                for (var
+                     columnIndex = IndexHeaderColumnStartAt; columnIndex <= range.ColumnCount(); columnIndex++)
                 {
-                    var row = new Row();
-                    for (int col_i = 1; col_i <= range.ColumnCount(); col_i++)
-                    {
-                        row.AddColumn(
-                            columnName: range.Cell(1, col_i).GetFormattedString(),
-                            value: range.Cell(row_i, col_i).GetFormattedString()
-                        );
-                    }
+                    row.AddColumn(
+                        columnName: range.Cell(HeaderRowIndex, columnIndex).GetFormattedString(),
+                        value: range.Cell(rowIndex, columnIndex).GetFormattedString()
+                    );
                 }
-                yield return table;
             }
+            yield return table;
         }
     }
 }

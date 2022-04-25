@@ -1,11 +1,10 @@
-﻿namespace ClosedXmlConsoleApp.Net6
+﻿namespace ClosedXmlConsoleApp.Net6;
+
+public class Row
 {
-    public class Row
-    {
-        private readonly Dictionary<string, string> _columns = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _columns = new();
 
-        public IReadOnlyDictionary<string, string> Columns => _columns;
+    public IReadOnlyDictionary<string, string> Columns => _columns;
 
-        public void AddColumn(string columnName, string value) => _columns.Add(columnName, value);
-    }
+    public void AddColumn(string columnName, string value) => _columns.Add(columnName, value);
 }
