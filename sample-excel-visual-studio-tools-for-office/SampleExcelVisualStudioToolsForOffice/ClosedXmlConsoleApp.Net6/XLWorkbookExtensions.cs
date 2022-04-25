@@ -27,6 +27,8 @@ public static class XlWorkbookExtensions
                         value: range.Cell(rowIndex, columnIndex).GetFormattedString()
                     );
                 }
+
+                table.AddRow(row);
             }
             yield return table;
         }
