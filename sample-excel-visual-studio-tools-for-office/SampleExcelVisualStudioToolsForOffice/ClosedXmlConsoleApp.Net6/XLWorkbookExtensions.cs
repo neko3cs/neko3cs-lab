@@ -5,8 +5,8 @@ namespace ClosedXmlConsoleApp.Net6;
 public static class XlWorkbookExtensions
 {
     private const int HeaderRowIndex = 1;
-    private const int IndexHeaderRowStartAt = 1;
-    private const int IndexHeaderColumnStartAt = 1;
+    private const int RowIndexDataStartAt = 3;
+    private const int ColumnIndexDataStartAt = 1;
 
     public static IEnumerable<Table> Load(this XLWorkbook workbook)
     {
@@ -16,11 +16,11 @@ public static class XlWorkbookExtensions
             if (range is null) continue;
 
             var table = new Table(worksheet.Name);
-            for (var rowIndex = IndexHeaderRowStartAt; rowIndex <= range.RowCount(); rowIndex++)
+            for (var rowIndex = RowIndexDataStartAt; rowIndex <= range.RowCount(); rowIndex++)
             {
                 var row = new Row();
                 for (var
-                     columnIndex = IndexHeaderColumnStartAt; columnIndex <= range.ColumnCount(); columnIndex++)
+                     columnIndex = ColumnIndexDataStartAt; columnIndex <= range.ColumnCount(); columnIndex++)
                 {
                     row.AddColumn(
                         columnName: range.Cell(HeaderRowIndex, columnIndex).GetFormattedString(),
