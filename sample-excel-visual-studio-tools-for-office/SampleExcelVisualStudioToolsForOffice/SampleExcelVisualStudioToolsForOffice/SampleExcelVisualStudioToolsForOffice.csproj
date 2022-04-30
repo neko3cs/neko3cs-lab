@@ -179,16 +179,16 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Extensions\FileStreamExtensions.cs" />
-    <Compile Include="Extensions\SheetsExtensions.cs" />
+    <Compile Include="FileStreamExtensions.cs" />
+    <Compile Include="SheetsExtensions.cs" />
     <Compile Include="MainRibbon.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainRibbon.Designer.cs">
       <DependentUpon>MainRibbon.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Table.cs" />
-    <Compile Include="Models\Row.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="Row.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

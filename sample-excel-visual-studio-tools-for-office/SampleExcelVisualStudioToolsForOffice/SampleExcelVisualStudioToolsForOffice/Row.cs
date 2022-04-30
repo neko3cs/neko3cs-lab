@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SampleExcelVisualStudioToolsForOffice.Models
+namespace SampleExcelVisualStudioToolsForOffice
 {
     public class Row
     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Office.Tools.Ribbon;
-using SampleExcelVisualStudioToolsForOffice.Extensions;
 using System;
 using System.Diagnostics;
 using System.IO;
