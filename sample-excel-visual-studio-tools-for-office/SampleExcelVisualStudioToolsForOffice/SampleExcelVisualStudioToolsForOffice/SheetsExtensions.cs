@@ -1,8 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
-using SampleExcelVisualStudioToolsForOffice.Models;
 using System.Collections.Generic;
 
-namespace SampleExcelVisualStudioToolsForOffice.Extensions
+namespace SampleExcelVisualStudioToolsForOffice
 {
     public static class SheetsExtensions
     {
