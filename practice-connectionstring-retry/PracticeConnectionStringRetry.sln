@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeConnectionStringRetry", "PracticeConnectionStringRetry\PracticeConnectionStringRetry.csproj", "{527AAF60-EA2B-4B6B-8D3A-F8C0A7E8F415}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{527AAF60-EA2B-4B6B-8D3A-F8C0A7E8F415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527AAF60-EA2B-4B6B-8D3A-F8C0A7E8F415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527AAF60-EA2B-4B6B-8D3A-F8C0A7E8F415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527AAF60-EA2B-4B6B-8D3A-F8C0A7E8F415}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E07FB276-2327-4949-BAE5-713952A96564}
+	EndGlobalSection
+EndGlobal
