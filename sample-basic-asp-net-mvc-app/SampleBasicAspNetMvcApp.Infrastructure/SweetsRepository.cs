@@ -1,6 +1,6 @@
 ﻿namespace SampleBasicAspNetMvcApp.Infrastructure
 {
-    public class Class1
+    public class SweetsRepository
     {
 
     }
