@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBasicAspNetMvcApp.Inf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBasicAspNetMvcApp.UseCase.Test", "SampleBasicAspNetMvcApp.UseCase.Test\SampleBasicAspNetMvcApp.UseCase.Test.csproj", "{6B269955-66AB-4B55-9B55-73DDC6AD8697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBasicAspNetMvcApp.Database", "SampleBasicAspNetMvcApp.Database\SampleBasicAspNetMvcApp.Database.csproj", "{61131D2B-43CD-40C4-9E60-A65820E0E1AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBasicAspNetMvcApp.Database", "SampleBasicAspNetMvcApp.Database\SampleBasicAspNetMvcApp.Database.csproj", "{61131D2B-43CD-40C4-9E60-A65820E0E1AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBasicAspNetMvcApp.Database.Test", "SampleBasicAspNetMvcApp.Database.Test\SampleBasicAspNetMvcApp.Database.Test.csproj", "{73C61BF5-41E0-4FB2-B7AB-92BF19ED6159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleBasicAspNetMvcApp.Database.Test", "SampleBasicAspNetMvcApp.Database.Test\SampleBasicAspNetMvcApp.Database.Test.csproj", "{73C61BF5-41E0-4FB2-B7AB-92BF19ED6159}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
