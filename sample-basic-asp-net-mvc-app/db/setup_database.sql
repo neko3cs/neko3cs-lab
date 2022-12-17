@@ -22,3 +22,19 @@ create table [Sweets]
   [Name] nvarchar(max),
   [Calorie] int,
 )
+
+use [SampleDatabase]
+
+insert into
+  [Sweets] ([Name], [Calorie])
+values 
+  (N'いちごケーキ', 500),
+  (N'チョコレートケーキ', 800),
+  (N'赤福', 900),
+  (N'アイスクリーム', 1500),
+  (N'なんとかフラペチーノ', 99999999)
+
+select
+  *
+from
+  [Sweets]
