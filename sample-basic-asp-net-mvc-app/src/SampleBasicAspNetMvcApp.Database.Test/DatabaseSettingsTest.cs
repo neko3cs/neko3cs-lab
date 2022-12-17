@@ -5,10 +5,10 @@ namespace SampleBasicAspNetMvcApp.Database.Test;
 
 public class DatabaseSettingsTest
 {
-    public class Ú‘±•¶š—ñ‚ğæ“¾‚·‚é
+    public class æ¥ç¶šæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
     {
         [Fact]
-        public void Ú‘±•¶š—ñ‚ªæ“¾o—ˆ‚é‚±‚Æ()
+        public void æ¥ç¶šæ–‡å­—åˆ—ãŒå–å¾—å‡ºæ¥ã‚‹ã“ã¨()
         {
             const string connectionString =
                 "Data Source=localhost:1434;Initial Catalog=SampleDatabase;User ID=sa;Password=P@ssword!;";

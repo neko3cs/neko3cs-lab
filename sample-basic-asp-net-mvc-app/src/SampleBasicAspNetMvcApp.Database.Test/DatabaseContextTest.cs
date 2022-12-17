@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Xunit;
