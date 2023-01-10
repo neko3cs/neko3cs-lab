@@ -1,5 +1,7 @@
 # Build script
 
+$NewtonsoftJsonDllPath = ".\package\newtonsoft.json.13.0.2\lib\net45\Newtonsoft.Json.dll"
+
 New-Item `
   -ItemType Directory `
   -Path .\publish\ `
@@ -9,14 +11,9 @@ New-Item `
 vbc.exe `
   .\Program.vb `
   /out:.\publish\a.exe `
-  /reference:.\package\newtonsoft.json.13.0.2\lib\net45\Newtonsoft.Json.dll
+  /reference:$NewtonsoftJsonDllPath
 
 Copy-Item `
-  -Path .\images `
-  -Destination .\publish\ `
-  -Recurse `
-  -Force
-Copy-Item `
-  -Path .\package\newtonsoft.json.13.0.2\lib\net45\Newtonsoft.Json.dll `
+  -Path $NewtonsoftJsonDllPath `
   -Destination .\publish\ `
   -Force
