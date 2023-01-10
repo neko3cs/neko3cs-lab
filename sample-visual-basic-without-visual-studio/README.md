@@ -6,6 +6,7 @@ Visual Basicで書いたコンソールアプリをVisual Studioなしでビル�
 
 ## 気づきメモ
 
+- `vbe.exe` は `C:\Windows\Microsoft.NET\Framework64\v4.0.30319\` の下にあるのでPATHを通しておくとよい
 - VS使わない場合Nugetパッケージはブラウザから取得する必要がある
   - `*.nupkg` 形式で取得されるため、拡張子を `*.zip` に変換して解凍する
   - 今回は以下から取得した
