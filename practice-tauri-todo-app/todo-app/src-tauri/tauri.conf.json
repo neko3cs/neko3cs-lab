@@ -12,11 +12,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true,
-      "shell": {
-        "all": false,
-        "open": true
-      }
+      "all": true
     },
     "bundle": {
       "active": true,
@@ -33,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.todo-app.neko3cs.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -60,10 +56,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 800,
         "resizable": true,
         "title": "todo-app",
-        "width": 800
+        "width": 1250,
+        "fileDropEnabled": false
       }
     ]
   }
