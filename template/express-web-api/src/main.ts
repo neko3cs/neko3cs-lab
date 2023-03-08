@@ -1,18 +1,25 @@
-import * as express from 'express';
-import { createExpressServer } from 'routing-controllers';
-import "reflect-metadata";
-import * as cors from 'cors';
-import { GreetController } from './controllers/greet-controller';
+import express from 'express';
+import cors from 'cors';
+import user from './routes/user';
 
-const app: express.Express = createExpressServer({
-  routePrefix: '/api',
-  controllers: [
-    GreetController
-  ]
-});
+const app: express.Express = express();
 
-app.use(cors());  // FIXME: 'Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client'
+// add middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(3000, () => console.log('Now listening on: http://localhost:3000'));
+// add routes
+app.use('/user', user);
+
+// implement api method
+app.get('/', (req: express.Request, res: express.Response) => {
+  res.send('Hello Express with TypeScript!')
+});
+
+// listen when production
+if (import.meta.env.PROD) {
+  app.listen(3000);
+}
+
+export const viteNodeApp = app;
