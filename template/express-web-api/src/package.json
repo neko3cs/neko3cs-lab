@@ -6,9 +6,11 @@
   "author": "neko3cs",
   "license": "MIT",
   "dependencies": {
+    "@types/node-fetch": "^2.6.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "express-validator": "^6.15.0"
+    "express-validator": "^6.15.0",
+    "node-fetch": "^3.3.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
