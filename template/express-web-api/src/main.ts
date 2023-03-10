@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import user from './routes/user';
+import coffee from './routes/coffee';
 
 const app: express.Express = express();
 
@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // add routes
-app.use('/user', user);
+app.use('/coffee', coffee);
 
 // implement api method
 app.get('/', (req: express.Request, res: express.Response) => {
