@@ -2,7 +2,10 @@ import puppeteer from "puppeteer";
 import { setTimeout } from "timers/promises";
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({
+    headless: false,
+    ignoreDefaultArgs: ['--disable-extensions']  // windowsでのエラー対策
+  });
   const page = await browser.newPage();
 
   await page.goto("https://cgi-lib.berkeley.edu/ex/fup.html");
