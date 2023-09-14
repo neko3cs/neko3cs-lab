@@ -6,13 +6,23 @@ import Link from 'next/link';
 import Header from './components/header';
 import Content from './components/content';
 
+const fetcher = (url: string) => fetch(url)
+  .then(
+    (res) => res.json(),
+    (error) => console.log(error)
+  );
+
 export default function Home() {
   let title = "ともすた";
-  const { data, error } = useSWR("/api/message");
+  const { data, error } = useSWR(
+    "/api/message",
+    fetcher
+  );
+
+  // FIXME: 404 Not Foundになってしまう
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
 
-  // FIXME: 「loading...」から変わらない...
   return (
     <Content>
       {/* 最新バージョンだとlayout.tsxのMetadataに記載するのが一般的そう
