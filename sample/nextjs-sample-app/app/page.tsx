@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Styles from './Home.module.css'
+import Link from 'next/link';
 
 export default function Home() {
   let title = "ともすた";
@@ -14,7 +15,11 @@ export default function Home() {
 
       <h1 className={Styles.mytitle} style={{ backgroundColor: `#9f9` }}>{title}</h1>
       <p>学ぶ。をちゃんと</p>
-
+      <div>
+        <Link href="/about">
+          About
+        </Link>
+      </div>
       {/*
       <style jsx>{`
         h1 {
