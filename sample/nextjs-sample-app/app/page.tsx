@@ -1,12 +1,18 @@
+'use client';
+import useSWR from 'swr';
 // import Head from 'next/head'
-// import Styles from './Home.module.css'
 import Link from 'next/link';
+// import Styles from './Home.module.css'
 import Header from './components/header';
 import Content from './components/content';
 
 export default function Home() {
   let title = "ともすた";
+  const { data, error } = useSWR("/api/message");
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
 
+  // FIXME: 「loading...」から変わらない...
   return (
     <Content>
       {/* 最新バージョンだとlayout.tsxのMetadataに記載するのが一般的そう
@@ -15,8 +21,8 @@ export default function Home() {
       </Head>
       */}
 
-      < Header title={title} />
-      <p>学ぶ。をちゃんと</p>
+      <Header title={title} />
+      <p>{data.message}</p>
       <div>
         <Link href="/about">
           About
