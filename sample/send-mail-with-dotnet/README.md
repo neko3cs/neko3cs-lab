@@ -1,4 +1,27 @@
 # Neko3csMailer
-ただのXamarinの勉強とMailKitの使い方を兼ねたアプリです。
 
-ReactivePropertyとかかっこいいから使ってみたいけどよくわかってない(´・ω・｀)
+ただの.NET MAUIの勉強とMailKitの使い方を兼ねたアプリです。
+
+## 起動方法
+
+iOSでデバッグする場合は以下のコマンドを実行する。
+
+```zsh
+dotnet build -t:Run -f net7.0-ios -p:_DeviceName=:v2:udid=MY_SPECIFIC_UDID
+```
+
+`MY_SPECIFIC_UDID` の部分は端末によって変わる。
+
+以下のコマンドでUDIDを確認できる。
+
+```zsh
+/Applications/Xcode.app/Contents/Developer/usr/bin/simctl list
+```
+
+## TODO
+
+- [ ] Androidがなぜか上手く起動しない。SDKパスが上手く通ってないかも知れない。
+
+## 参考資料
+
+- [.NET CLI を使用して macOS で iOS アプリを構築する - .NET MAUI | Microsoft Learn](https://learn.microsoft.com/ja-jp/dotnet/maui/ios/cli)
