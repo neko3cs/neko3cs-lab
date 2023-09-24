@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
+using SendMailWithDotNet.Views;
 
 namespace SendMailWithDotNet;
 
@@ -9,6 +11,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
+			.RegisterViewModels()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,5 +24,15 @@ public static class MauiProgram
 #endif
 
 		return builder.Build();
+	}
+
+	public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
+	{
+		mauiAppBuilder.Services.AddTransient<MainPage>();
+		mauiAppBuilder.Services.AddTransient<MainPageViewModel>();
+		mauiAppBuilder.Services.AddTransient<SettingsPage>();
+		mauiAppBuilder.Services.AddTransient<SettingsPageViewModel>();
+
+		return mauiAppBuilder;
 	}
 }
