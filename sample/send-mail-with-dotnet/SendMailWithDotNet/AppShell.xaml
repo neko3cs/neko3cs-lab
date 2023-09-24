@@ -5,10 +5,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:SendMailWithDotNet.Views"
     Shell.FlyoutBehavior="Disabled">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:MainPage}"
-        Route="MainPage" />
-
+    <Tabbar>
+        <Tab
+            Title="Mail">
+            <ShellContent
+                Title="Mail"
+                ContentTemplate="{DataTemplate views:MainPage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab
+            Title="Settings">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate views:SettingsPage}"
+                Route="SettingsPage" />
+        </Tab>
+    </Tabbar>
 </Shell>
