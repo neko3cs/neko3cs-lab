@@ -4,12 +4,12 @@ namespace SendMailWithDotNet;
 
 public partial class App : Application
 {
-	public static Account Account;
+    public static Account Account;
 
-	public App()
-	{
-		InitializeComponent();
+    public App()
+    {
+        InitializeComponent();
 
-		MainPage = new AppShell();
-	}
+        MainPage = new AppShell();
+    }
 }

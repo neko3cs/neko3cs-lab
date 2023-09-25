@@ -1,51 +1,53 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MimeKit;
+using SendMailWithDotNet.Models;
 
-public class MainPageViewModel : ObservableObject
+namespace SendMailWithDotNet.ViewModels;
+
+public partial class MainPageViewModel : ObservableObject
 {
-  [ObservableProperty]
-  [NotifyPropertyChangedFor(nameof(To))]
-  private string _to;
-  public string To => _to;
-  [ObservableProperty]
-  [NotifyPropertyChangedFor(nameof(Cc))]
-  private string _cc;
-  public string Cc => _cc;
-  [ObservableProperty]
-  [NotifyPropertyChangedFor(nameof(Bcc))]
-  private string _bcc;
-  public string Bcc => _bcc;
-  [ObservableProperty]
-  [NotifyPropertyChangedFor(nameof(Subject))]
-  private string _subject;
-  public string Subject => _subject;
-  [ObservableProperty]
-  [NotifyPropertyChangedFor(nameof(Body))]
-  private string _body;
-  public string Body => _body;
+    [field: ObservableProperty]
+    [field: NotifyPropertyChangedFor(nameof(To))]
+    public string To { get; private set; }
 
-  [AsyncRelayCommand]
-  public async Task SendMailCommand()
-  {
-    var toList = To.Split(new char[] { ',' })
-      .Select(address => new MailboxAddress(address.Trim()))
-      .ToList();
-    var ccList = Cc.Split(new char[] { ',' })?
-      .Select(address => new MailboxAddress(address.Trim()))
-      .ToList();
-    var bccList = Bcc.Split(new char[] { ',' })?
-      .Select(address => new MailboxAddress(address.Trim()))
-      .ToList();
+    [field: ObservableProperty]
+    [field: NotifyPropertyChangedFor(nameof(Cc))]
+    public string Cc { get; private set; }
 
-    try
+    [field: ObservableProperty]
+    [field: NotifyPropertyChangedFor(nameof(Bcc))]
+    public string Bcc { get; private set; }
+
+    [field: ObservableProperty]
+    [field: NotifyPropertyChangedFor(nameof(Subject))]
+    public string Subject { get; private set; }
+
+    [field: ObservableProperty]
+    [field: NotifyPropertyChangedFor(nameof(Body))]
+    public string Body { get; private set; }
+
+    [RelayCommand]
+    public async Task SendMailCommand()
     {
-      var mailer = new Mailer(App.Account);
-      await mailer.SendAsync(Subject, Body, toList, ccList, bccList);
+        var toList = To.Split(new char[] { ',' })
+            .Select(address => new MailboxAddress(address.Trim(), address.Trim()))
+            .ToList();
+        var ccList = Cc.Split(new char[] { ',' })
+            .Select(address => new MailboxAddress(address.Trim(), address.Trim()))
+            .ToList();
+        var bccList = Bcc.Split(new char[] { ',' })
+            .Select(address => new MailboxAddress(address.Trim(), address.Trim()))
+            .ToList();
+
+        try
+        {
+            var mailer = new SendMail(App.Account);
+            await mailer.SendAsync(Subject, Body, toList, ccList, bccList);
+        }
+        catch (Exception)
+        {
+            //await DisplayAlertAsync("Send Email Error", ex.Message, "OK");
+        }
     }
-    catch (Exception ex)
-    {
-      await PageDialogService.DisplayAlertAsync("Send Email Error", ex.Message, "OK");
-      return;
-    }
-  }
 }
