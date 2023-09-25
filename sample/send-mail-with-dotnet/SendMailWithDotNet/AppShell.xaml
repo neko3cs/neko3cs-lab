@@ -4,8 +4,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:SendMailWithDotNet.Views"
-    Shell.FlyoutBehavior="Disabled">
-    <Tabbar>
+    FlyoutBehavior="Disabled"
+    Shell.TabBarUnselectedColor="Blue">
+    <FlyoutItem>
         <Tab
             Title="Mail">
             <ShellContent
@@ -20,5 +21,5 @@
                 ContentTemplate="{DataTemplate views:SettingsPage}"
                 Route="SettingsPage" />
         </Tab>
-    </Tabbar>
+    </FlyoutItem>
 </Shell>

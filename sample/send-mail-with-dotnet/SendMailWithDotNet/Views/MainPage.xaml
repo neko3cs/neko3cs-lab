@@ -8,11 +8,11 @@
         <viewmodels:MainPageViewModel />
     </ContentPage.BindingContext>
 
-    <ContentPage.Padding>
+    <!--<ContentPage.Padding>
         <OnPlatform
             x:TypeArguments="Thickness"
             iOS="0,20,0,0"/>
-    </ContentPage.Padding>
+    </ContentPage.Padding>-->
 
     <StackLayout
         HorizontalOptions="Fill"
