@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/local/Cellar/qt/6.6.1/lib/QtWidgets.framework/Versions/A/Headers",
-                "/usr/local/Cellar/qt/6.6.1/lib/QtGui.framework/Versions/A/Headers"
+                "/usr/local/Cellar/qt/6.6.1/lib/QtGui.framework/Versions/A/Headers",
+                "/usr/local/Cellar/qt/6.6.1/lib/QtCore5Compat.framework/Versions/A/Headers",
+                "/usr/local/Cellar/qt/6.6.1/lib/QtCore.framework/Versions/A/Headers"
             ],
             "defines": [],
             "macFrameworkPath": [
