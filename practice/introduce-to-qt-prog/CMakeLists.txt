@@ -12,6 +12,8 @@ qt_standard_project_setup()
 
 qt_add_executable(IntroduceToQtProg
     main.cpp
+    MainDialog.cpp
+    SecondDialog.cpp
 )
 
 target_link_libraries(IntroduceToQtProg
