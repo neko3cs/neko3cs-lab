@@ -1,13 +1,12 @@
-  #include <QApplication>
-  #include <QLabel>
-  // #include <QTextCodec>
-  // #include <QString>
+#include <QApplication>
+#include <QPushButton>
 
-  int main(int argc, char** argv)
-  {
-    QApplication app(argc, argv);
-    // QTextCodec::setCodecForTr(QTextCodec::codecForLocale());  // Qt6では文字コード対応しなくても日本語表示可能っぽい
-    QLabel* label = new QLabel(QObject::tr("こんにちは Qt"));
-    label->show();
-    return app.exec();
-  }
+int main(int argc, char** argv)
+{
+	QApplication app(argc, argv);
+	QPushButton* button = new QPushButton("Hello Qt!");
+	QPushButton* button2 = new QPushButton("Goodbye");
+	button->show();
+	button2->show();
+	return app.exec();
+}
