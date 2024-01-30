@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QPushButton>
-#include <QHBoxLayout>
+#include <QGridLayout>
 
 int main(int argc, char** argv)
 {
@@ -9,11 +9,11 @@ int main(int argc, char** argv)
 	QPushButton* buttonA = new QPushButton("Button A");
 	QPushButton* buttonB = new QPushButton("Button B");
 	QPushButton* buttonC = new QPushButton("Button C");
-	QHBoxLayout* layout = new QHBoxLayout;
+	QGridLayout* layout = new QGridLayout;
 
-	layout->addWidget(buttonA);
-	layout->addWidget(buttonB);
-	layout->addWidget(buttonC);
+	layout->addWidget(buttonA,0,0);
+	layout->addWidget(buttonB,0,1);
+	layout->addWidget(buttonC,1,0,1,2);
 
 	window->setLayout(layout);
 	window->show();	
