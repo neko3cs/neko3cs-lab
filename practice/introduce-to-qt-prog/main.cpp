@@ -1,14 +1,13 @@
-#include <QtWidgets/QApplication>
-#include <QPushButton>
-#include <QFont>
+  #include <QApplication>
+  #include <QLabel>
+  // #include <QTextCodec>
+  // #include <QString>
 
-int main(int argc, char **argv)
-{
-  QApplication app(argc, argv);
-  QPushButton *button = new QPushButton("Hello Qt!");
-  button->resize(200, 50);
-  button->move(100, 50);
-  button->setFont(QFont("Times", 15, QFont::Bold, true));
-  button->show();
-  return app.exec();
-}
+  int main(int argc, char** argv)
+  {
+    QApplication app(argc, argv);
+    // QTextCodec::setCodecForTr(QTextCodec::codecForLocale());  // Qt6では文字コード対応しなくても日本語表示可能っぽい
+    QLabel* label = new QLabel(QObject::tr("こんにちは Qt"));
+    label->show();
+    return app.exec();
+  }
