@@ -4,7 +4,7 @@
 #include "MainDialog.h"
 #include "SecondDialog.h"
 
-MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
+MainDialog::MainDialog(QWidget *parent) : QDialog(parent), secondDialog(NULL)
 {
   showDialogButton = new QPushButton("Show Second Dialog");
   textLabel = new QLabel("empty");
@@ -18,10 +18,23 @@ MainDialog::MainDialog(QWidget *parent) : QDialog(parent)
 
 void MainDialog::showSecondDialog()
 {
-  SecondDialog secondDialog(this);
-  if (secondDialog.exec())
+  if (!secondDialog)
   {
-    QString str = secondDialog.getLineEditText();
-    textLabel->setText(str);
+    secondDialog = new SecondDialog;
+    connect(secondDialog, SIGNAL(okButtonClicked()), this, SLOT(setTextLabel()));
   }
+  if (secondDialog->isHidden())
+  {
+    secondDialog->show();
+  }
+  else
+  {
+    secondDialog->activateWindow();
+  }
+}
+
+void MainDialog::setTextLabel()
+{
+  QString str = secondDialog->getLineEditText();
+  textLabel->setText(str);
 }

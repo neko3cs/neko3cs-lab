@@ -5,18 +5,21 @@
 
 class QPushButton;
 class QLabel;
+class SecondDialog;
 
 class MainDialog : public QDialog
 {
   Q_OBJECT
 public:
   MainDialog(QWidget *parent = 0);
-private slots:
+public slots:
   void showSecondDialog();
+  void setTextLabel();
 
 private:
   QPushButton *showDialogButton;
   QLabel *textLabel;
+  SecondDialog *secondDialog;
 };
 
 #endif

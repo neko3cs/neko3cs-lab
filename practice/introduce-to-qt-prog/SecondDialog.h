@@ -5,6 +5,7 @@
 
 class QPushButton;
 class QLineEdit;
+class QString;
 
 class SecondDialog : public QDialog
 {
@@ -12,6 +13,8 @@ class SecondDialog : public QDialog
 public:
   SecondDialog(QWidget *parent = 0);
   QString getLineEditText();
+signals:
+  void okButtonClicked();
 
 private:
   QPushButton *okButton;
