@@ -44,6 +44,14 @@ class _TodoListPageState extends State<TodoListPage> {
           return Card(
             child: ListTile(
               title: Text(todoList[index]),
+              trailing: OutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    todoList.removeAt(index);
+                  });
+                },
+                child: const Icon(Icons.delete_forever),
+              ),
             ),
           );
         },
