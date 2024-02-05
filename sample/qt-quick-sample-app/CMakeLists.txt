@@ -8,6 +8,7 @@ add_compile_options(-Wall -O3)
 find_package(Qt6 REQUIRED COMPONENTS
   Core
   Quick
+  QuickControls2
 )
 
 # Qt関係の設定を自動でオンにする
@@ -19,11 +20,13 @@ set(CMAKE_AUTOUIC ON)
 # qrcファイルにてqmlファイルの紐付けを行う
 add_executable(${PROJECT_NAME}
   src/main.cpp
+  src/MainWindow.cpp
   src/qml.qrc
 )
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        Qt6::Core
-        Qt6::Quick
+      Qt6::Core
+      Qt6::Quick
+      Qt6::QuickControls2
 )
