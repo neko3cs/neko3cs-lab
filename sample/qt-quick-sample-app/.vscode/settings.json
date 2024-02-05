@@ -53,6 +53,11 @@
     "variant": "cpp",
     "vector": "cpp",
     "algorithm": "cpp",
-    "qqmlapplicationengine": "cpp"
+    "qqmlapplicationengine": "cpp",
+    "qqmlcontext": "cpp",
+    "qqmlcomponent": "cpp",
+    "qinputdialog": "cpp",
+    "qapplication": "cpp",
+    "qquickstyle": "cpp"
   }
 }
