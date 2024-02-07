@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 
   QQmlApplicationEngine engine;
   MainWindow mainWindow(engine);
+  engine.setInitialProperties({{"mainWindow", QVariant::fromValue(&mainWindow)}});
   QObject::connect(
       &engine,
       &QQmlApplicationEngine::objectCreationFailed,
