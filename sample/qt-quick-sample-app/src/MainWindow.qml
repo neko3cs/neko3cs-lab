@@ -19,23 +19,20 @@ ApplicationWindow {
         anchors.centerIn: parent
 
         Label {
-          text: mainWindow.text
+          text: mainWindow.labelText
           font.pixelSize: 24
           color: "black"
         }
 
         TextField {
-          id: tfInputText
           width: 200
-          text: mainWindow.text
+          text: mainWindow.textFieldText
           placeholderText: "Type something..."
         }
 
         Button {
           text: "Update Label"
-          onClicked: {
-            mainWindow.updateLabel(tfInputText.text);
-          }
+          onClicked: mainWindow.updateLabel();
         }
       }
     }

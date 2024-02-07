@@ -6,20 +6,25 @@
 class MainWindow : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+  Q_PROPERTY(QString labelText READ labelText WRITE setLabelText NOTIFY labelTextChanged)
+  Q_PROPERTY(QString textFieldText READ textFieldText WRITE setTextFieldText NOTIFY textFieldTextChanged)
 
 public:
   MainWindow(QQmlApplicationEngine &engine);
 
-  Q_INVOKABLE void updateLabel(const QString &text);
+  Q_INVOKABLE void updateLabel();
 
-  QString text() const;
-  void setText(const QString &text);
+  QString labelText() const;
+  void setLabelText(const QString &text);
+  QString textFieldText() const;
+  void setTextFieldText(const QString &text);
 
 signals:
-  void textChanged();
+  void labelTextChanged();
+  void textFieldTextChanged();
 
 private:
   QQmlApplicationEngine &m_engine;
-  QString m_text;
+  QString m_labelText;
+  QString m_textFieldText;
 };
