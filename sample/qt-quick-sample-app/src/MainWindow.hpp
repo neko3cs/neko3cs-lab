@@ -1,5 +1,4 @@
 #pragma once
-#include <QQmlApplicationEngine>
 #include <QObject>
 #include <QString>
 
@@ -10,7 +9,7 @@ class MainWindow : public QObject
   Q_PROPERTY(QString textFieldText READ textFieldText WRITE setTextFieldText NOTIFY textFieldTextChanged)
 
 public:
-  MainWindow(QQmlApplicationEngine &engine);
+  MainWindow();
 
   Q_INVOKABLE void updateLabel();
 
@@ -24,7 +23,6 @@ signals:
   void textFieldTextChanged();
 
 private:
-  QQmlApplicationEngine &m_engine;
   QString m_labelText;
   QString m_textFieldText;
 };
