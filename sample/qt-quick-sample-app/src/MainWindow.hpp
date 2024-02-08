@@ -12,7 +12,7 @@ class MainWindow : public QObject
 public:
   MainWindow(QQmlApplicationEngine &engine);
 
-  Q_INVOKABLE void updateLabel();
+  Q_INVOKABLE void updateLabel(const QString text);
 
   QString labelText() const;
   void setLabelText(const QString &text);

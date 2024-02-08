@@ -7,11 +7,14 @@ MainWindow::MainWindow(QQmlApplicationEngine &engine)
     : QObject(), m_engine(engine), m_labelText("Hello Qt Quick World!")
 {
   m_engine.rootContext()->setContextProperty("mainWindow", this);
+  m_engine.setInitialProperties({{"textFieldText", QVariant::fromValue(m_textFieldText)}});
 }
 
-void MainWindow::updateLabel()
+void MainWindow::updateLabel(const QString text)
 {
-  m_labelText = m_textFieldText;  // FIXME: 反映されない
+  qDebug() << "text: " << text; // DEBUG
+
+  m_labelText = text;
   emit labelTextChanged();
 }
 

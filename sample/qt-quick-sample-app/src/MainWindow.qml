@@ -32,7 +32,7 @@ ApplicationWindow {
 
         Button {
           text: "Update Label"
-          onClicked: mainWindow.updateLabel();
+          onClicked: mainWindow.updateLabel(mainWindow.textFieldText)
         }
       }
     }
