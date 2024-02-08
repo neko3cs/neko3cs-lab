@@ -19,20 +19,20 @@ ApplicationWindow {
         anchors.centerIn: parent
 
         Label {
-          text: mainWindow.labelText
+          text: mainWindow.text
           font.pixelSize: 24
           color: "black"
         }
 
         TextField {
+          id: textField
           width: 200
-          text: mainWindow.textFieldText
           placeholderText: "Type something..."
         }
 
         Button {
           text: "Update Label"
-          onClicked: mainWindow.updateLabel();
+          onClicked: mainWindow.updateLabel(textField.text);
         }
       }
     }
