@@ -3,7 +3,7 @@
 
 MainWindow::MainWindow()
     : QObject(),
-      m_labelText("Hello Qt Quick World!")
+      m_labelText("文字を入力してボタンを押すと、ここに表示されるよ！")
 {
 }
 

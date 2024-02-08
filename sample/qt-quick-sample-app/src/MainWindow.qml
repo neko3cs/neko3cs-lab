@@ -1,40 +1,44 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 ApplicationWindow {
   visible: true
   width: 640
   height: 480
   title: "Hello Qt Quick App"
+  background: Rectangle {
+    color: "white"
+  }
 
-  Item {
-    anchors.fill: parent
+  Column {
+    anchors.centerIn: parent
+    spacing: 10
 
-    Rectangle {
+    Label {
+      text: "Hello Qt Quick World!"
+      font.pixelSize: 24
+      color: "black"
+      anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    TextField {
+      id: textField
+      placeholderText: "何か入力してね！"
       width: parent.width
-      height: parent.height
-      color: "white"
+      anchors.horizontalCenter: parent.horizontalCenter
+    }
 
-      Column {
-        anchors.centerIn: parent
+    Label {
+      text: mainWindow.text
+      font.pixelSize: 16
+      color: "black"
+      anchors.horizontalCenter: parent.horizontalCenter
+    }
 
-        Label {
-          text: mainWindow.text
-          font.pixelSize: 24
-          color: "black"
-        }
-
-        TextField {
-          id: textField
-          width: 200
-          placeholderText: "Type something..."
-        }
-
-        Button {
-          text: "Update Label"
-          onClicked: mainWindow.updateLabel(textField.text);
-        }
-      }
+    Button {
+      text: "表示を切り替える"
+      onClicked: mainWindow.updateLabel(textField.text)  // HACK: idを使わないで更新する方法を探す
+      anchors.horizontalCenter: parent.horizontalCenter
     }
   }
 }
