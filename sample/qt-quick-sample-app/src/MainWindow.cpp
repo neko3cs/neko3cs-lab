@@ -7,36 +7,22 @@ MainWindow::MainWindow()
 {
 }
 
-void MainWindow::updateLabel()
+void MainWindow::updateLabel(const QString text)
 {
-  m_labelText = m_textFieldText; // FIXME: 反映されない
-  emit labelTextChanged();
+  m_labelText = text;
+  emit textChanged();
 }
 
-QString MainWindow::labelText() const
+QString MainWindow::text() const
 {
   return m_labelText;
 }
 
-void MainWindow::setLabelText(const QString &text)
+void MainWindow::setText(const QString &text)
 {
   if (text != m_labelText)
   {
     m_labelText = text;
-    emit labelTextChanged();
-  }
-}
-
-QString MainWindow::textFieldText() const
-{
-  return m_textFieldText;
-}
-
-void MainWindow::setTextFieldText(const QString &text)
-{
-  if (text != m_textFieldText)
-  {
-    m_textFieldText = text;
-    emit textFieldTextChanged();
+    emit textChanged();
   }
 }
