@@ -5,38 +5,33 @@ using SendMailWithDotnet.Models;
 
 namespace SendMailWithDotnet.ViewModels;
 
-public partial class MainPageViewModel : ObservableObject
+internal partial class MainPageViewModel : ObservableObject
 {
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(To))]
-  public string To { get; private set; }
+  [ObservableProperty]
+  private string to;
 
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(Cc))]
-  public string Cc { get; private set; }
+  [ObservableProperty]
+  private string cc;
 
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(Bcc))]
-  public string Bcc { get; private set; }
+  [ObservableProperty]
+  private string bcc;
 
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(Subject))]
-  public string Subject { get; private set; }
+  [ObservableProperty]
+  private string subject;
 
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(Body))]
-  public string Body { get; private set; }
+  [ObservableProperty]
+  private string body;
 
   [RelayCommand]
-  public async Task SendMailCommand()
+  private async Task SendMailCommand()
   {
-    var toList = To.Split(new char[] { ',' })
+    var toList = To.Split([','])
         .Select(address => new MailboxAddress(address.Trim(), address.Trim()))
         .ToList();
-    var ccList = Cc.Split(new char[] { ',' })
+    var ccList = Cc.Split([','])
         .Select(address => new MailboxAddress(address.Trim(), address.Trim()))
         .ToList();
-    var bccList = Bcc.Split(new char[] { ',' })
+    var bccList = Bcc.Split([','])
         .Select(address => new MailboxAddress(address.Trim(), address.Trim()))
         .ToList();
 
