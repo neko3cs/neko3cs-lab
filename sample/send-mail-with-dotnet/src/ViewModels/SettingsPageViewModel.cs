@@ -1,22 +1,61 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using SendMailWithDotnet.Models;
 
 namespace SendMailWithDotnet.ViewModels;
 
-internal partial class SettingsPageViewModel : ObservableObject
+public partial class SettingsPageViewModel : INotifyPropertyChanged
 {
-  [ObservableProperty]
-  public string name;
+  private string _name = string.Empty;
+  private string _address = string.Empty;
+  private string _password = string.Empty;
+  public event PropertyChangedEventHandler PropertyChanged;
 
-  [ObservableProperty]
-  public string address;
+  public string Name
+  {
+    get => _name;
+    set
+    {
+      if (_name != value)
+      {
+        _name = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public string Address
+  {
+    get => _address;
+    set
+    {
+      if (_address != value)
+      {
+        _address = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public string Password
+  {
+    get => _password;
+    set
+    {
+      if (_password != value)
+      {
+        _password = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public ICommand SaveUserInfoCommand { get; private set; }
 
-  [ObservableProperty]
-  public string password;
+  public SettingsPageViewModel()
+  {
+    SaveUserInfoCommand = new Command(SaveUserInfo);
+  }
 
-  [RelayCommand]
-  public void SaveUserInfoCommand()
+  private void SaveUserInfo()
   {
     if (
         string.IsNullOrEmpty(Name) ||
@@ -34,4 +73,7 @@ internal partial class SettingsPageViewModel : ObservableObject
       Password
     );
   }
+
+  public void OnPropertyChanged([CallerMemberName] string name = "") =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
