@@ -15,7 +15,7 @@ dotnet build -t:Run -f net7.0-ios -p:_DeviceName=:v2:udid=MY_SPECIFIC_UDID
 以下のコマンドでUDIDを確認できる。
 
 ```zsh
-/Applications/Xcode.app/Contents/Developer/usr/bin/simctl list
+xcrun simctl list -v devices available
 ```
 
 ## TODO
