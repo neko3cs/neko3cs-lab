@@ -5,11 +5,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:SendMailWithDotnet.Views"
     Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarUnselectedColor="Blue"
     Title="SendMailWithDotnet">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:MainPage}"
-        Route="MainPage" />
-
+    <FlyoutItem>
+        <Tab
+            Title="Mail">
+            <ShellContent
+                Title="Mail"
+                ContentTemplate="{DataTemplate views:MainPage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab
+            Title="Settings">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate views:SettingsPage}"
+                Route="SettingsPage" />
+        </Tab>
+    </FlyoutItem>
 </Shell>
