@@ -2,41 +2,64 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:SendMailWithDotnet.ViewModels"
     x:Class="SendMailWithDotnet.Views.MainPage">
-
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
-
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+    <ContentPage.BindingContext>
+        <viewmodels:MainPageViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout
+        HorizontalOptions="Fill"
+        VerticalOptions="Start">
+        <Label
+            Text="To:"
+            FontSize="Small"
+            Margin="5,0,0,0"/>
+        <Entry
+            Text="{Binding To}"
+            Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
+            Keyboard="Email"
+            HorizontalOptions="FillAndExpand"
+            Margin="10,5,5,5"/>
+        <Label
+            Text="Cc: "
+            FontSize="Small"
+            Margin="5,0,0,0"/>
+        <Entry
+            Text="{Binding Cc}"
+            Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
+            Keyboard="Email"
+            HorizontalOptions="FillAndExpand"
+            Margin="10,5,5,5"/>
+        <Label
+            Text="Bcc: "
+            FontSize="Small"
+            Margin="5,0,0,0"/>
+        <Entry
+            Text="{Binding Bcc}"
+            Placeholder="example: aaa@hoge.com, bbb@hoge.com, ccc@hoge.com"
+            Keyboard="Email"
+            HorizontalOptions="FillAndExpand"
+            Margin="10,5,5,5"/>
+        <Entry
+            Text="{Binding Subject}"
+            Placeholder="Subject"
+            Keyboard="Chat"
+            HorizontalOptions="FillAndExpand"
+            Margin="10,5,5,5"/>
+        <Entry
+            Text="{Binding Body}"
+            Placeholder="Body"
+            Keyboard="Chat"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            Margin="10,5,5,5"/>
+        <Button
+            Text="Send"
+            Command="{Binding SendMailCommand}"
+            BackgroundColor="LightGray"
+            HorizontalOptions="End"
+            WidthRequest="100"
+            HeightRequest="40"
+            Margin="0,0,20,0" />
+    </StackLayout>    
 </ContentPage>
