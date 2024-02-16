@@ -1,29 +1,88 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using MimeKit;
 using SendMailWithDotnet.Models;
 
 namespace SendMailWithDotnet.ViewModels;
 
-internal partial class MainPageViewModel : ObservableObject
+public partial class MainPageViewModel : INotifyPropertyChanged
 {
-  [ObservableProperty]
-  private string to;
+  private string _to = string.Empty;
+  private string _cc = string.Empty;
+  private string _bcc = string.Empty;
+  private string _subject = string.Empty;
+  private string _body = string.Empty;
+  public event PropertyChangedEventHandler PropertyChanged;
 
-  [ObservableProperty]
-  private string cc;
+  public string To
+  {
+    get => _to;
+    set
+    {
+      if (_to != value)
+      {
+        _to = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public string Cc
+  {
+    get => _cc;
+    set
+    {
+      if (_cc != value)
+      {
+        _cc = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public string Bcc
+  {
+    get => _bcc;
+    set
+    {
+      if (_bcc != value)
+      {
+        _bcc = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public string Body
+  {
+    get => _body;
+    set
+    {
+      if (_body != value)
+      {
+        _body = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public string Subject
+  {
+    get => _subject;
+    set
+    {
+      if (_subject != value)
+      {
+        _subject = value;
+        OnPropertyChanged();
+      }
+    }
+  }
+  public ICommand SendMailCommand { get; private set; }
 
-  [ObservableProperty]
-  private string bcc;
+  public MainPageViewModel()
+  {
+    SendMailCommand = new Command(async () => await SendMail());
+  }
 
-  [ObservableProperty]
-  private string subject;
-
-  [ObservableProperty]
-  private string body;
-
-  [RelayCommand]
-  private async Task SendMailCommand()
+  public async Task SendMail()
   {
     var toList = To.Split([','])
         .Select(address => new MailboxAddress(address.Trim(), address.Trim()))
@@ -40,9 +99,12 @@ internal partial class MainPageViewModel : ObservableObject
       var mailer = new SendMail(App.Account);
       await mailer.SendAsync(Subject, Body, toList, ccList, bccList);
     }
-    catch (Exception)
+    catch (Exception ex)
     {
       //await DisplayAlertAsync("Send Email Error", ex.Message, "OK");
     }
   }
+
+  public void OnPropertyChanged([CallerMemberName] string name = "") =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

@@ -1,9 +1,12 @@
-﻿namespace SendMailWithDotnet.Views;
+﻿using SendMailWithDotnet.ViewModels;
+
+namespace SendMailWithDotnet.Views;
 
 public partial class MainPage : ContentPage
 {
-	public MainPage()
+	public MainPage(MainPageViewModel viewModel)
 	{
 		InitializeComponent();
+		BindingContext = viewModel;
 	}
 }
