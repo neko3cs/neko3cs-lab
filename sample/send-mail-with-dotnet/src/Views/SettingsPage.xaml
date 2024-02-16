@@ -10,42 +10,43 @@
     <StackLayout
         VerticalOptions="Start">
         <Label
-            Text="User Info"
-            FontSize="Medium"
+            Text="ユーザー情報"
+            FontSize="Large"
             Margin="5,0,0,0"/>
         <Label
-            Text="Account Name"
-            FontSize="Small"
+            Text="アカウント名"
+            FontSize="Medium"
             Margin="10,0,0,0"/>
         <Entry
             Text="{Binding Name}"
-            Placeholder="Input account name..."
+            Placeholder="アカウント名を入れてください..."
             Keyboard="Text"
             HorizontalOptions="FillAndExpand"
             Margin="10,5,5,5"/>
         <Label
-            Text="Account Address"
-            FontSize="Small"
+            Text="メールアドレス"
+            FontSize="Medium"
             Margin="10,0,0,0"/>
         <Entry
             Text="{Binding Address}"
-            Placeholder="Input account address..."
+            Placeholder="メールアドレスを入れてください..."
             Keyboard="Email"
             HorizontalOptions="FillAndExpand"
             Margin="10,5,5,5"/>
         <Label
-            Text="Account Password"
-            FontSize="Small"
+            Text="パスワード"
+            FontSize="Medium"
             Margin="10,0,0,0"/>
         <Entry
             Text="{Binding Password}"
-            Placeholder="Input account password..."
+            Placeholder="パスワードを入れてください..."
             Keyboard="Text"
             IsPassword="True"
             HorizontalOptions="FillAndExpand"
             Margin="10,5,5,5"/>
         <Button
-            Text="Save"
+            Text="保存"
+            FontSize="Medium"
             Command="{Binding SaveUserInfoCommand}"
             BackgroundColor="LightGray"
             HorizontalOptions="End"

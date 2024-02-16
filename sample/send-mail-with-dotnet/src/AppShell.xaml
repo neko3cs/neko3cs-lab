@@ -9,16 +9,14 @@
     Title="SendMailWithDotnet">
     <FlyoutItem>
         <Tab
-            Title="Mail">
+            Title="メール">
             <ShellContent
-                Title="Mail"
                 ContentTemplate="{DataTemplate views:MainPage}"
                 Route="MainPage" />
         </Tab>
         <Tab
-            Title="Settings">
+            Title="設定">
             <ShellContent
-                Title="Settings"
                 ContentTemplate="{DataTemplate views:SettingsPage}"
                 Route="SettingsPage" />
         </Tab>
