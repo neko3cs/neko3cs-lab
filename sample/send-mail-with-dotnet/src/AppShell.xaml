@@ -3,13 +3,13 @@
     x:Class="SendMailWithDotnet.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SendMailWithDotnet"
+    xmlns:views="clr-namespace:SendMailWithDotnet.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="SendMailWithDotnet">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate views:MainPage}"
         Route="MainPage" />
 
 </Shell>
