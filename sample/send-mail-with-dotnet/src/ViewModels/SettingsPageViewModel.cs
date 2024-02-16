@@ -4,19 +4,16 @@ using SendMailWithDotnet.Models;
 
 namespace SendMailWithDotnet.ViewModels;
 
-public partial class SettingsPageViewModel : ObservableObject
+internal partial class SettingsPageViewModel : ObservableObject
 {
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(Name))]
-  public string Name { get; private set; }
+  [ObservableProperty]
+  public string name;
 
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(Address))]
-  public string Address { get; private set; }
+  [ObservableProperty]
+  public string address;
 
-  [field: ObservableProperty]
-  [field: NotifyPropertyChangedFor(nameof(Password))]
-  public string Password { get; private set; }
+  [ObservableProperty]
+  public string password;
 
   [RelayCommand]
   public void SaveUserInfoCommand()
@@ -32,9 +29,9 @@ public partial class SettingsPageViewModel : ObservableObject
     }
 
     App.Account = new Account(
-        Name,
-        Address,
-        Password
+      Name,
+      Address,
+      Password
     );
   }
 }
