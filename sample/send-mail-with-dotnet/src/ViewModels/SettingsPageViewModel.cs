@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using SendMailWithDotnet.Models;
+using SendMailWithDotnet.Service;
 
 namespace SendMailWithDotnet.ViewModels;
 
@@ -11,6 +12,7 @@ public partial class SettingsPageViewModel : INotifyPropertyChanged
   private string _address = string.Empty;
   private string _password = string.Empty;
   public event PropertyChangedEventHandler PropertyChanged;
+  private readonly IDialogService _dialogService;
 
   public string Name
   {
@@ -50,12 +52,13 @@ public partial class SettingsPageViewModel : INotifyPropertyChanged
   }
   public ICommand SaveUserInfoCommand { get; private set; }
 
-  public SettingsPageViewModel()
+  public SettingsPageViewModel(IDialogService dialogService)
   {
-    SaveUserInfoCommand = new Command(SaveUserInfo);
+    _dialogService = dialogService;
+    SaveUserInfoCommand = new Command(async () => await SaveUserInfoAsync());
   }
 
-  private void SaveUserInfo()
+  private async Task SaveUserInfoAsync()
   {
     if (
         string.IsNullOrEmpty(Name) ||
@@ -63,8 +66,7 @@ public partial class SettingsPageViewModel : INotifyPropertyChanged
         string.IsNullOrEmpty(Password)
     )
     {
-      // await PageDialogService.DisplayAlertAsync("There is blank area.", "Please check input area.", "OK");
-      return;
+      await _dialogService.DisplayAlertAsync("空欄があります。", "すべての欄を入力してください。", "OK");
     }
 
     App.Account = new Account(
