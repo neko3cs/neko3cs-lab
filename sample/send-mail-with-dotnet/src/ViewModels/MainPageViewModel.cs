@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using MimeKit;
 using SendMailWithDotnet.Models;
+using SendMailWithDotnet.Service;
 
 namespace SendMailWithDotnet.ViewModels;
 
@@ -14,6 +15,7 @@ public partial class MainPageViewModel : INotifyPropertyChanged
   private string _subject = string.Empty;
   private string _body = string.Empty;
   public event PropertyChangedEventHandler PropertyChanged;
+  private readonly IDialogService _dialogService;
 
   public string To
   {
@@ -77,8 +79,9 @@ public partial class MainPageViewModel : INotifyPropertyChanged
   }
   public ICommand SendMailCommand { get; private set; }
 
-  public MainPageViewModel()
+  public MainPageViewModel(IDialogService dialogService)
   {
+    _dialogService = dialogService;
     SendMailCommand = new Command(async () => await SendMail());
   }
 
@@ -101,7 +104,7 @@ public partial class MainPageViewModel : INotifyPropertyChanged
     }
     catch (Exception ex)
     {
-      //await DisplayAlertAsync("Send Email Error", ex.Message, "OK");
+      await _dialogService.DisplayAlertAsync("メール送信エラー", ex.Message, "OK");
     }
   }
 

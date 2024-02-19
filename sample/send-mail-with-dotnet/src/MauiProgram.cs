@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SendMailWithDotnet.Views;
 using SendMailWithDotnet.ViewModels;
+using SendMailWithDotnet.Service;
 
 namespace SendMailWithDotnet;
 
@@ -32,7 +33,8 @@ public static class MauiProgram
 			.AddTransient<MainPage>()
 			.AddTransient<MainPageViewModel>()
 			.AddTransient<SettingsPage>()
-			.AddTransient<SettingsPageViewModel>();
+			.AddTransient<SettingsPageViewModel>()
+			.AddTransient<IDialogService, DialogService>();
 
 		return mauiAppBuilder;
 	}
