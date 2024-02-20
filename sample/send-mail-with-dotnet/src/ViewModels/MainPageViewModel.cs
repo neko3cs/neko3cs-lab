@@ -63,6 +63,8 @@ public partial class MainPageViewModel : ViewModelBase
     {
       var mailer = new Mailer(App.Account);
       await mailer.SendAsync(Subject, Body, toList, ccList, bccList);
+
+      await _dialogService.DisplayAlertAsync("送信完了", "メールは送信されました。", "OK");
     }
     catch (Exception ex)
     {
