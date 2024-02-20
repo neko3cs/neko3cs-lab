@@ -61,7 +61,7 @@ public partial class MainPageViewModel : ViewModelBase
 
     try
     {
-      var mailer = new SendMail(App.Account);
+      var mailer = new Mailer(App.Account);
       await mailer.SendAsync(Subject, Body, toList, ccList, bccList);
     }
     catch (Exception ex)
