@@ -1,54 +1,30 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using SendMailWithDotnet.Models;
 using SendMailWithDotnet.Service;
 
 namespace SendMailWithDotnet.ViewModels;
 
-public partial class SettingsPageViewModel : INotifyPropertyChanged
+public partial class SettingsPageViewModel : ViewModelBase
 {
   private string _name = string.Empty;
   private string _address = string.Empty;
   private string _password = string.Empty;
-  public event PropertyChangedEventHandler PropertyChanged;
   private readonly IDialogService _dialogService;
 
   public string Name
   {
     get => _name;
-    set
-    {
-      if (_name != value)
-      {
-        _name = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _name, value);
   }
   public string Address
   {
     get => _address;
-    set
-    {
-      if (_address != value)
-      {
-        _address = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _address, value);
   }
   public string Password
   {
     get => _password;
-    set
-    {
-      if (_password != value)
-      {
-        _password = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _password, value);
   }
   public ICommand SaveUserInfoCommand { get; private set; }
 
@@ -75,7 +51,4 @@ public partial class SettingsPageViewModel : INotifyPropertyChanged
       Password
     );
   }
-
-  public void OnPropertyChanged([CallerMemberName] string name = "") =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
