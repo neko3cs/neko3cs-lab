@@ -62,7 +62,6 @@
             Text="送る"
             FontSize="Medium"
             Command="{Binding SendMailCommand}"
-            BackgroundColor="LightGray"
             HorizontalOptions="End"
             WidthRequest="100"
             HeightRequest="40"

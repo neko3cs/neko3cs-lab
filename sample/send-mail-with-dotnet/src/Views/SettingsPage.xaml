@@ -44,7 +44,6 @@
             Text="保存"
             FontSize="Medium"
             Command="{Binding SaveUserInfoCommand}"
-            BackgroundColor="LightGray"
             HorizontalOptions="End"
             WidthRequest="100"
             HeightRequest="40"
