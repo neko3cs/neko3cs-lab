@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using MimeKit;
 using SendMailWithDotnet.Models;
@@ -7,75 +5,39 @@ using SendMailWithDotnet.Service;
 
 namespace SendMailWithDotnet.ViewModels;
 
-public partial class MainPageViewModel : INotifyPropertyChanged
+public partial class MainPageViewModel : ViewModelBase
 {
   private string _to = string.Empty;
   private string _cc = string.Empty;
   private string _bcc = string.Empty;
   private string _subject = string.Empty;
   private string _body = string.Empty;
-  public event PropertyChangedEventHandler PropertyChanged;
   private readonly IDialogService _dialogService;
 
   public string To
   {
     get => _to;
-    set
-    {
-      if (_to != value)
-      {
-        _to = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _to, value);
   }
   public string Cc
   {
     get => _cc;
-    set
-    {
-      if (_cc != value)
-      {
-        _cc = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _cc, value);
   }
   public string Bcc
   {
     get => _bcc;
-    set
-    {
-      if (_bcc != value)
-      {
-        _bcc = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _bcc, value);
   }
   public string Body
   {
     get => _body;
-    set
-    {
-      if (_body != value)
-      {
-        _body = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _body, value);
   }
   public string Subject
   {
     get => _subject;
-    set
-    {
-      if (_subject != value)
-      {
-        _subject = value;
-        OnPropertyChanged();
-      }
-    }
+    set => SetProperty(ref _subject, value);
   }
   public ICommand SendMailCommand { get; private set; }
 
@@ -107,7 +69,4 @@ public partial class MainPageViewModel : INotifyPropertyChanged
       await _dialogService.DisplayAlertAsync("メール送信エラー", ex.Message, "OK");
     }
   }
-
-  public void OnPropertyChanged([CallerMemberName] string name = "") =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
