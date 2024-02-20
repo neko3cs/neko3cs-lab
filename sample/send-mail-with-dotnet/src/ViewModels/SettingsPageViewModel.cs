@@ -36,19 +36,20 @@ public partial class SettingsPageViewModel : ViewModelBase
 
   private async Task SaveUserInfoAsync()
   {
-    if (
-        string.IsNullOrEmpty(Name) ||
-        string.IsNullOrEmpty(Address) ||
-        string.IsNullOrEmpty(Password)
-    )
+    try
     {
-      await _dialogService.DisplayAlertAsync("空欄があります。", "すべての欄を入力してください。", "OK");
-    }
+      if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Address) || string.IsNullOrEmpty(Password))
+      {
+        await _dialogService.DisplayAlertAsync("空欄があります。", "すべての欄を入力してください。", "OK");
+        return;
+      }
 
-    App.Account = new Account(
-      Name,
-      Address,
-      Password
-    );
+      App.Account = new Account(Name, Address, Password);
+      await _dialogService.DisplayAlertAsync("設定完了", "設定しました。", "OK");
+    }
+    catch (Exception ex)
+    {
+      await _dialogService.DisplayAlertAsync("設定エラー", ex.Message, "OK");
+    }
   }
 }
