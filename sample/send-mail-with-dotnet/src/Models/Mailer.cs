@@ -1,3 +1,4 @@
+using MailKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
@@ -20,16 +21,18 @@ public class Mailer(Account account)
   {
     var message = new MimeMessage();
     message.From.Add(new MailboxAddress(_account.Name, _account.Address));
-
     toList.ForEach(message.To.Add);
     ccList?.ForEach(message.Cc.Add);
     bccList?.ForEach(message.Bcc.Add);
-
     message.Subject = subject;
     message.Body = new TextPart("plain") { Text = body };
 
+#if DEBUG
+    using var client = new SmtpClient(new ProtocolLogger(Console.OpenStandardOutput()));
+#else
     using var client = new SmtpClient();
-    await client.ConnectAsync(SmtpHost, SmtpPort, SecureSocketOptions.SslOnConnect);
+#endif
+    await client.ConnectAsync(SmtpHost, SmtpPort, SecureSocketOptions.Auto);
     await client.AuthenticateAsync(_account.Address, _account.Password);
     await client.SendAsync(message);
     await client.DisconnectAsync(quit: true);
