@@ -4,7 +4,7 @@
   "main": "main.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && ts-node ./build.ts",
+    "build": "tsc && ts-node ./build.ts && nexe --build --python=$(which python3)",
     "dev": "ts-node ./main.ts"
   },
   "dependencies": {
