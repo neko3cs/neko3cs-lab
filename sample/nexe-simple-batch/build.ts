@@ -2,10 +2,8 @@ import { compile } from "nexe";
 
 compile({
   input: "./dest/main.js",
-  output: `./bin/NexeSimpleBatch`,
-  // build: true,
+  output: `./bin/HelloCommand`,
   targets: [
-    'mac-x64-8.9.4'
-  ],
-  python: "/usr/local/bin/python3"
+    'macos-10.13.0'
+  ]
 });
