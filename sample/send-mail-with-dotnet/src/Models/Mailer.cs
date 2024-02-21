@@ -34,7 +34,7 @@ public class Mailer(Account account)
 #endif
     await client.ConnectAsync(SmtpHost, SmtpPort, SecureSocketOptions.Auto);
     await client.AuthenticateAsync(_account.Address, _account.Password);
-    await client.SendAsync(message);
+    await client.SendAsync(message);  // FIXME: "5.5.2 Syntax error, cannot decode response."
     await client.DisconnectAsync(quit: true);
   }
 }
