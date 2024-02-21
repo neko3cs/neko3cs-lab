@@ -1,9 +1,16 @@
-const Command = require("commander");
+import { Command } from "commander";
 
-// const command = new Command();
-Command.option("--name <char>");
+const main = (name: string) => {
+  console.log(`Hello, ${name}`);
+}
 
-Command.parse();
+const command = new Command();
+command
+  .name("HelloCommand")
+  .version("1.0.0")
+  .description("Say hello command.")
+  .option("--name <your_name>")
+  .parse();
+const options = command.opts();
 
-const yourName = Command.opts().name;
-console.log(`Hello, ${yourName}`);
+main(options.name);

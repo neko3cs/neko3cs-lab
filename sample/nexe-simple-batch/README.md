@@ -2,14 +2,13 @@
 
 nexeの使い方を確認するサンプルコード。
 
-## メモ
+## ビルド方法
 
-importでモジュールを利用するTypeScriptコードをコンパイルして生成したJavaScriptファイルをnexeにかけるとエラーする。
+npm scriptの `yarn build` を実行する。
 
-なんかimport形式でのモジュール呼び出しがよくないっぽいので、nexeを使う場合はJavaScript直接書くか、TypeScriptでもrequireを使ってモジュールを利用する必要があるっぽい。
-
-他に何かやりようがあるかもしれないけど、分からんかった。
+binフォルダに実行ファイルが生成される。
 
 ## 参考
 
 - [nexe/nexe: 🎉 create a single executable out of your node.js apps](https://github.com/nexe/nexe#compiling-node)
+- [tj/commander.js: node.js command-line interfaces made easy](https://github.com/tj/commander.js?tab=readme-ov-file)
