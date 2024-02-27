@@ -1,6 +1,10 @@
 ﻿using PuppeteerSharp;
 
-const string chromePath = @"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome";
+var chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+if (Environment.OSVersion.Platform is PlatformID.MacOSX)
+{
+  chromePath = @"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome";
+}
 
 var launchOptions = new LaunchOptions() { Headless = true };
 if (!File.Exists(chromePath))
