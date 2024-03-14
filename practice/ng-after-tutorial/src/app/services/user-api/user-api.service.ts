@@ -1,19 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../user';
 
 const apiHost = 'https://jsonplaceholder.typicode.com';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UserApiService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    @Inject(HttpClient) private http: HttpClient
+  ) { }
 
   async getAllUsers() {
-    return await this.http.get<User[]>(`${apiHost}/users`).toPromise();
+    return this.http.get<User[]>(`${apiHost}/users`);
   }
 
   async getUserById(id: string) {
-    return await this.http.get<User>(`${apiHost}/users/${id}`).toPromise();
+    return this.http.get<User>(`${apiHost}/users/${id}`);
   }
 }
