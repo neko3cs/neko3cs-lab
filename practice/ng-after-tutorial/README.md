@@ -1,3 +1,3 @@
 # NgAfterTutorial
 
-[Angular After Tutorial](https://gitbook.lacolaco.net/angular-after-tutorial/)をやってみた。
+[Angular After Tutorial](https://zenn.dev/lacolaco/books/angular-after-tutorial)をやってみた。
