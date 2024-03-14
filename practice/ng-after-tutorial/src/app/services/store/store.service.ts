@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { State, initialState } from '../../state';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class Store {
 
   private _state$ = new BehaviorSubject<State>(initialState);

@@ -1,27 +1,27 @@
-import { User } from './user';
+import { User, initialUser } from './user';
 
 export interface UserListFilter {
-    nameFilter: string;
+  nameFilter: string;
 }
 
 export interface State {
-    userList: {
-        items: User[];
-    };
-    userListFilter: UserListFilter;
-    userDetail: {
-        user: User | null;
-    };
+  userList: {
+    items: User[];
+  };
+  userListFilter: UserListFilter;
+  userDetail: {
+    user: User;
+  };
 }
 
 export const initialState = {
-    userList: {
-        items: [],
-    },
-    userListFilter: {
-        nameFilter: '',
-    },
-    userDetail: {
-        user: null,
-    }
+  userList: {
+    items: [],
+  },
+  userListFilter: {
+    nameFilter: '',
+  },
+  userDetail: {
+    user: initialUser,
+  }
 }

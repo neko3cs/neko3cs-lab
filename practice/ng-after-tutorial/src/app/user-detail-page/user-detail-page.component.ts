@@ -1,17 +1,40 @@
-import { Component, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, EventEmitter, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { UserDetailUsecase } from '../usecases/user-detail.usecase';
+import { Observable } from 'rxjs';
+import { User } from '../user';
 
 @Component({
+  selector: 'user-detail-page',
+  standalone: true,
+  imports: [
+    CommonModule,
+  ],
+  providers: [
+    UserDetailUsecase,
+  ],
   templateUrl: './user-detail-page.component.html',
   styleUrls: ['./user-detail-page.component.css']
 })
 export class UserDetailPageComponent implements OnDestroy {
-  user$ = this.userDetailUsecase.user$;
 
+  user$: Observable<User> = new Observable<User>();
   private onDestroy$ = new EventEmitter();
 
-  constructor(private route: ActivatedRoute, private userDetailUsecase: UserDetailUsecase) {
+  constructor(
+    @Inject(ActivatedRoute) private route: ActivatedRoute,
+    @Inject(UserDetailUsecase) private userDetailUsecase: UserDetailUsecase
+  ) {
+    this.userDetailUsecase.user$.subscribe({
+      next: (user: User) => {
+        this.user$ = new Observable<User>(observable => observable.next(user));
+      },
+      error: error => {
+        console.error(`ERROR: ${error}`);
+
+      }
+    });
     this.userDetailUsecase.subscribeRouteChanges(this.route, this.onDestroy$);
   }
 

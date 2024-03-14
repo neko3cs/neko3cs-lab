@@ -1,44 +1,49 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Inject, Injectable } from '@angular/core';
 import { Store } from '../services/store/store.service';
-import { User } from '../user';
 import { UserApiService } from '../services/user-api/user-api.service';
+import { User } from '../user';
+import { UserListFilter } from '../state';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UserListUsecase {
 
-    get users$() {
-        return this.store.select(state =>
-            state.userList.items.filter(user => user.name.includes(state.userListFilter.nameFilter))
-        );
-    }
+  get users$() {
+    return this.store
+      .select<User[]>(state => state.userList.items.filter(user => user.name.includes(state.userListFilter.nameFilter)));
+  }
 
-    get filter$() {
-        return this.store.select(state => state.userListFilter);
-    }
+  get filter$() {
+    return this.store.select<UserListFilter>(state => state.userListFilter);
+  }
 
-    constructor(private userApi: UserApiService, private store: Store) { }
+  constructor(
+    @Inject(UserApiService) private userApi: UserApiService,
+    @Inject(Store) private store: Store
+  ) { }
 
-    async fetchUsers() {
-        const users = await this.userApi.getAllUsers();
-
+  async fetchUsers() {
+    (await this.userApi.getAllUsers()).subscribe({
+      next: (users: User[]) => {
         this.store.update(state => ({
-            ...state,
-            userList: {
-                ...state.userList,
-                items: users,
-            }
+          ...state,
+          userList: {
+            ...state.userList,
+            items: users,
+          }
         }));
-    }
+      },
+      error: error => {
+        console.error(`ERROR: ${error}`);
+      },
+    });
+  }
 
-    setNameFilter(nameFilter: string) {
-        this.store.update(state => ({
-            ...state,
-            userListFilter: {
-                nameFilter
-            }
-        }));
-    }
+  setNameFilter(nameFilter: string) {
+    this.store.update(state => ({
+      ...state,
+      userListFilter: {
+        nameFilter
+      }
+    }));
+  }
 }
