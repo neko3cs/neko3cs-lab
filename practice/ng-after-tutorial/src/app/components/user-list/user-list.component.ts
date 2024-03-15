@@ -12,9 +12,11 @@ import { User } from '../../types/user';
   ],
   template: `
     <ul>
-      <li *ngFor="let user of users">
-        <user-list-item [user]="user"></user-list-item>
-      </li>
+      @for (user of users; track $index) {
+        <li>
+          <user-list-item [user]="user"></user-list-item>
+        </li>
+      }
     </ul>
   `,
   styles: ``,

@@ -15,9 +15,8 @@ import { User } from '../../types/user';
     UserDetailUsecase,
   ],
   template: `
-    <ng-container *ngIf="user$ | async as user; else userFetching">
+    @if (user$ | async; as user) {
       <h1>{{user.name}}</h1>
-
       <dl>
         <dt>Email</dt>
         <dd>{{ user.email }}</dd>
@@ -26,12 +25,9 @@ import { User } from '../../types/user';
         <dt>Company</dt>
         <dd>{{ user.company.name }}</dd>
       </dl>
-
-    </ng-container>
-
-    <ng-template #userFetching>
+    } @else {
       <div>Fetching...</div>
-    </ng-template>
+    }
   `,
   styles: ``
 })
