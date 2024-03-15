@@ -1,15 +1,15 @@
 import { Component, Inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from "@angular/common";
-import { UserListFilter } from './state';
-import { UserListUsecase } from './usecases/user-list.usecase';
+import { UserListFilter } from '../../types/state';
+import { UserListUsecase } from '../../usecases/user-list.usecase';
 import { Observable } from 'rxjs';
-import { User } from './user';
-import { UserListFilterComponent } from "./user-list-filter/user-list-filter.component";
-import { UserListComponent } from "./user-list/user-list.component";
-import { UserApiService } from './services/user-api/user-api.service';
+import { User } from '../../types/user';
+import { UserListFilterComponent } from "../user-list-filter/user-list-filter.component";
+import { UserListComponent } from "../user-list/user-list.component";
+import { UserApiService } from '../../services/user-api/user-api.service';
 import { HttpClient } from '@angular/common/http';
-import { Store } from './services/store/store.service';
+import { Store } from '../../services/store/store.service';
 
 @Component({
   selector: 'app-root',

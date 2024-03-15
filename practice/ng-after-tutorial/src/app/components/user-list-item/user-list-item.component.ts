@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { User } from '../user';
+import { User } from '../../types/user';
 
 @Component({
   selector: 'user-list-item',
