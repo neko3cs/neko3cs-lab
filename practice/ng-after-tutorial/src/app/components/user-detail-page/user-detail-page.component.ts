@@ -1,9 +1,9 @@
 import { Component, OnDestroy, EventEmitter, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { UserDetailUsecase } from '../usecases/user-detail.usecase';
+import { UserDetailUsecase } from '../../usecases/user-detail.usecase';
 import { Observable } from 'rxjs';
-import { User } from '../user';
+import { User } from '../../types/user';
 
 @Component({
   selector: 'user-detail-page',

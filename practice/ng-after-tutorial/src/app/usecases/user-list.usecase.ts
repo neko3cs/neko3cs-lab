@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { Store } from '../services/store/store.service';
 import { UserApiService } from '../services/user-api/user-api.service';
-import { User } from '../user';
-import { UserListFilter } from '../state';
+import { User } from '../types/user';
+import { UserListFilter } from '../types/state';
 
 @Injectable()
 export class UserListUsecase {

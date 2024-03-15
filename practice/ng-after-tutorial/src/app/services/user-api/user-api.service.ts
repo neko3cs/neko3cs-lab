@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../../user';
+import { User } from '../../types/user';
 
 const apiHost = 'https://jsonplaceholder.typicode.com';
 
