@@ -14,8 +14,26 @@ import { User } from '../user';
   providers: [
     UserDetailUsecase,
   ],
-  templateUrl: './user-detail-page.component.html',
-  styleUrls: ['./user-detail-page.component.css']
+  template: `
+    <ng-container *ngIf="user$ | async as user; else userFetching">
+      <h1>{{user.name}}</h1>
+
+      <dl>
+        <dt>Email</dt>
+        <dd>{{ user.email }}</dd>
+        <dt>Phone</dt>
+        <dd>{{ user.phone }}</dd>
+        <dt>Company</dt>
+        <dd>{{ user.company.name }}</dd>
+      </dl>
+
+    </ng-container>
+
+    <ng-template #userFetching>
+      <div>Fetching...</div>
+    </ng-template>
+  `,
+  styles: ``
 })
 export class UserDetailPageComponent implements OnDestroy {
 

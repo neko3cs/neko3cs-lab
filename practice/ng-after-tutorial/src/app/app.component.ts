@@ -26,8 +26,13 @@ import { Store } from './services/store/store.service';
     UserListUsecase,
     UserApiService,
   ],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: `
+    <user-list-filter [value]="userListFilter$ | async" (valueChange)="setUserListFilter($event)" />
+    <user-list [users]="users$ | async" />
+
+    <router-outlet />
+  `,
+  styles: ``
 })
 export class AppComponent {
 
