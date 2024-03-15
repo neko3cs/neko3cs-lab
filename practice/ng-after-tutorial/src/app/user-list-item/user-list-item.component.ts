@@ -8,7 +8,12 @@ import { User } from '../user';
   imports: [
     RouterLink,
   ],
-  templateUrl: './user-list-item.component.html',
+  template: `
+    <a routerLink="users/{{user.id}}" routerLinkActive="active">
+      #{{ user.id }} {{ user.name }}
+    </a>
+  `,
+  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserListItemComponent {

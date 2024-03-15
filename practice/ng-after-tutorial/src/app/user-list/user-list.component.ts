@@ -10,7 +10,14 @@ import { User } from '../user';
     CommonModule,
     UserListItemComponent,
   ],
-  templateUrl: './user-list.component.html',
+  template: `
+    <ul>
+      <li *ngFor="let user of users">
+        <user-list-item [user]="user"></user-list-item>
+      </li>
+    </ul>
+  `,
+  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {

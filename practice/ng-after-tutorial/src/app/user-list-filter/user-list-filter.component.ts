@@ -9,8 +9,15 @@ import { UserListFilter } from '../state';
   imports: [
     ReactiveFormsModule,
   ],
-  templateUrl: './user-list-filter.component.html',
-  styleUrls: ['./user-list-filter.component.css']
+  template: `
+    <form [formGroup]="form">
+      <label>
+          Name Filter:
+          <input formControlName="nameFilter">
+      </label>
+    </form>
+  `,
+  styles: ``
 })
 export class UserListFilterComponent implements OnDestroy {
   @Input() set value(value: UserListFilter | null) {
