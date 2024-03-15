@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { takeUntil, map, distinctUntilChanged } from 'rxjs/operators';
 import { UserApiService } from '../services/user-api/user-api.service';
 import { Store } from '../services/store/store.service';
-import { User, initialUser } from '../user';
+import { User, initialUser } from '../types/user';
 
 @Injectable()
 export class UserDetailUsecase {

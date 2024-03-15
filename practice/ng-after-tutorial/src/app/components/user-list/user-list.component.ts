@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserListItemComponent } from '../user-list-item/user-list-item.component';
-import { User } from '../user';
+import { User } from '../../types/user';
 
 @Component({
   selector: 'user-list',
