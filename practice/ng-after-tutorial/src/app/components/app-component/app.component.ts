@@ -15,8 +15,8 @@ import { Store } from '../../services/store/store.service';
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
     CommonModule,
+    RouterOutlet,
     UserListFilterComponent,
     UserListComponent,
   ],
