@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "TryDotNetFive": {
-      "commandName": "Project",
-      "commandLineArgs": "greet"
-    }
-  }
-}
