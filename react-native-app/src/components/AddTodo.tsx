@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Alert, Button, TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { TodoItem } from '../types/TodoItem';
+import { Button, Input } from '@rneui/base';
 
 type Props = {
   todos: TodoItem[];
@@ -9,12 +10,14 @@ type Props = {
 
 const AddTodo = (props: Props): JSX.Element => {
   const [taskText, setTaskText] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const addTodo = (): void => {
     if (taskText === null) {
       return;
     } else if (taskText === '') {
-      return Alert.alert('Todoを入力してください。');
+      setErrorMessage('Todoを入力してください。');
+      return;
     }
     let todo: TodoItem = {
       id: 0,
@@ -29,17 +32,22 @@ const AddTodo = (props: Props): JSX.Element => {
     const newTodos: TodoItem[] = [...props.todos, todo];
     props.setTodos(newTodos);
     setTaskText('');
+    setErrorMessage('');
   };
 
   return (
     <>
       <View>
-        <TextInput
-          placeholder='Todoを追加'
+        <Input
           value={taskText}
+          placeholder='Todoを追加'
+          errorMessage={errorMessage}
           onChangeText={newText => setTaskText(newText)}
         />
-        <Button title='追加' onPress={addTodo} />
+        <Button
+          title='追加'
+          color='primary'
+          onPress={addTodo} />
       </View>
     </>
   );
