@@ -13,8 +13,12 @@ const TodoList = (props: Props): JSX.Element => {
     <>
       {props.todos.map(todo => {
         return (
-          <View key={todo.id}>
-            <Todo todo={todo} todos={props.todos} setTodos={props.setTodos} />
+          <View
+            key={todo.id}>
+            <Todo
+              todo={todo}
+              todos={props.todos}
+              setTodos={props.setTodos} />
           </View>
         );
       })}
