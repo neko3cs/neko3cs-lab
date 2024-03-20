@@ -1,7 +1,7 @@
 import React from 'react';
 import { TodoItem } from '../types/TodoItem';
-import { View, Text } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { View } from 'react-native';
+import { CheckBox } from '@rneui/base';
 
 type Props = {
   todo: TodoItem;
@@ -25,13 +25,14 @@ const Todo = (props: Props): JSX.Element => {
       <View>
         <CheckBox
           id={String(props.todo.id)}
-          value={props.todo.completed}
-          onValueChange={toggleTodo}
-          disabled={false}
+          checked={props.todo.completed}
+          title={`No.${props.todo.id} : ${props.todo.task}`}
+          checkedColor='#0F0'
+          uncheckedColor='#F00'
+          size={30}
+          containerStyle={{ width: '75%' }}
+          onIconPress={toggleTodo}
         />
-        <Text>
-          Todo{props.todo.id} : {props.todo.task}
-        </Text>
       </View>
     </>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TodoItem } from '../types/TodoItem';
-import { Button } from 'react-native';
+import { Button } from '@rneui/base';
 
 type Props = {
   todos: TodoItem[];
@@ -20,7 +20,11 @@ const DeleteTodo = (props: Props): JSX.Element => {
 
   return (
     <>
-      <Button title='完了したTodoを削除' onPress={deleteTodo} />
+      <Button
+        title='完了したTodoを削除'
+        color='error'
+        type='outline'
+        onPress={deleteTodo} />
     </>
   );
 };
