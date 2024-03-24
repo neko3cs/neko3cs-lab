@@ -1,6 +1,7 @@
 import React from 'react';
 import { TodoItem } from '../types/TodoItem';
 import { Button } from '@rneui/base';
+import { globalStyles } from '../GlobalStyles';
 
 type Props = {
   todos: TodoItem[];
@@ -24,6 +25,7 @@ const DeleteTodo = (props: Props): JSX.Element => {
         title='完了したTodoを削除'
         color='error'
         type='outline'
+        style={globalStyles.items_mediam}
         onPress={deleteTodo} />
     </>
   );
