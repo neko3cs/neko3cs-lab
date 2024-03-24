@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { TodoItem } from '../types/TodoItem';
 import Todo from './Todo';
+import { globalStyles } from '../GlobalStyles';
 
 type Props = {
   todos: TodoItem[];
@@ -14,7 +15,8 @@ const TodoList = (props: Props): JSX.Element => {
       {props.todos.map(todo => {
         return (
           <View
-            key={todo.id}>
+            key={todo.id}
+            style={globalStyles.container}>
             <Todo
               todo={todo}
               todos={props.todos}
