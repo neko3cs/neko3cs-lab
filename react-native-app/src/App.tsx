@@ -9,6 +9,7 @@ import { TodoItem } from './types/TodoItem';
 import AddTodo from './components/AddTodo';
 import TodoList from './components/TodoList';
 import DeleteTodo from './components/DeleteTodo';
+import { globalStyles } from './GlobalStyles';
 
 const App = (): React.JSX.Element => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -22,7 +23,7 @@ const App = (): React.JSX.Element => {
         }} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic">
-        <View>
+        <View style={globalStyles.container}>
           <AddTodo todos={todos} setTodos={setTodos} />
           <TodoList todos={todos} setTodos={setTodos} />
           <Text h4>残りTodo件数 : {todos.length}件</Text>
