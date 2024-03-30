@@ -1,0 +1,52 @@
+﻿@page "/securestorage"
+
+<h3>Secure Storage</h3>
+
+<div>
+  <MatTextField @bind-Value="@userIdForInput" Label="User ID" FullWidth="true" />
+</div>
+<div>
+  <MatTextField @bind-Value="@passwordForInput" Label="Password" Type="password" FullWidth="true" />
+</div>
+<div>
+  <MatButton Label="Submit" Outlined="true" Raised="true" OnClick="@Submit" />
+</div>
+
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+  <MatDialogTitle>Your Informartion</MatDialogTitle>
+  <MatDialogContent>
+    <p>User Id: @userIdForShow</p>
+    <p>Password: @passwordForShow</p>
+  </MatDialogContent>
+  <MatDialogActions>
+    <MatButton OnClick="@Ok">OK</MatButton>
+  </MatDialogActions>
+</MatDialog>
+
+@code {
+  // FIXME: 動いてないので直す
+
+  bool dialogIsOpen = false;
+  string userIdForInput = "";
+  string passwordForInput = "";
+  string userIdForShow = "";
+  string passwordForShow = "";
+
+  async void Submit()
+  {
+    await SecureStorage.Default.SetAsync("UserId", userIdForInput);
+    await SecureStorage.Default.SetAsync("Password", passwordForInput);
+
+    userIdForShow = await SecureStorage.Default.GetAsync("UserId");
+    passwordForShow = await SecureStorage.Default.GetAsync("Password");
+
+    dialogIsOpen = true;
+  }
+
+  void Ok()
+  {
+    userIdForShow = string.Empty;
+    passwordForShow = string.Empty;
+    dialogIsOpen = false;
+  }
+}
