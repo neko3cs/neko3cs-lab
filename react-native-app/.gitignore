@@ -141,7 +141,7 @@ vendor/
 /packages/react-native/sdks/hermes-engine/hermes-engine-from-local-source-dir.tar.gz
 
 # Visual studio
-.vscode
+# .vscode
 .vs
 
 # Android memory profiler files
