@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "clean-all": "react-native clean --include android,cocoapods,metro,npm,bun,watchman,yarn",
+    "install-all": "yarn install && cd $INIT_CWD/ios && pod install && cd $INIT_CWD"
   },
   "dependencies": {
     "@rneui/base": "^4.0.0-rc.8",
