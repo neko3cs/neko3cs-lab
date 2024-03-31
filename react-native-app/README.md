@@ -21,9 +21,51 @@ error Failed to build iOS project. We ran "xcodebuild" command but it exited wit
 
 react-native-vector-iconsはインストール後各プラットフォームのフォルダーに対してFontsの配置をおこなう必要がある。
 
+### react-native-macOSの追加
+
+以下のコマンドでmacOSに対応させる。
+
+```zsh
+npx react-native-macos-init --overwrite
+```
+
+| オプション     | 説明                                                          |
+| ------------- | ------------------------------------------------------------ |
+| `--overwrite` | 既存プロジェクトにmacOS対応用のソースやパッケージを追加するようにする。 |
+
+### react-native-windowsの追加
+
+以下のコマンドでWindowsに対応させる。
+
+```zsh
+npx react-native-windows-init --language 'cs' --namespace '<NameSpace>' --overwrite
+```
+
+| オプション     | 説明                                                                                           |
+| ------------- | --------------------------------------------------------------------------------------------- |
+| `--language`  | React NativeのWindows対応にはUWPが使われている。このオプションでUWPプロジェクトの言語を指定できる。       |
+| `--namespace` | 名前空間を指定できる。デフォルトだとなぜかプロジェクト名の全部小文字になるのでここで改めて指定するといいと思う。 |
+| `--overwrite` | 既存プロジェクトにWindows対応用のソースやパッケージを追加するようにする。                                |
+
+### react-native-macos v0.73.0でアプリが起動できない
+
+以下のエラーが出る。
+
+```txt
+No bundle URL present.
+
+Make sure you're running a packager server or have included a .jsbundle file in your application bundle.
+```
+
+どうやら上手くメトロサーバーが起動できない不具合があるようで、以下の手順で実行する。
+
+1. `yarn react-native start` でメトロサーバーを起動しておく
+1. 別のターミナルで `yarn react-native run-macos` を実行してmacOSアプリを起動する
+
 ## 参考文献
 
 - [React(TypeScript)の復習として簡単なTodoアプリを作ってみた話](https://zenn.dev/grazie/articles/cfb43e4b81a152)
 - ※1: [React Native iOS で run-ios 出来ない時のエラー - ねこさんのぶろぐ](https://www.neko3cs.net/entry/error-on-react-native-ios-and-cocoapods)
 - ※2: [React Native Elements](https://reactnativeelements.com/docs/installation)
 - ※3: [oblador/react-native-vector-icons: Customizable Icons for React Native with support for image source and full styling.](https://github.com/oblador/react-native-vector-icons?tab=readme-ov-file#installation)
+- [React Native for Windows + macOS · Build native Windows & macOS apps with Javascript and React](https://microsoft.github.io/react-native-windows/)
