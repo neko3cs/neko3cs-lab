@@ -2,38 +2,6 @@
 
 React Nativeのサンプルアプリです。
 
-## TODO
-
-### react-native-macosでエラーが出る
-
-以下のエラーが出る。
-`yarn clean-all && yarn install-all`を実行してみてもダメ。
-
-```txt
-No bundle URL present.
-
-Make sure you're running a packager server or have included a .jsbundle file in your application bundle.
-
-RCTFatal
-__28-[RCTCxxBridge handleError:]_block_invoke
-_dispatch_call_block_and_release
-_dispatch_client_callout
-_dispatch_main_queue_drain
-_dispatch_main_queue_callback_4CF
-__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__
-__CFRunLoopRun
-CFRunLoopRunSpecific
-RunCurrentEventLoopInMode
-ReceiveNextEventCommon
-_BlockUntilNextEventMatchingListInModeWithFilter
-_DPSNextEvent
--[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:]
--[NSApplication run]
-NSApplicationMain
-main
-start
-```
-
 ## 技術メモ
 
 ### run-iosでのビルドエラー
@@ -79,7 +47,20 @@ npx react-native-windows-init --language 'cs' --namespace '<NameSpace>' --overwr
 | `--namespace` | 名前空間を指定できる。デフォルトだとなぜかプロジェクト名の全部小文字になるのでここで改めて指定するといいと思う。 |
 | `--overwrite` | 既存プロジェクトにWindows対応用のソースやパッケージを追加するようにする。                                |
 
-## 参考文献
+### react-native-macos v0.73.0でアプリが起動できない
+
+以下のエラーが出る。
+
+```txt
+No bundle URL present.
+
+Make sure you're running a packager server or have included a .jsbundle file in your application bundle.
+```
+
+どうやら上手くメトロサーバーが起動できない不具合があるようで、以下の手順で実行する。
+
+1. `yarn react-native start` でメトロサーバーを起動しておく
+1. 別のターミナルで `yarn react-native run-macos` を実行してmacOSアプリを起動する
 
 - [React(TypeScript)の復習として簡単なTodoアプリを作ってみた話](https://zenn.dev/grazie/articles/cfb43e4b81a152)
 - ※1: [React Native iOS で run-ios 出来ない時のエラー - ねこさんのぶろぐ](https://www.neko3cs.net/entry/error-on-react-native-ios-and-cocoapods)
