@@ -62,8 +62,6 @@ Make sure you're running a packager server or have included a .jsbundle file in 
 1. `yarn react-native start` でメトロサーバーを起動しておく
 1. 別のターミナルで `yarn react-native run-macos` を実行してmacOSアプリを起動する
 
-## 参考文献
-
 - [React(TypeScript)の復習として簡単なTodoアプリを作ってみた話](https://zenn.dev/grazie/articles/cfb43e4b81a152)
 - ※1: [React Native iOS で run-ios 出来ない時のエラー - ねこさんのぶろぐ](https://www.neko3cs.net/entry/error-on-react-native-ios-and-cocoapods)
 - ※2: [React Native Elements](https://reactnativeelements.com/docs/installation)
