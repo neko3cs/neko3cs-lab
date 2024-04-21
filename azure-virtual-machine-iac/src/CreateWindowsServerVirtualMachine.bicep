@@ -1,4 +1,4 @@
-// Parameter
+// Parameter ----------------------------------------------------------------------------------------------------------
 @description('Username for the Virtual Machine.')
 param adminUsername string
 @description('Password for the Virtual Machine.')
@@ -61,7 +61,7 @@ param vmName string = 'simple-vm'
 ])
 param securityType string = 'TrustedLaunch'
 
-// Variables
+// Variables ----------------------------------------------------------------------------------------------------------
 var storageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
 var nicName = '${vmName}-VMNic'
 var addressPrefix = '10.0.0.0/16'
@@ -82,7 +82,7 @@ var extensionVersion = '1.0'
 var maaTenantName = 'GuestAttestation'
 var maaEndpoint = substring('emptyString', 0, 0)
 
-// Resources
+// Resources ----------------------------------------------------------------------------------------------------------
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: storageAccountName
   location: location
@@ -254,5 +254,5 @@ resource vmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
     }
   }
 
-// Return Variables
+// Return Variables ---------------------------------------------------------------------------------------------------
 output hostname string = publicIp.properties.dnsSettings.fqdn
