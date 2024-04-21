@@ -13,7 +13,8 @@ $DiskSizeGB = $EnvVal.DISK_SIZE_GB
 
 az group create `
   --name $ResourceGroup `
-  --location $Location
+  --location $Location `
+  --output table
 
 az deployment group create `
   --resource-group $ResourceGroup `
@@ -24,11 +25,15 @@ az deployment group create `
   OSVersion="$OSVersion" `
   vmName="$VMName" `
   vmSize="$VMSize" `
-  diskSizeGB="$DiskSizeGB"
+  diskSizeGB="$DiskSizeGB" `
+  --output table
 
 $HostName = az deployment group show `
   --resource-group $ResourceGroup `
   --name CreateWindowsServerVirtualMachine `
-  --query properties.outputs.hostname.value
+  --query properties.outputs.hostname.value `
+  --output table
 
-Write-Output "HostName: '$HostName'"
+if ($HostName) {
+  Write-Output "HostName: '$HostName'"
+}
