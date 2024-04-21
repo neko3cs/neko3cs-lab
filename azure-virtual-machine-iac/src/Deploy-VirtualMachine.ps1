@@ -8,6 +8,7 @@ $AdminUserName = $EnvVal.ADMIN_USERNAME
 $AdminPassword = $EnvVal.ADMIN_PASSWORD
 $OSVersion = $EnvVal.OS_VERSION
 $VMName = $EnvVal.VM_NAME
+$DiskSizeGB = $EnvVal.DISK_SIZE_GB
 
 az group create `
   --name $ResourceGroup `
@@ -20,7 +21,8 @@ az deployment group create `
   adminUsername="$AdminUserName" `
   adminPassword="$AdminPassword" `
   OSVersion="$OSVersion" `
-  vmName="$VMName"
+  vmName="$VMName" `
+  diskSizeGB="$DiskSizeGB"
 
 $HostName = az deployment group show `
   --resource-group $ResourceGroup `

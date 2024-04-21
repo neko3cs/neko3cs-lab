@@ -54,6 +54,8 @@ param vmSize string = 'Standard_D2s_v5'
 param location string = resourceGroup().location
 @description('Name of the virtual machine.')
 param vmName string = 'simple-vm'
+@description('Size of VM disk[GB]')
+param diskSizeGB int = 1023
 @description('Security Type of the Virtual Machine.')
 @allowed([
   'Standard'
@@ -210,7 +212,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
       }
       dataDisks: [
         {
-          diskSizeGB: 1023
+          diskSizeGB: diskSizeGB
           lun: 0
           createOption: 'Empty'
         }
