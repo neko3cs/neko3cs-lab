@@ -13,6 +13,7 @@ ADMIN_USERNAME=LocalAdmin
 ADMIN_PASSWORD=YourPassword
 OS_VERSION=2022-datacenter-g2
 VM_NAME=YourVMName
+DISK_SIZE_GB=512
 ```
 
 ## 参考文献
