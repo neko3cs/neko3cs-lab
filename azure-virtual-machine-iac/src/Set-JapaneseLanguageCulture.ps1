@@ -1,6 +1,6 @@
 #Requires -PSEdition Desktop
 
-$GeoId = 0x7A # JAPAN
+$GeoId = 122 # JAPAN
 $TimeZone = "Tokyo Standard Time"
 
 Set-WinCultureFromLanguageListOptOut `
@@ -9,6 +9,8 @@ Set-WinHomeLocation `
   -GeoId $GeoId
 Set-WinSystemLocale `
   -SystemLocale ja-JP
+Set-WinUILanguageOverride `
+  -Language ja-JP
 Set-TimeZone `
   -Id $TimeZone
 Restart-Computer
