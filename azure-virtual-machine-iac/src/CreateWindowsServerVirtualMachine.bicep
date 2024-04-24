@@ -139,6 +139,19 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
           destinationAddressPrefix: '*'
         }
       }
+      {
+        name: 'allow-ssh'
+        properties: {
+          priority: 1010
+          access: 'Allow'
+          direction: 'Inbound'
+          protocol: 'Tcp'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '22'
+          sourceAddressPrefix: allowedIpAddress
+          sourcePortRange: '*'
+        }
+      }
     ]
   }
 }
@@ -257,6 +270,15 @@ resource vmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
       }
     }
   }
-
+resource sshVmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' = {
+  parent: vm
+  name: 'WindowsOpenSSH'
+  location: location
+  properties: {
+    publisher: 'Microsoft.Azure.OpenSSH'
+    type: 'WindowsOpenSSH'
+    typeHandlerVersion: '3.0'
+  }
+}
 // Return Variables ---------------------------------------------------------------------------------------------------
 output hostname string = publicIp.properties.dnsSettings.fqdn
