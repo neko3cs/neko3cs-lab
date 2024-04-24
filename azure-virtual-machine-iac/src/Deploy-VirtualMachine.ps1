@@ -6,6 +6,7 @@ $ResourceGroup = $EnvVal.RESOURCE_GROUP
 $Location = $EnvVal.LOCATION
 $AdminUserName = $EnvVal.ADMIN_USERNAME
 $AdminPassword = $EnvVal.ADMIN_PASSWORD
+$AllowedIpAddress = $EnvVal.ALLOWED_IPADDRESS
 $OSVersion = $EnvVal.OS_VERSION
 $VMName = $EnvVal.VM_NAME
 $VMSize = $EnvVal.VM_SIZE
@@ -22,6 +23,7 @@ az deployment group create `
   --parameters `
   adminUsername="$AdminUserName" `
   adminPassword="$AdminPassword" `
+  allowedIpAddress="$AllowedIpAddress" `
   OSVersion="$OSVersion" `
   vmName="$VMName" `
   vmSize="$VMSize" `

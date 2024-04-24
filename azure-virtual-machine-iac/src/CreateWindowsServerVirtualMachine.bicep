@@ -21,6 +21,8 @@ param publicIPAllocationMethod string = 'Dynamic'
   'Standard'
 ])
 param publicIpSku string = 'Basic'
+@description('The IP address from which communication to the Virtual Machine is allowed by the Network Security Group.')
+param allowedIpAddress string = '*'
 @description('The Windows version for the VM. This will pick a fully patched image of this given Windows version.')
 @allowed([
   '2016-datacenter-gensecond'
@@ -93,7 +95,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   }
   kind: 'Storage'
 }
-// TODO: Azure Bastionを利用するように修正する（Bastionの方が安価でセキュリティが高いらしい）
 resource publicIp 'Microsoft.Network/publicIPAddresses@2022-05-01' = {
   name: publicIpName
   location: location
@@ -121,7 +122,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
           destinationPortRange: '3389'
           protocol: 'Tcp'
           sourcePortRange: '*'
-          sourceAddressPrefix: '*'
+          sourceAddressPrefix: allowedIpAddress
           destinationAddressPrefix: '*'
         }
       }
@@ -134,7 +135,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
           destinationPortRange: '*'
           protocol: 'Icmp'
           sourcePortRange: '*'
-          sourceAddressPrefix: '*'
+          sourceAddressPrefix: allowedIpAddress
           destinationAddressPrefix: '*'
         }
       }
