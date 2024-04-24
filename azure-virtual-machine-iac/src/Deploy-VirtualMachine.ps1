@@ -30,14 +30,10 @@ az deployment group create `
   diskSizeGB="$DiskSizeGB" `
   --output table
 
-$HostName = az deployment group show `
+(az deployment group show `
   --resource-group $ResourceGroup `
   --name CreateWindowsServerVirtualMachine `
-  --query properties.outputs.hostname.value `
-  --output table
+  --query properties.outputs.hostname.value).Trim('"') |
+Out-File -FilePath hostname.txt -Encoding utf8
 
 # TODO: 必要なスクリプトファイルをVMにアップロードし、実行する
-
-if ($HostName) {
-  Write-Output "HostName: '$HostName'"
-}
