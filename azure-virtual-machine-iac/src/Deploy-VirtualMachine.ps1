@@ -34,6 +34,8 @@ $HostName = az deployment group show `
   --query properties.outputs.hostname.value `
   --output table
 
+# TODO: 必要なスクリプトファイルをVMにアップロードし、実行する
+
 if ($HostName) {
   Write-Output "HostName: '$HostName'"
 }
