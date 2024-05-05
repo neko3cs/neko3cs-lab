@@ -5,25 +5,39 @@ namespace MauiBlazorApp;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-			});
-
-		builder.Services.AddMauiBlazorWebView();
-
+	public static MauiApp CreateMauiApp() => MauiApp.CreateBuilder()
+		.UseMauiApp<App>()
+		.ConfigureFonts(fonts =>
+		{
+			fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+		})
+		.ConfigureServices(services =>
+		{
+			services.AddMauiBlazorWebView();
+			services.AddSingleton<WeatherForecastService>();
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+			services.AddBlazorWebViewDeveloperTools();
 #endif
+		})
+#if DEBUG
+		.ConfigureLogging(builder =>
+		{
+			builder.Logging.AddDebug();
+		})
+#endif
+		.Build();
 
-		builder.Services.AddSingleton<WeatherForecastService>();
-
-		return builder.Build();
+	#region HelperMethod
+	private static MauiAppBuilder ConfigureServices(this MauiAppBuilder builder, Action<IServiceCollection> action)
+	{
+		action(builder.Services);
+		return builder;
 	}
+
+	private static MauiAppBuilder ConfigureLogging(this MauiAppBuilder builder, Action<MauiAppBuilder> action)
+	{
+		action(builder);
+		return builder;
+	}
+	#endregion
 }
