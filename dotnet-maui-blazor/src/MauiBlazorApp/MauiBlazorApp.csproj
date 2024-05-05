@@ -63,6 +63,10 @@
         <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.4" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MauiBlazorApp.RCL\MauiBlazorApp.RCL.csproj" />
+    </ItemGroup>
+
   <!-- Build Properties must be defined within these property groups to ensure successful publishing
        to the Mac App Store. See: https://aka.ms/maui-publish-app-store#define-build-properties-in-your-project-file -->
   <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Debug'">
