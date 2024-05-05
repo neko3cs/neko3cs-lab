@@ -57,10 +57,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MatBlazor" Version="2.10.0" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.1.23419.4" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.21" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.21" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+        <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.4" />
     </ItemGroup>
 
   <!-- Build Properties must be defined within these property groups to ensure successful publishing
