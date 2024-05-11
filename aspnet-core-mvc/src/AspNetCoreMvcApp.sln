@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMvcApp.View", "AspNetMvcApp.View\AspNetMvcApp.View.csproj", "{B842F26A-1BEA-483D-9960-AB5B8D313381}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreMvcApp.View", "AspNetCoreMvcApp.View\AspNetCoreMvcApp.View.csproj", "{B842F26A-1BEA-483D-9960-AB5B8D313381}"
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
