@@ -1,4 +1,4 @@
-namespace AspNetCoreBlazor.Maui.Data;
+namespace AspNetCoreBlazor.Core.Data;
 
 public class WeatherForecast
 {
