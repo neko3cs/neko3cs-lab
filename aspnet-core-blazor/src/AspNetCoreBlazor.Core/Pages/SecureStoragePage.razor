@@ -1,4 +1,5 @@
 ﻿@page "/securestorage"
+@inject ISecureStorageService SecureStorageService
 
 <h3>Secure Storage</h3>
 
@@ -38,19 +39,13 @@
   string userIdForShow = string.Empty;
   string passwordForShow = string.Empty;
 
-  async void Submit()
-  {
-    // FIXME: SecureStorageMはMauiの機能なのでInterfaceを経由してDIする必要がある
-    @* await SecureStorage.Default.SetAsync("UserId", userIdForInput);
-    await SecureStorage.Default.SetAsync("Password", passwordForInput); *@
-    userIdForShow = userIdForInput;
-    passwordForShow = passwordForInput;
-  }
+  async void Submit() => await SecureStorageService.SetCurrentUserAsync(new User(userIdForInput, passwordForInput));
 
   async void Load()
   {
-    @* userIdForShow = await SecureStorage.Default.GetAsync("UserId");
-    passwordForShow = await SecureStorage.Default.GetAsync("Password"); *@
+    var user = await SecureStorageService.GetCurrentUserAsync();
+    userIdForShow = user.UserId;
+    passwordForShow = user.Password;
   }
 
   void Clear()
@@ -59,6 +54,6 @@
     passwordForInput = string.Empty;
     userIdForShow = string.Empty;
     passwordForShow = string.Empty;
-    @* SecureStorage.Default.RemoveAll(); *@
+    SecureStorageService.DeleteUser();
   }
 }
