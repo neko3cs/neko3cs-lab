@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using AspNetCoreBlazor.Core.Data;
+using AspNetCoreBlazor.Maui.Views;
 
 namespace AspNetCoreBlazor.Maui;
 
