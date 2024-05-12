@@ -1,4 +1,8 @@
-﻿<Router AppAssembly="@typeof(Main).Assembly" AdditionalAssemblies="@LazyLoadAssemblies">
+﻿@using System.Reflection
+@using Microsoft.AspNetCore.Components.Routing
+@using AspNetCoreBlazor.Core.Shared
+
+<Router AppAssembly="@typeof(Main).Assembly" AdditionalAssemblies="@LazyLoadAssemblies">
   <Found Context="routeData">
     <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     <FocusOnNavigate RouteData="@routeData" Selector="h1" />
