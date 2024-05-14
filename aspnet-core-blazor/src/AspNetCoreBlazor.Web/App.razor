@@ -1,4 +1,9 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using System.Reflection
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using AspNetCoreBlazor.Core.Shared
+
+<Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@LazyLoadAssemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +15,10 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    IEnumerable<Assembly> LazyLoadAssemblies { get; } = new[]
+    {
+        typeof(AspNetCoreBlazor.Core._Imports).Assembly
+    };
+}

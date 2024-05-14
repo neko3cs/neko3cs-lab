@@ -15,7 +15,6 @@ public static class MauiProgram
 		.ConfigureServices(services =>
 		{
 			services.AddMauiBlazorWebView();
-			services.AddSingleton<WeatherForecastService>();
 			services.AddSingleton<ISecureStorageService, SecureStorageService>();
 #if DEBUG
 			services.AddBlazorWebViewDeveloperTools();
