@@ -15,5 +15,8 @@
 </Router>
 
 @code {
-  Assembly[] LazyLoadAssemblies = new[] { typeof(AspNetCoreBlazor.Core._Imports).Assembly };
+  IEnumerable<Assembly> LazyLoadAssemblies { get; } = new[]
+  {
+    typeof(Core._Imports).Assembly
+  };
 }
