@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreBlazor.Core.Data;
+﻿namespace AspNetCoreBlazor.Core.Types;
 
 public enum PlatformKind
 {

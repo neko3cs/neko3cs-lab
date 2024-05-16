@@ -1,6 +1,7 @@
-﻿using AspNetCoreBlazor.Core.Data;
+﻿using AspNetCoreBlazor.Core.Services;
+using AspNetCoreBlazor.Core.Types;
 
-namespace AspNetCoreBlazor.Web.Data;
+namespace AspNetCoreBlazor.Web.Services;
 
 public class SecureStorageService : ISecureStorageService
 {
