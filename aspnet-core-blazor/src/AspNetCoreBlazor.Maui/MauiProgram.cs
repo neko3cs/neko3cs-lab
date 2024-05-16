@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using AspNetCoreBlazor.Core.Data;
+﻿using AspNetCoreBlazor.Core.Data;
 using AspNetCoreBlazor.Maui.Views;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetCoreBlazor.Maui;
 
@@ -15,6 +15,7 @@ public static class MauiProgram
 		.ConfigureServices(services =>
 		{
 			services.AddMauiBlazorWebView();
+            services.AddSingleton(_ => new PlatformDetection(PlatformKind.Maui));
 			services.AddSingleton<ISecureStorageService, SecureStorageService>();
 #if DEBUG
 			services.AddBlazorWebViewDeveloperTools();
