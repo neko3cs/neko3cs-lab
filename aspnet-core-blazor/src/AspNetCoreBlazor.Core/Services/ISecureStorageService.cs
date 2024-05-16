@@ -1,4 +1,6 @@
-namespace AspNetCoreBlazor.Core.Data;
+using AspNetCoreBlazor.Core.Types;
+
+namespace AspNetCoreBlazor.Core.Services;
 
 public interface ISecureStorageService
 {

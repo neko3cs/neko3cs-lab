@@ -1,6 +1,7 @@
-using AspNetCoreBlazor.Core.Data;
+using AspNetCoreBlazor.Core.Services;
+using AspNetCoreBlazor.Core.Types;
 using AspNetCoreBlazor.Web;
-using AspNetCoreBlazor.Web.Data;
+using AspNetCoreBlazor.Web.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
