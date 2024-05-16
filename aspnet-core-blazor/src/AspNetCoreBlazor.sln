@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreBlazor.Core", "As
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreBlazor.Web", "AspNetCoreBlazor.Web\AspNetCoreBlazor.Web.csproj", "{C3C1CD06-25B6-4CCB-BFB5-95A37BDD80D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreBlazor.Wpf", "AspNetCoreBlazor.Wpf\AspNetCoreBlazor.Wpf.csproj", "{67E82DA0-7033-4BF1-80D9-D1F92F590AC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{C3C1CD06-25B6-4CCB-BFB5-95A37BDD80D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3C1CD06-25B6-4CCB-BFB5-95A37BDD80D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3C1CD06-25B6-4CCB-BFB5-95A37BDD80D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67E82DA0-7033-4BF1-80D9-D1F92F590AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67E82DA0-7033-4BF1-80D9-D1F92F590AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67E82DA0-7033-4BF1-80D9-D1F92F590AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67E82DA0-7033-4BF1-80D9-D1F92F590AC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
