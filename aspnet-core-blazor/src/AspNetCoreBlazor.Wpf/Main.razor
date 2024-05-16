@@ -1,0 +1,22 @@
+﻿@using System.Reflection
+@using Microsoft.AspNetCore.Components.Routing
+@using AspNetCoreBlazor.Core.Shared
+
+<Router AppAssembly="@typeof(Main).Assembly" AdditionalAssemblies="@LazyLoadAssemblies">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    IEnumerable<Assembly> LazyLoadAssemblies { get; } = new[]
+    {
+        typeof(Core._Imports).Assembly
+    };
+}
