@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject PlatformDetection Platform
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">AspNetCoreBlazor App</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -24,21 +26,23 @@
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Weather
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="securestorage">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Secure Storage
-            </NavLink>
-        </div>
+        @if (Platform.Current is not PlatformKind.Browser)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="securestorage">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Secure Storage
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private bool _collapseNavMenu = true;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : string.Empty;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 }
