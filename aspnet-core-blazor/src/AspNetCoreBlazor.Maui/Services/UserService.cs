@@ -3,7 +3,7 @@ using AspNetCoreBlazor.Core.Types;
 
 namespace AspNetCoreBlazor.Maui.Services;
 
-public class SecureStorageService : ISecureStorageService
+public class UserService : IUserService
 {
     public async Task<User> GetCurrentUserAsync() => new User(
         await SecureStorage.Default.GetAsync("UserId") ?? string.Empty,
