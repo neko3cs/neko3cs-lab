@@ -1,10 +1,10 @@
 ﻿using AspNetCoreBlazor.Core.Services;
 using AspNetCoreBlazor.Core.Types;
 
-namespace AspNetCoreBlazor.Wpf.Services;
+namespace AspNetCoreBlazor.Web.Services;
 
-// HACK: 気が向いたら実装する。WPFならPasswordVaultクラスによる暗号化が良いみたい。
-public class SecureStorageService : ISecureStorageService
+// HACK: WebにはSecureStorageはないため、なにかセキュアな保存方法を検討する必要がある。気が向いたら実装する。
+public class UserService : IUserService
 {
     public Task<User> GetCurrentUserAsync()
     {
