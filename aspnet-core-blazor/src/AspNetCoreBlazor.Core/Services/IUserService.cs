@@ -2,7 +2,7 @@ using AspNetCoreBlazor.Core.Types;
 
 namespace AspNetCoreBlazor.Core.Services;
 
-public interface ISecureStorageService
+public interface IUserService
 {
   Task<User> GetCurrentUserAsync();
   Task SetCurrentUserAsync(User user);

@@ -11,6 +11,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSingleton(_ => new PlatformDetection(PlatformKind.Browser));
-builder.Services.AddSingleton<ISecureStorageService, SecureStorageService>();
+builder.Services.AddSingleton<IUserService, UserService>();
 
 await builder.Build().RunAsync();
