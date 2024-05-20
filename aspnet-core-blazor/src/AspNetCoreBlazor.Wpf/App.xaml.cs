@@ -22,7 +22,7 @@ public partial class App : Application
         // TODO: HttpClientでwwwroot内のリソースにアクセスする方法があるのか調べる
         services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("http://localhost") });
         services.AddSingleton(_ => new PlatformDetection(PlatformKind.Wpf));
-        services.AddSingleton<ISecureStorageService, SecureStorageService>();
+        services.AddSingleton<IUserService, UserService>();
         Resources.Add("services", services.BuildServiceProvider());
     }
 }
