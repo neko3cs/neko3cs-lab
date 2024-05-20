@@ -9,29 +9,29 @@
 </div>
 <div>
   <label for="passwordForInput">Password</label>
-  <input type="text" name="passwordForInput" class="form-control" @bind-value="@passwordForInput" tabindex="1" />
+  <input type="text" name="passwordForInput" class="form-control" @bind-value="@passwordForInput" />
 </div>
 <div>
-  <button @onclick="@Submit" class="btn btn-outline-primary" tabindex="2">送信</button>
+  <button @onclick="@Submit" class="btn btn-outline-primary">送信</button>
 </div>
 
 <hr />
 
 <div>
   <label for="userIdForShow" class="form-label">UserID</label>
-  <input type="text" name="userIdForShow" readonly class="form-control" @bind-value="@userIdForShow" />
+  <input type="text" name="userIdForShow" readonly class="form-control" @bind-value="@userIdForShow" tabindex="-1" />
 </div>
 <div>
   <label for="passwordForShow" class="form-label">Password</label>
-  <input type="text" name="passwordForShow" readonly class="form-control" @bind-value="@passwordForShow" />
+  <input type="text" name="passwordForShow" readonly class="form-control" @bind-value="@passwordForShow" tabindex="-1" />
 </div>
 <div>
-  <button @onclick="@Load" class="btn btn-outline-primary" tabindex="3">読込</button>
+  <button @onclick="@Load" class="btn btn-outline-primary">読込</button>
 </div>
 
 <hr />
 
-<button @onclick="@Clear" class="btn btn-outline-primary" tabindex="4">クリア</button>
+<button @onclick="@Clear" class="btn btn-outline-primary">クリア</button>
 
 @code {
   string userIdForInput = string.Empty;
