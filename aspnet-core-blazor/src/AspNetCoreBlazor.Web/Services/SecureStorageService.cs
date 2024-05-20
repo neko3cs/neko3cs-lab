@@ -3,21 +3,21 @@ using AspNetCoreBlazor.Core.Types;
 
 namespace AspNetCoreBlazor.Web.Services;
 
-// HACK: ページ遷移時先にDLL読んでるのか実装がないとエラーしてしまうので一旦用意 -> 実装しなくても回避する方法があればそちらにする
+// HACK: WebにはSecureStorageはないため、なにかセキュアな保存方法を検討する必要がある。気が向いたら実装する。
 public class SecureStorageService : ISecureStorageService
 {
     public Task<User> GetCurrentUserAsync()
     {
-        throw new NotImplementedException();
+        return Task.Run(() => new User("hoge", "fuga"));
     }
 
-    public Task SetCurrentUserAsync(User user)
+    public async Task SetCurrentUserAsync(User user)
     {
-        throw new NotImplementedException();
+        await Task.Delay(TimeSpan.FromSeconds(1));
     }
 
     public void DeleteUser()
     {
-        throw new NotImplementedException();
+        Task.Delay(TimeSpan.FromSeconds(1)).Wait();
     }
 }

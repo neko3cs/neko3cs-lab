@@ -3,21 +3,21 @@ using AspNetCoreBlazor.Core.Types;
 
 namespace AspNetCoreBlazor.Wpf.Services;
 
-// TODO: 後で実装する
+// HACK: 気が向いたら実装する。WPFならPasswordVaultクラスによる暗号化が良いみたい。
 public class SecureStorageService : ISecureStorageService
 {
     public Task<User> GetCurrentUserAsync()
     {
-        throw new NotImplementedException();
+        return Task.Run(() => new User("hoge", "fuga"));
     }
 
-    public Task SetCurrentUserAsync(User user)
+    public async Task SetCurrentUserAsync(User user)
     {
-        throw new NotImplementedException();
+        await Task.Delay(TimeSpan.FromSeconds(1));
     }
 
     public void DeleteUser()
     {
-        throw new NotImplementedException();
+        Task.Delay(TimeSpan.FromSeconds(1)).Wait();
     }
 }
