@@ -17,7 +17,8 @@ public static class MauiProgram
 		.ConfigureServices(services =>
 		{
 			services.AddMauiBlazorWebView();
-            services.AddSingleton(_ => new PlatformDetection(PlatformKind.Maui));
+			services.AddSingleton(_ => new PlatformDetection(PlatformKind.Maui));
+			services.AddScoped(_ => new HttpClient());
 			services.AddSingleton<IUserService, UserService>();
 #if DEBUG
 			services.AddBlazorWebViewDeveloperTools();
