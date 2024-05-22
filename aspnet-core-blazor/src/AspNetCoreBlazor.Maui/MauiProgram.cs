@@ -3,6 +3,7 @@ using AspNetCoreBlazor.Core.Types;
 using AspNetCoreBlazor.Maui.Services;
 using AspNetCoreBlazor.Maui.Views;
 using Microsoft.Extensions.Logging;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace AspNetCoreBlazor.Maui;
 
@@ -17,6 +18,7 @@ public static class MauiProgram
 		.ConfigureServices(services =>
 		{
 			services.AddMauiBlazorWebView();
+			services.AddFluentUIComponents();
 			services.AddSingleton(_ => new PlatformDetection(PlatformKind.Maui));
 			services.AddScoped(_ => new HttpClient());
 			services.AddSingleton<IUserService, UserService>();
