@@ -13,46 +13,31 @@
 }
 else
 {
-    <table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Ingredients</th>
-            <th>Image</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var coffee in coffees)
-            {
-                <tr>
-                    <td>@coffee.Id</td>
-                    <td>@coffee.Title</td>
-                    <td>@coffee.Description</td>
-                    <td>
-                        <ul>
-                            @foreach (var ingredient in @coffee.Ingredients)
-                            {
-                                <li>@ingredient</li>
-                            }
-                        </ul>
-                    </td>
-                    <td>
-                        <img src="@coffee.Image" width="120" height="120" />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <FluentDataGrid Id="CoffeeGrid" Items="@coffees" GridTemplateColumns="1fr 1fr 3fr 2fr 1fr" TGridItem="CoffeeInfo">
+        <PropertyColumn Title="Id" Property="@(c => c!.Id)" Sortable="true" Align="Align.Start" />
+        <PropertyColumn Title="Title" Property="@(c => c!.Title)" Sortable="true" Align="Align.Start" />
+        <PropertyColumn Title="Description" Property="@(c => c!.Description)" Sortable="true" Align="Align.Start"
+            Class="multiline-text" />
+        <TemplateColumn Title="Ingredients" Sortable="true" Align="Align.Start">
+            <ul>
+                @foreach (var ingredient in @context.Ingredients)
+                {
+                    <li>@ingredient</li>
+                }
+            </ul>
+        </TemplateColumn>
+        <TemplateColumn Title="Image" Sortable="true" Align="Align.Center">
+            <img src="@context.Image" width="120" height="120" />
+        </TemplateColumn>
+    </FluentDataGrid>
 }
 
 @code {
-    private CoffeeInfo[]? coffees;
+    private IQueryable<CoffeeInfo>? coffees;
 
     protected override async Task OnInitializedAsync()
     {
-        coffees = await Http.GetFromJsonAsync<CoffeeInfo[]>("https://api.sampleapis.com/coffee/hot");
+        coffees = (await Http.GetFromJsonAsync<CoffeeInfo[]>("https://api.sampleapis.com/coffee/hot"))?.AsQueryable();
     }
 
     public class CoffeeInfo
