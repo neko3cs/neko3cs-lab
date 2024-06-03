@@ -1,16 +1,29 @@
 #Requires -PSEdition Core
 $ErrorActionPreference = 'Stop'
 
-$EnvData = Get-Content .env | ConvertFrom-StringData
-$LOCATION = $EnvData.LOCATION
-$RESOURCE_GROUP = $EnvData.RESOURCE_GROUP
-$APP_NAME = $EnvData.APP_NAME
-$SQL_DATABASE_NAME = $EnvData.SQL_DATABASE_NAME
-$SQL_SERVER_LOGIN = $EnvData.SQL_SERVER_LOGIN
-$SQL_SERVER_LOGIN_PASSWORD = $EnvData.SQL_SERVER_LOGIN_PASSWORD
+$Environ = Get-Content .env | ConvertFrom-StringData
+$Location = $Environ.LOCATION
+$ResourceGroup = $Environ.RESOURCE_GROUP
+$AppName = $Environ.APP_NAME
+$SQLServerName = "$AppName-sqldatabase-server"
+$SQLDatabaseName = $Environ.SQL_DATABASE_NAME
+$SQLServerLogin = $Environ.SQL_SERVER_LOGIN
+$SQLServerLoginPassword = $Environ.SQL_SERVER_LOGIN_PASSWORD
 
-$SQL_SERVER_NAME = "$APP_NAME-sqldatabase-server"
-$PUBLIC_IP_ADDRESS = Invoke-RestMethod -Uri checkip.amazonaws.com
+$DatabaseBicepParameters = @{
+  "location"           = @{ "value" = $Location };
+  "serverName"         = @{ "value" = $SQLServerName };
+  "publicIpAddress"    = @{ "value" = ((Invoke-RestMethod -Uri checkip.amazonaws.com) -replace '\n', '') };
+  "sqlDBName"          = @{ "value" = $SQLDatabaseName };
+  "adminLogin"         = @{ "value" = $SQLServerLogin };
+  "adminLoginPassword" = @{ "value" = $SQLServerLoginPassword };
+} | ConvertTo-Json -Compress |
+ForEach-Object { $_ -replace '"', '\"' }
+$ApplicationBicepParameters = @{
+  "location" = @{ "value" = $Location };
+  "appName"  = @{ "value" = $AppName };
+} | ConvertTo-Json -Compress |
+ForEach-Object { $_ -replace '"', '\"' }
 
 @(
   @{ ProviderName = "Microsoft.App" }
@@ -27,41 +40,37 @@ ForEach-Object {
   }
 }
 
-Write-Output "`n#Creating resource group : '$RESOURCE_GROUP'`n"
+Write-Output "`n#Creating resource group...`n"
 az group create `
-  --name $RESOURCE_GROUP `
-  --location $LOCATION `
+  --name $ResourceGroup `
+  --location $Location `
   --output table
 
-Write-Output "`n#Creating sql-database : '$SQL_DATABASE_NAME' on the server : '$SQL_SERVER_NAME'`n"
+Write-Output "`n#Creating sql-database...`n"
 az deployment group create `
-  --resource-group $RESOURCE_GROUP `
+  --resource-group $ResourceGroup `
   --template-file ./Database.bicep `
-  --parameters `
-  location="$LOCATION" `
-  serverName="$SQL_SERVER_NAME" `
-  publicIpAddress="$PUBLIC_IP_ADDRESS" `
-  sqlDBName="$SQL_DATABASE_NAME" `
-  adminLogin="$SQL_SERVER_LOGIN" `
-  adminLoginPassword="$SQL_SERVER_LOGIN_PASSWORD"
+  --parameters $DatabaseBicepParameters
 
-$connectionString = (az sql db show-connection-string `
-    --server $SQL_SERVER_NAME `
-    --name $SQL_DATABASE_NAME `
-    --client ado.net) `
-  -replace "<username>", $SQL_SERVER_LOGIN `
-  -replace "<password>", $SQL_SERVER_LOGIN_PASSWORD `
-  -replace '^\s*"(.*)"\s*$', '$1'
-Write-Output "`n#ConnectionString is: '$connectionString'`n"
+(az sql db show-connection-string `
+  --server $SQLServerName `
+  --name $SQLDatabaseName `
+  --client ado.net) `
+  -replace "<username>", $SQLServerLogin `
+  -replace "<password>", $SQLServerLoginPassword `
+  -replace '^\s*"(.*)"\s*$', '$1' |
+Out-File `
+  -FilePath .\connectionString.txt `
+  -NoNewline `
+  -Encoding utf8
+Write-Output "`n#ConnectionString in connectionString.txt`n"
 
 Invoke-Sqlcmd `
-  -ConnectionString $connectionString `
+  -ConnectionString (Get-Content -Path .\connectionString.txt) `
   -InputFile ./CreateTable.sql
 
-Write-Output "`n#Creating container app with application-gateway: location='$LOCATION' appName='$APP_NAME'`n"
+Write-Output "`n#Creating container app with application-gateway...`n"
 az deployment group create `
-  --resource-group $RESOURCE_GROUP `
+  --resource-group $ResourceGroup `
   --template-file ./Application.bicep `
-  --parameters `
-  location="$LOCATION" `
-  appName="$APP_NAME"
+  --parameters $ApplicationBicepParameters
