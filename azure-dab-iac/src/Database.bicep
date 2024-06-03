@@ -1,8 +1,8 @@
 // Params
 param location string = resourceGroup().location
-param serverName string = uniqueString('sql', resourceGroup().id)
+param serverName string
 param publicIpAddress string
-param sqlDBName string = 'SampleDB'
+param sqlDBName string
 param adminLogin string
 @secure()
 param adminLoginPassword string
