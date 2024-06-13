@@ -1,17 +1,22 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+<FluentLayout>
+    <FluentHeader>
+        AspNetCoreBlazor App
+        <FluentSpacer />
+        <FluentAnchor Href="https://learn.microsoft.com/en-us/aspnet/core/blazor" Target="_blank"
+            IconStart="@(new Icons.Regular.Size16.Globe())">
+            About Blazor
+        </FluentAnchor>
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <div class="sidebar">
+            <NavMenu />
         </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <FluentBodyContent>
+            <div class="content">
+                @Body
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>
