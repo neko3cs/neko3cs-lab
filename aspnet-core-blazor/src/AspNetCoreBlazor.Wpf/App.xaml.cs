@@ -2,6 +2,7 @@
 using AspNetCoreBlazor.Core.Types;
 using AspNetCoreBlazor.Wpf.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FluentUI.AspNetCore.Components;
 using System.Net.Http;
 using System.Windows;
 
@@ -19,6 +20,7 @@ public partial class App : Application
 #if DEBUG
         services.AddBlazorWebViewDeveloperTools();
 #endif
+        services.AddFluentUIComponents();
         services.AddScoped(_ => new HttpClient());
         services.AddSingleton(_ => new PlatformDetection(PlatformKind.Wpf));
         services.AddSingleton<IUserService, UserService>();

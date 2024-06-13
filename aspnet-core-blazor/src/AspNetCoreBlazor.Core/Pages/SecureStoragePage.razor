@@ -4,34 +4,22 @@
 <h3>Secure Storage</h3>
 
 <div>
-  <label for="userIdForInput" class="form-label">UserID</label>
-  <input type="text" name="userIdForInput" class="form-control" @bind-value="@userIdForInput" tabindex="0" />
-</div>
-<div>
-  <label for="passwordForInput">Password</label>
-  <input type="text" name="passwordForInput" class="form-control" @bind-value="@passwordForInput" />
-</div>
-<div>
-  <button @onclick="@Submit" class="btn btn-outline-primary">送信</button>
+  <FluentTextField Label="UserID" @bind-Value="@userIdForInput" tabindex="0" />
+  <FluentTextField Label="Password" @bind-Value="@passwordForInput" />
+  <FluentButton @onclick="@Submit" Appearance="Appearance.Accent">送信</FluentButton>
 </div>
 
 <hr />
 
 <div>
-  <label for="userIdForShow" class="form-label">UserID</label>
-  <input type="text" name="userIdForShow" readonly class="form-control" @bind-value="@userIdForShow" tabindex="-1" />
-</div>
-<div>
-  <label for="passwordForShow" class="form-label">Password</label>
-  <input type="text" name="passwordForShow" readonly class="form-control" @bind-value="@passwordForShow" tabindex="-1" />
-</div>
-<div>
-  <button @onclick="@Load" class="btn btn-outline-primary">読込</button>
+  <FluentTextField Label="UserID" @bind-Value="@userIdForShow" ReadOnly tabindex="-1" />
+  <FluentTextField Label="Password" @bind-Value="@passwordForShow" ReadOnly tabindex="-1" />
+  <FluentButton @onclick="@Load" Appearance="Appearance.Accent">読込</FluentButton>
 </div>
 
 <hr />
 
-<button @onclick="@Clear" class="btn btn-outline-primary">クリア</button>
+<FluentButton @onclick="@Clear" Appearance="Appearance.Accent">クリア</FluentButton>
 
 @code {
   string userIdForInput = string.Empty;
