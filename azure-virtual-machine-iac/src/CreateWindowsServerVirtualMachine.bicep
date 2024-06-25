@@ -7,6 +7,8 @@ param allowedIpAddress string
 param OSVersion string
 param vmSize string
 param vmName string
+@maxLength(15)
+param computerName string
 param diskSizeGB int
 
 // Variables ----------------------------------------------------------------------------------------------------------
@@ -158,7 +160,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
       vmSize: vmSize
     }
     osProfile: {
-      computerName: vmName
+      computerName: computerName
       adminUsername: adminUsername
       adminPassword: adminPassword
     }
