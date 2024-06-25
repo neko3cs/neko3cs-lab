@@ -68,7 +68,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
       {
         name: 'default-allow-3389'
         properties: {
-          priority: 1000
+          priority: 300
           access: 'Allow'
           direction: 'Inbound'
           destinationPortRange: '3389'
@@ -94,7 +94,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
       {
         name: 'allow-ssh'
         properties: {
-          priority: 1010
+          priority: 320
           access: 'Allow'
           direction: 'Inbound'
           protocol: 'Tcp'
@@ -140,6 +140,9 @@ resource nic 'Microsoft.Network/networkInterfaces@2022-05-01' = {
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
             id: publicIp.id
+            properties: {
+              deleteOption: 'Delete'
+            }
           }
           subnet: {
             id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
@@ -176,6 +179,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: 'StandardSSD_LRS'
         }
+        deleteOption: 'Delete'
         diskSizeGB: diskSizeGB
       }
     }
@@ -183,6 +187,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
       networkInterfaces: [
         {
           id: nic.id
+          properties: {
+            deleteOption: 'Delete'
+          }
         }
       ]
     }
