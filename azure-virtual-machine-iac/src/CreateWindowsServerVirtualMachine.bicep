@@ -176,14 +176,8 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: 'StandardSSD_LRS'
         }
+        diskSizeGB: diskSizeGB
       }
-      dataDisks: [
-        {
-          diskSizeGB: diskSizeGB
-          lun: 0
-          createOption: 'Empty'
-        }
-      ]
     }
     networkProfile: {
       networkInterfaces: [
