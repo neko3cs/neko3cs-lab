@@ -8,7 +8,7 @@ $Location = $Environ.LOCATION
 $VirtualMachineParameters = @{
   "adminUsername"    = @{ "value" = [string]$Environ.ADMIN_USERNAME };
   "adminPassword"    = @{ "value" = [string]$Environ.ADMIN_PASSWORD };
-  "allowedIpAddress" = @{ "value" = [string]((Invoke-RestMethod checkip.amazonaws.com).Trim()) };
+  "allowedIpAddress" = @{ "value" = [string]((Invoke-RestMethod https://domains.google.com/checkip).Trim()) };
   "OSVersion"        = @{ "value" = [string]$Environ.OS_VERSION };
   "vmSize"           = @{ "value" = [string]$Environ.VM_SIZE };
   "vmName"           = @{ "value" = [string]$Environ.VM_NAME };
