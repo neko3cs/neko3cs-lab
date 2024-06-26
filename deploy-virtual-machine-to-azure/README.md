@@ -1,4 +1,4 @@
-# Deploy to Azure Virtual Machine
+# Deploy Virtual Machine to Azure
 
 Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルです。
 
