@@ -4,9 +4,11 @@ Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルで
 
 ## 使い方
 
-### 1. 仮想マシンのデプロイ
+### 1. 設定ファイルの作成
 
-`Deploy-VirtualMachine.ps1` と同一階層に以下内容の `.env` ファイルを用意して実行する。
+`Deploy-VirtualMachine.ps1` と同一階層のフォルダーに以下内容の `.env` ファイルを作成する。
+
+`{}` で囲われた部分は適宜、用途に合わせて修正する。
 
 ```.env
 RESOURCE_GROUP={YourResourceGroupName}
@@ -20,14 +22,18 @@ COMPUTER_NAME={YourComputerNameOfServer}
 DISK_SIZE_GB={CDriveSize}
 ```
 
-### 2. 日本語環境の設定
+### 2. 仮想マシンのデプロイ
+
+`Deploy-VirtualMachine.ps1` を実行する。
+
+### 3. 日本語環境の設定
 
 以下のスクリプトを実行する。スクリプト毎に再起動が実行されるので都度ログインして実行する。
 
 1. `Install-JapaneseLanguagePack.ps1`
 1. `Set-JapaneseLanguageCulture.ps1`
 
-### 3. ping有効設定(任意)
+### 4. ping有効設定(任意)
 
 サーバーへの疎通確認のために `ping` コマンドを試したい時がある。
 
