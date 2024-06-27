@@ -232,5 +232,3 @@ resource sshVmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-03-01
     typeHandlerVersion: '3.0'
   }
 }
-// Return Variables ---------------------------------------------------------------------------------------------------
-output hostname string = publicIp.properties.dnsSettings.fqdn
