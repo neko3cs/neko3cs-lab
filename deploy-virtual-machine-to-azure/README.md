@@ -2,7 +2,7 @@
 
 Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルです。
 
-## 使い方
+## デプロイ方法
 
 ### 1. 設定ファイルの作成
 
@@ -38,6 +38,16 @@ DISK_SIZE_GB={CDriveSize}
 サーバーへの疎通確認のために `ping` コマンドを試したい時がある。
 
 `Enable-PingFireWallRule.ps1` を実行することで `ping` 用のファイアウォールルールを有効化することができる。
+
+## 接続方法
+
+以下のコマンドでサーバーのIPを確認できる。
+
+```pwsh
+az vm show -g {YourResourceGroupName} -n {YourVirtualMachineName} --show-details --output table
+```
+
+リモートデスクトップ接続を起動し、コンピューター名にFQDNかIP+":3389"を入力して接続する。
 
 ## 設定値について
 

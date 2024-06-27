@@ -28,9 +28,3 @@ az deployment group create `
   --template-file ./CreateWindowsServerVirtualMachine.bicep `
   --parameters $VirtualMachineParameters `
   --output table
-
-(az deployment group show `
-  --resource-group $ResourceGroup `
-  --name CreateWindowsServerVirtualMachine `
-  --query properties.outputs.hostname.value).Trim('"') |
-Out-File -FilePath hostname.txt -Encoding utf8 -NoNewline
