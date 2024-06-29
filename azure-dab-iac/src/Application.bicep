@@ -1,9 +1,9 @@
-// Params
+// Params -------------------------------------------------------------------------------------------------------------
 param location string = resourceGroup().location
 param appName string
 var useHttps = false // Httpsを使う場合はMEMOコメントの部分の設定をおこなう
 
-// ResourceNames
+// ResourceNames ------------------------------------------------------------------------------------------------------
 var acaSubnetName = '${appName}-aca-subnet'
 var agwSubnetName = '${appName}-agw-subnet'
 var applicationGatewayName = '${appName}-agw'
@@ -14,7 +14,7 @@ var backendAddressPoolsName = '${applicationGatewayName}-backendAddressPools'
 var backendHttpSettingsName = '${applicationGatewayName}-backendHttpSettings'
 var httpListenerName = '${applicationGatewayName}-httpListeners'
 
-// Resources
+// Resources ----------------------------------------------------------------------------------------------------------
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: '${appName}-vnet'
   location: location
