@@ -2,8 +2,8 @@
 $ErrorActionPreference = 'Stop'
 
 $Environ = Get-Content .env | ConvertFrom-StringData
-$Location = $Environ.LOCATION
 $ResourceGroup = $Environ.RESOURCE_GROUP
+$Location = $Environ.LOCATION
 $AppName = $Environ.APP_NAME
 $SQLServerName = "$AppName-sqldatabase-server"
 $SQLDatabaseName = $Environ.SQL_DATABASE_NAME
@@ -11,7 +11,6 @@ $SQLServerLogin = $Environ.SQL_SERVER_LOGIN
 $SQLServerLoginPassword = $Environ.SQL_SERVER_LOGIN_PASSWORD
 
 $DatabaseBicepParameters = @{
-  "location"           = @{ "value" = $Location };
   "serverName"         = @{ "value" = $SQLServerName };
   "publicIpAddress"    = @{ "value" = ((Invoke-RestMethod -Uri checkip.amazonaws.com) -replace '\n', '') };
   "sqlDBName"          = @{ "value" = $SQLDatabaseName };
