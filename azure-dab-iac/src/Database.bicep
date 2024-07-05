@@ -1,11 +1,13 @@
 // Params -------------------------------------------------------------------------------------------------------------
-param location string = resourceGroup().location
 param serverName string
 param publicIpAddress string
 param sqlDBName string
 param adminLogin string
 @secure()
 param adminLoginPassword string
+
+// Variables ----------------------------------------------------------------------------------------------------------
+var location = resourceGroup().location
 
 // Resources ----------------------------------------------------------------------------------------------------------
 resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
