@@ -45,6 +45,7 @@ $connectionString = (az sql db show-connection-string `
     --client ado.net) `
   -replace "<username>", $SQLServerLogin `
   -replace "<password>", $SQLServerLoginPassword `
+  -replace "TrustServerCertificate=False", "TrustServerCertificate=True" `
   -replace '^\s*"(.*)"\s*$', '$1'
 
 Invoke-Sqlcmd `
