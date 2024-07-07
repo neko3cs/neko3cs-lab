@@ -1,26 +1,48 @@
 #Requires -PSEdition Desktop
+$ErrorActionPreference = "Stop"
 
-# TODO: LanguagePackManagementモジュールを使って2019, 2022にも対応する。
-# URL: https://jpwinsup.github.io/blog/2023/03/06/UserInterfaceAndApps/LanguageSupport_IME/InstallLanguage/
-$LanguagePackUrl = "http://download.windowsupdate.com/c/msdownload/update/software/updt/2016/09/lp_9a666295ebc1052c4c5ffbfa18368dfddebcd69a.cab"
-$LanguagePackFilePath = "$PWD\LanguagePackFile.cab"
+$OSCaption = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+$JapaneseKeyboardLayout = "0411:00000411"
+$JapanGeoId = 122
+$TimeZone = "Tokyo Standard Time"
 
-Set-WinUserLanguageList `
-  -LanguageList ja-JP, en-US `
-  -Force
-Start-BitsTransfer `
-  -Source $LanguagePackUrl `
-  -Destination $LanguagePackFilePath `
-  -Priority High
-Add-WindowsPackage `
-  -PackagePath $LanguagePackFilePath `
-  -Online
+if ($OSCaption -match "Microsoft Windows Server 2016") {
+  lpksetup /i ja-JP /s
+
+  Set-WinUserLanguageList `
+    -LanguageList ja-JP, en-US `
+    -Force
+  Set-WinUILanguageOverride `
+    -Language ja-JP
+}
+else {
+  # After Windows Server 2016 OS
+  Install-Module `
+    -Name LanguagePackManagement `
+    -Force -AllowClobber
+  Add-WindowsCapability `
+    -Online `
+    -Name Language.Basic~~~ja-JP~0.0.1.0
+  Add-WindowsCapability `
+    -Online `
+    -Name Language.Fonts.Japanese~~~ja-JP~0.0.1.0
+  Add-WindowsCapability `
+    -Online `
+    -Name Language.TextToSpeech~~~ja-JP~0.0.1.0
+
+  Set-SystemPreferredUILanguage `
+    -Language ja-JP
+}
+
 Set-WinDefaultInputMethodOverride `
-  -InputTip "0411:00000411"
-Set-WinLanguageBarOption `
-  -UseLegacySwitchMode `
-  -UseLegacyLanguageBar
-Remove-Item `
-  -Path $LanguagePackFilePath `
-  -Force
+  -InputTip $JapaneseKeyboardLayout
+Set-WinCultureFromLanguageListOptOut `
+  -OptOut $False
+Set-WinHomeLocation `
+  -GeoId $JapanGeoId
+Set-WinSystemLocale `
+  -SystemLocale ja-JP
+Set-TimeZone `
+  -Id $TimeZone
+
 Restart-Computer
