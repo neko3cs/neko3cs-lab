@@ -57,16 +57,16 @@
           <Property Name="rowguid" Type="Guid" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="AdventureWorksLT2016Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Products" EntityType="Self.Product" />
+        <EntityContainer Name="AzFunctionsAppDatabaseContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Product" EntityType="Self.Product" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AdventureWorksLT2016ModelStoreContainer" CdmEntityContainer="AdventureWorksLT2016Entities">
-          <EntitySetMapping Name="Products">
+        <EntityContainerMapping StorageEntityContainer="AdventureWorksLT2016ModelStoreContainer" CdmEntityContainer="AzFunctionsAppDatabaseContext">
+          <EntitySetMapping Name="Product">
             <EntityTypeMapping TypeName="AdventureWorksLT2016Model.Product">
               <MappingFragment StoreEntitySet="Product">
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
@@ -103,7 +103,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
       </DesignerInfoPropertySet>

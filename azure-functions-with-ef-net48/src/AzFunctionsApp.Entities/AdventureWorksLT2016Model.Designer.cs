@@ -21,32 +21,32 @@ namespace AzFunctionsApp.Entities
     /// <summary>
     /// 使用できるメタデータ ドキュメントはありません。
     /// </summary>
-    public partial class AdventureWorksLT2016Entities : ObjectContext
+    public partial class AzFunctionsAppDatabaseContext : ObjectContext
     {
         #region コンストラクター
     
         /// <summary>
-        /// アプリケーション構成ファイルの 'AdventureWorksLT2016Entities' セクションにある接続文字列を使用して新しい AdventureWorksLT2016Entities オブジェクトを初期化します。
+        /// アプリケーション構成ファイルの 'AzFunctionsAppDatabaseContext' セクションにある接続文字列を使用して新しい AzFunctionsAppDatabaseContext オブジェクトを初期化します。
         /// </summary>
-        public AdventureWorksLT2016Entities() : base("name=AdventureWorksLT2016Entities", "AdventureWorksLT2016Entities")
+        public AzFunctionsAppDatabaseContext() : base("name=AzFunctionsAppDatabaseContext", "AzFunctionsAppDatabaseContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// 新しい AdventureWorksLT2016Entities オブジェクトを初期化します。
+        /// 新しい AzFunctionsAppDatabaseContext オブジェクトを初期化します。
         /// </summary>
-        public AdventureWorksLT2016Entities(string connectionString) : base(connectionString, "AdventureWorksLT2016Entities")
+        public AzFunctionsAppDatabaseContext(string connectionString) : base(connectionString, "AzFunctionsAppDatabaseContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// 新しい AdventureWorksLT2016Entities オブジェクトを初期化します。
+        /// 新しい AzFunctionsAppDatabaseContext オブジェクトを初期化します。
         /// </summary>
-        public AdventureWorksLT2016Entities(EntityConnection connection) : base(connection, "AdventureWorksLT2016Entities")
+        public AzFunctionsAppDatabaseContext(EntityConnection connection) : base(connection, "AzFunctionsAppDatabaseContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
@@ -65,29 +65,29 @@ namespace AzFunctionsApp.Entities
         /// <summary>
         /// 使用できるメタデータ ドキュメントはありません。
         /// </summary>
-        public ObjectSet<Product> Products
+        public ObjectSet<Product> Product
         {
             get
             {
-                if ((_Products == null))
+                if ((_Product == null))
                 {
-                    _Products = base.CreateObjectSet<Product>("Products");
+                    _Product = base.CreateObjectSet<Product>("Product");
                 }
-                return _Products;
+                return _Product;
             }
         }
-        private ObjectSet<Product> _Products;
+        private ObjectSet<Product> _Product;
 
         #endregion
 
         #region AddTo メソッド
     
         /// <summary>
-        /// Products EntitySet に新しいオブジェクトを追加するための非推奨のメソッドです。代わりに、関連付けられている ObjectSet&lt;T&gt; プロパティの .Add メソッドを使用してください。
+        /// Product EntitySet に新しいオブジェクトを追加するための非推奨のメソッドです。代わりに、関連付けられている ObjectSet&lt;T&gt; プロパティの .Add メソッドを使用してください。
         /// </summary>
-        public void AddToProducts(Product product)
+        public void AddToProduct(Product product)
         {
-            base.AddObject("Products", product);
+            base.AddObject("Product", product);
         }
 
         #endregion
