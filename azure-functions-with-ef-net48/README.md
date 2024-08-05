@@ -4,4 +4,4 @@
 
 ## データベース接続文字列について
 
-AzFunctionsApp.Entity/App.Configのパスワードは任意のインスタンスのものに変える。
+AzFunctionsApp/local.settings.jsonの `YOUR_PASSWORD` は任意のインスタンスのパスワードに変える。
