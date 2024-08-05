@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="AzFunctionsAppDatabaseContext.edmx" />
+    <None Remove="AdventureWorksLT2016Model.edmx" />
   </ItemGroup>
 
   <ItemGroup>
-    <EntityDeploy Include="AzFunctionsAppDatabaseContext.edmx">
+    <EntityDeploy Include="AdventureWorksLT2016Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AzFunctionsAppDatabaseContext.Designer.cs</LastGenOutput>
+      <LastGenOutput>AdventureWorksLT2016Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
 
@@ -24,6 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="AdventureWorksLT2016Model.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AdventureWorksLT2016Model.edmx</DependentUpon>
+    </Compile>
     <Compile Update="AzFunctionsAppDatabaseContext.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

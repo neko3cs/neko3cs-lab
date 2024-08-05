@@ -1,4 +1,6 @@
+using AzFunctionsApp.Entities;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 // ReSharper disable ClassNeverInstantiated.Global
@@ -13,10 +15,13 @@ namespace AzFunctionsApp
 
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults()
-                .ConfigureServices(services =>
+                .ConfigureServices((context, services) =>
                 {
                     services.AddApplicationInsightsTelemetryWorkerService();
                     services.ConfigureFunctionsApplicationInsights();
+
+                    var connectionString = context.Configuration.GetConnectionString("AzFunctionsAppDatabaseContext");
+                    services.AddSingleton<AzFunctionsAppDatabaseContext>(new AzFunctionsAppDatabaseContext(connectionString));
                 })
                 .Build();
 
