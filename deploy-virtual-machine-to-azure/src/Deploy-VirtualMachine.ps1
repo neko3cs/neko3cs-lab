@@ -6,14 +6,13 @@ $ResourceGroup = $Environ.RESOURCE_GROUP
 $Location = $Environ.LOCATION
 
 $VirtualMachineParameters = @{
-  "adminUsername"    = @{ "value" = [string]$Environ.ADMIN_USERNAME };
-  "adminPassword"    = @{ "value" = [string]$Environ.ADMIN_PASSWORD };
-  "allowedIpAddress" = @{ "value" = [string]((Invoke-RestMethod https://checkip.amazonaws.com).Trim()) };
-  "OSVersion"        = @{ "value" = [string]$Environ.OS_VERSION };
-  "vmSize"           = @{ "value" = [string]$Environ.VM_SIZE };
-  "vmName"           = @{ "value" = [string]$Environ.VM_NAME };
-  "computerName"     = @{ "value" = [string]$Environ.COMPUTER_NAME };
-  "diskSizeGB"       = @{ "value" = [int]$Environ.DISK_SIZE_GB };
+  "adminUsername" = @{ "value" = [string]$Environ.ADMIN_USERNAME };
+  "adminPassword" = @{ "value" = [string]$Environ.ADMIN_PASSWORD };
+  "OSVersion"     = @{ "value" = [string]$Environ.OS_VERSION };
+  "vmSize"        = @{ "value" = [string]$Environ.VM_SIZE };
+  "vmName"        = @{ "value" = [string]$Environ.VM_NAME };
+  "computerName"  = @{ "value" = [string]$Environ.COMPUTER_NAME };
+  "diskSizeGB"    = @{ "value" = [int]$Environ.DISK_SIZE_GB };
 } |
 ConvertTo-Json -Compress |
 ForEach-Object { $_ -replace '"', '\"' }

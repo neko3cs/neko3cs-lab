@@ -3,7 +3,6 @@ param adminUsername string
 @minLength(12)
 @secure()
 param adminPassword string
-param allowedIpAddress string
 param OSVersion string
 param vmSize string
 param vmName string
@@ -66,32 +65,6 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
   properties: {
     securityRules: [
       {
-        name: 'default-allow-3389'
-        properties: {
-          priority: 300
-          access: 'Allow'
-          direction: 'Inbound'
-          destinationPortRange: '3389'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: allowedIpAddress
-          destinationAddressPrefix: '*'
-        }
-      }
-      {
-        name: 'allow-icmp'
-        properties: {
-          priority: 310
-          access: 'Allow'
-          direction: 'Inbound'
-          destinationPortRange: '*'
-          protocol: 'Icmp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: allowedIpAddress
-          destinationAddressPrefix: '*'
-        }
-      }
-      {
         name: 'allow-ssh'
         properties: {
           priority: 320
@@ -100,7 +73,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-0
           protocol: 'Tcp'
           destinationAddressPrefix: '*'
           destinationPortRange: '22'
-          sourceAddressPrefix: allowedIpAddress
+          sourceAddressPrefix: '*'
           sourcePortRange: '*'
         }
       }
