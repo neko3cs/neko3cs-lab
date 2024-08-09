@@ -28,26 +28,17 @@ DISK_SIZE_GB={CDriveSize}
 
 ### 3. 日本語環境の設定
 
-以下のスクリプトを実行する。スクリプト毎に再起動が実行されるので都度ログインして実行する。
+`Install-JapaneseLanguagePack.ps1` 実行する。
 
-1. `Install-JapaneseLanguagePack.ps1`
-1. `Set-JapaneseLanguageCulture.ps1`
-
-### 4. ping有効設定(任意)
-
-サーバーへの疎通確認のために `ping` コマンドを試したい時がある。
-
-`Enable-PingFireWallRule.ps1` を実行することで `ping` 用のファイアウォールルールを有効化することができる。
+実行後に再起動が実行される。
 
 ## 接続方法
 
-以下のコマンドでサーバーのIPを確認できる。
+Azure Bastionを利用してログインする。
 
-```pwsh
-az vm show -g {YourResourceGroupName} -n {YourVirtualMachineName} --show-details --output table
-```
+Azure BastionはAzure Portalから作成したVirtual Machineを開き、[概要] > [接続] > [要塞]からログインする。
 
-リモートデスクトップ接続を起動し、コンピューター名にFQDNかIP+":3389"を入力して接続する。
+ログインに成功すると操作用のタブが開く。
 
 ## 設定値について
 

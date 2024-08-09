@@ -3,7 +3,6 @@ param adminUsername string
 @minLength(12)
 @secure()
 param adminPassword string
-param allowedIpAddress string
 param OSVersion string
 param vmSize string
 param vmName string
@@ -13,17 +12,20 @@ param diskSizeGB int
 
 // Variables ----------------------------------------------------------------------------------------------------------
 var location = resourceGroup().location
-var storageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
+var bootDiagStorageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
+var userStorageAccountName = 'userstore${uniqueString(resourceGroup().id)}'
+var containerName = 'scripts'
 var nicName = '${vmName}-VMNic'
 var addressPrefix = '10.0.0.0/16'
 var subnetName = 'Subnet'
 var subnetPrefix = '10.0.0.0/24'
+var bastionName = '${vmName}-Bastion'
+var bastionSubnetName = 'AzureBastionSubnet'
+var bastionAddressPrefix = '192.168.1.0/24'
 var virtualNetworkName = '${vmName}-VNET'
-var networkSecurityGroupName = '${vmName}-NSG'
-var dnsLabelPrefix = toLower('${vmName}-${uniqueString(resourceGroup().id, vmName)}')
-var publicIpName = '${vmName}-PublicIP'
-var publicIPAllocationMethod = 'Dynamic'
-var publicIpSku = 'Basic'
+var bastionPublicIpName = '${vmName}-BastionPublicIP'
+var bastionPublicIPAllocationMethod = 'Static'
+var bastionPublicIpSku = 'Standard'
 var securityProfileJson = {
   uefiSettings: {
     secureBootEnabled: true
@@ -39,72 +41,43 @@ var maaEndpoint = substring('emptyString', 0, 0)
 var securityType = 'TrustedLaunch'
 
 // Resources ----------------------------------------------------------------------------------------------------------
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
-  name: storageAccountName
+resource bootDiagStorageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: bootDiagStorageAccountName
   location: location
   sku: {
     name: 'Standard_LRS'
   }
   kind: 'Storage'
+  properties: {}
 }
-resource publicIp 'Microsoft.Network/publicIPAddresses@2022-05-01' = {
-  name: publicIpName
+resource userStorageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: userStorageAccountName
   location: location
   sku: {
-    name: publicIpSku
+    name: 'Standard_LRS'
   }
+  kind: 'StorageV2'
   properties: {
-    publicIPAllocationMethod: publicIPAllocationMethod
-    dnsSettings: {
-      domainNameLabel: dnsLabelPrefix
-    }
+    accessTier: 'Hot'
   }
 }
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-05-01' = {
-  name: networkSecurityGroupName
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2021-04-01' = {
+  name: 'default'
+  parent: userStorageAccount
+}
+resource scriptsblobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
+  parent: blobService
+  name: containerName
+  properties: {}
+}
+resource bastionPublicIp 'Microsoft.Network/publicIPAddresses@2022-05-01' = {
+  name: bastionPublicIpName
   location: location
+  sku: {
+    name: bastionPublicIpSku
+  }
   properties: {
-    securityRules: [
-      {
-        name: 'default-allow-3389'
-        properties: {
-          priority: 300
-          access: 'Allow'
-          direction: 'Inbound'
-          destinationPortRange: '3389'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: allowedIpAddress
-          destinationAddressPrefix: '*'
-        }
-      }
-      {
-        name: 'allow-icmp'
-        properties: {
-          priority: 310
-          access: 'Allow'
-          direction: 'Inbound'
-          destinationPortRange: '*'
-          protocol: 'Icmp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: allowedIpAddress
-          destinationAddressPrefix: '*'
-        }
-      }
-      {
-        name: 'allow-ssh'
-        properties: {
-          priority: 320
-          access: 'Allow'
-          direction: 'Inbound'
-          protocol: 'Tcp'
-          destinationAddressPrefix: '*'
-          destinationPortRange: '22'
-          sourceAddressPrefix: allowedIpAddress
-          sourcePortRange: '*'
-        }
-      }
-    ]
+    publicIPAllocationMethod: bastionPublicIPAllocationMethod
   }
 }
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' = {
@@ -114,6 +87,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' = {
     addressSpace: {
       addressPrefixes: [
         addressPrefix
+        bastionAddressPrefix
       ]
     }
     subnets: [
@@ -121,9 +95,12 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-05-01' = {
         name: subnetName
         properties: {
           addressPrefix: subnetPrefix
-          networkSecurityGroup: {
-            id: networkSecurityGroup.id
-          }
+        }
+      }
+      {
+        name: bastionSubnetName
+        properties: {
+          addressPrefix: bastionAddressPrefix
         }
       }
     ]
@@ -138,12 +115,6 @@ resource nic 'Microsoft.Network/networkInterfaces@2022-05-01' = {
         name: 'ipconfig1'
         properties: {
           privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: {
-            id: publicIp.id
-            properties: {
-              deleteOption: 'Delete'
-            }
-          }
           subnet: {
             id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
           }
@@ -196,7 +167,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
     diagnosticsProfile: {
       bootDiagnostics: {
         enabled: true
-        storageUri: storageAccount.properties.primaryEndpoints.blob
+        storageUri: bootDiagStorageAccount.properties.primaryEndpoints.blob
       }
     }
     securityProfile: ((securityType == 'TrustedLaunch') ? securityProfileJson : null)
@@ -222,13 +193,29 @@ resource vmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
     }
   }
 }
-resource sshVmExtension 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' = {
-  parent: vm
-  name: 'WindowsOpenSSH'
+resource bastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
+  name: bastionName
   location: location
   properties: {
-    publisher: 'Microsoft.Azure.OpenSSH'
-    type: 'WindowsOpenSSH'
-    typeHandlerVersion: '3.0'
+    ipConfigurations: [
+      {
+        name: '${bastionName}-ipConfig'
+        properties: {
+          subnet: {
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, bastionSubnetName)
+          }
+          publicIPAddress: {
+            id: bastionPublicIp.id
+          }
+        }
+      }
+    ]
   }
+  dependsOn: [
+    virtualNetwork
+  ]
 }
+
+// Output ----------------------------------------------------------------------------------------------------------
+output userStorageAccountName string = userStorageAccount.name
+output scriptsContainerName string = scriptsblobContainer.name
