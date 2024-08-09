@@ -12,7 +12,9 @@ param diskSizeGB int
 
 // Variables ----------------------------------------------------------------------------------------------------------
 var location = resourceGroup().location
-var storageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
+var bootDiagStorageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
+var userStorageAccountName = 'userstore${uniqueString(resourceGroup().id)}'
+var containerName = 'scripts'
 var nicName = '${vmName}-VMNic'
 var addressPrefix = '10.0.0.0/16'
 var subnetName = 'Subnet'
@@ -39,13 +41,34 @@ var maaEndpoint = substring('emptyString', 0, 0)
 var securityType = 'TrustedLaunch'
 
 // Resources ----------------------------------------------------------------------------------------------------------
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
-  name: storageAccountName
+resource bootDiagStorageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: bootDiagStorageAccountName
   location: location
   sku: {
     name: 'Standard_LRS'
   }
   kind: 'Storage'
+  properties: {}
+}
+resource userStorageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: userStorageAccountName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    accessTier: 'Hot'
+  }
+}
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2021-04-01' = {
+  name: 'default'
+  parent: userStorageAccount
+}
+resource scriptsblobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
+  parent: blobService
+  name: containerName
+  properties: {}
 }
 resource bastionPublicIp 'Microsoft.Network/publicIPAddresses@2022-05-01' = {
   name: bastionPublicIpName
@@ -144,7 +167,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
     diagnosticsProfile: {
       bootDiagnostics: {
         enabled: true
-        storageUri: storageAccount.properties.primaryEndpoints.blob
+        storageUri: bootDiagStorageAccount.properties.primaryEndpoints.blob
       }
     }
     securityProfile: ((securityType == 'TrustedLaunch') ? securityProfileJson : null)
@@ -192,3 +215,7 @@ resource bastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
     virtualNetwork
   ]
 }
+
+// Output ----------------------------------------------------------------------------------------------------------
+output userStorageAccountName string = userStorageAccount.name
+output scriptsContainerName string = scriptsblobContainer.name
