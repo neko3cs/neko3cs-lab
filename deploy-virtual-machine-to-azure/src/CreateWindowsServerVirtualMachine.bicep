@@ -12,7 +12,7 @@ param diskSizeGB int
 
 // Variables ----------------------------------------------------------------------------------------------------------
 var location = resourceGroup().location
-var storageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
+var bootDiagStorageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
 var nicName = '${vmName}-VMNic'
 var addressPrefix = '10.0.0.0/16'
 var subnetName = 'Subnet'
@@ -39,13 +39,14 @@ var maaEndpoint = substring('emptyString', 0, 0)
 var securityType = 'TrustedLaunch'
 
 // Resources ----------------------------------------------------------------------------------------------------------
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
-  name: storageAccountName
+resource bootDiagStorageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+  name: bootDiagStorageAccountName
   location: location
   sku: {
     name: 'Standard_LRS'
   }
   kind: 'Storage'
+  properties: {}
 }
 resource bastionPublicIp 'Microsoft.Network/publicIPAddresses@2022-05-01' = {
   name: bastionPublicIpName
@@ -144,7 +145,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
     diagnosticsProfile: {
       bootDiagnostics: {
         enabled: true
-        storageUri: storageAccount.properties.primaryEndpoints.blob
+        storageUri: bootDiagStorageAccount.properties.primaryEndpoints.blob
       }
     }
     securityProfile: ((securityType == 'TrustedLaunch') ? securityProfileJson : null)
