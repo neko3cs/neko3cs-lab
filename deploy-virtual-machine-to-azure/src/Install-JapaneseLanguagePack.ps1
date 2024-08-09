@@ -8,41 +8,24 @@ $TimeZone = "Tokyo Standard Time"
 
 if ($OSCaption -match "Microsoft Windows Server 2016") {
   lpksetup /i ja-JP /s
-
-  Set-WinUserLanguageList `
-    -LanguageList ja-JP, en-US `
-    -Force
-  Set-WinUILanguageOverride `
-    -Language ja-JP
 }
 else {
   # After Windows Server 2016 OS
-  Install-Module `
-    -Name LanguagePackManagement `
-    -Force -AllowClobber
-  Add-WindowsCapability `
-    -Online `
-    -Name Language.Basic~~~ja-JP~0.0.1.0
-  Add-WindowsCapability `
-    -Online `
-    -Name Language.Fonts.Japanese~~~ja-JP~0.0.1.0
-  Add-WindowsCapability `
-    -Online `
-    -Name Language.TextToSpeech~~~ja-JP~0.0.1.0
-
-  Set-SystemPreferredUILanguage `
-    -Language ja-JP
+  Add-WindowsCapability -Online -Name Language.Basic~~~ja-JP~0.0.1.0 | Out-Null
+  Add-WindowsCapability -Online -Name Language.Handwriting~~~ja-JP~0.0.1.0 | Out-Null
+  Add-WindowsCapability -Online -Name Language.OCR~~~ja-JP~0.0.1.0 | Out-Null
+  Add-WindowsCapability -Online -Name Language.Speech~~~ja-JP~0.0.1.0 | Out-Null
+  Add-WindowsCapability -Online -Name Language.TextToSpeech~~~ja-JP~0.0.1.0 | Out-Null
+  Add-WindowsCapability -Online -Name Language.Fonts.Japanese~~~ja-JP~0.0.1.0 | Out-Null
 }
 
-Set-WinDefaultInputMethodOverride `
-  -InputTip $JapaneseKeyboardLayout
-Set-WinCultureFromLanguageListOptOut `
-  -OptOut $False
-Set-WinHomeLocation `
-  -GeoId $JapanGeoId
-Set-WinSystemLocale `
-  -SystemLocale ja-JP
-Set-TimeZone `
-  -Id $TimeZone
+Set-WinUserLanguageList -LanguageList ja-JP, en-US -Force
+Set-WinUILanguageOverride -Language ja-JP
+Set-WinDefaultInputMethodOverride -InputTip $JapaneseKeyboardLayout
+Set-WinCultureFromLanguageListOptOut -OptOut $False
+Set-Culture -CultureInfo ja-JP
+Set-WinHomeLocation -GeoId $JapanGeoId
+Set-WinSystemLocale -SystemLocale ja-JP
+Set-TimeZone -Id $TimeZone
 
 Restart-Computer
