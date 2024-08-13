@@ -28,26 +28,30 @@ DISK_SIZE_GB={CDriveSize}
 
 ### 3. 日本語環境の設定
 
-以下のスクリプトを実行する。スクリプト毎に再起動が実行されるので都度ログインして実行する。
+設定用スクリプトは手動でBastionのコピー&ペーストの機能を使用して持ち込む。（これが一番簡単な実現方法だった...）
 
-1. `Install-JapaneseLanguagePack.ps1`
-1. `Set-JapaneseLanguageCulture.ps1`
+以下のパスに空ファイルを作成する。
 
-### 4. ping有効設定(任意)
+- `C:\Setup\Install-JapaneseLanguagePack.ps1`
 
-サーバーへの疎通確認のために `ping` コマンドを試したい時がある。
+本リポジトリにある `Install-JapaneseLanguagePack.ps1` の中身をサーバー上の `Install-JapaneseLanguagePack.ps1` にコピペする。
 
-`Enable-PingFireWallRule.ps1` を実行することで `ping` 用のファイアウォールルールを有効化することができる。
+`C:\Setup\Install-JapaneseLanguagePack.ps1` を実行する。
+
+実行後、自動的に再起動され、日本語化される。
+
+> [!WARNING]
+> 2024年8月現在、PowerShellの `Add-WindowsCapability` コマンドは不完全なようで、一部GUIでの対応が必要になっている。
+> 設定アプリの `[Time & Language] > [Language] > [Preferred languages] > [Japanese] > [Options]` を開き、ダウンロードされていないパッケージをダウンロードする。
+> ※大体Language Packがされていない。
 
 ## 接続方法
 
-以下のコマンドでサーバーのIPを確認できる。
+Azure Bastionを利用してログインする。
 
-```pwsh
-az vm show -g {YourResourceGroupName} -n {YourVirtualMachineName} --show-details --output table
-```
+Azure BastionはAzure Portalから作成したVirtual Machineを開き、[概要] > [接続] > [Bastion]からログインする。
 
-リモートデスクトップ接続を起動し、コンピューター名にFQDNかIP+":3389"を入力して接続する。
+ログインに成功すると操作用のタブが開く。
 
 ## 設定値について
 
