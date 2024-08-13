@@ -11,12 +11,22 @@ if ($OSCaption -match "Microsoft Windows Server 2016") {
 }
 else {
   # After Windows Server 2016 OS
-  Add-WindowsCapability -Online -Name Language.Basic~~~ja-JP~0.0.1.0 | Out-Null
-  Add-WindowsCapability -Online -Name Language.Handwriting~~~ja-JP~0.0.1.0 | Out-Null
-  Add-WindowsCapability -Online -Name Language.OCR~~~ja-JP~0.0.1.0 | Out-Null
-  Add-WindowsCapability -Online -Name Language.Speech~~~ja-JP~0.0.1.0 | Out-Null
-  Add-WindowsCapability -Online -Name Language.TextToSpeech~~~ja-JP~0.0.1.0 | Out-Null
-  Add-WindowsCapability -Online -Name Language.Fonts.Japanese~~~ja-JP~0.0.1.0 | Out-Null
+  $Capabilities = @(
+    "Language.Pack~~~ja-JP~0.0.1.0"
+    "Language.Basic~~~ja-JP~0.0.1.0"
+    "Language.Basic.Typing~~~ja-JP~0.0.1.0"
+    "Language.Handwriting~~~ja-JP~0.0.1.0"
+    "Language.OCR~~~ja-JP~0.0.1.0"
+    "Language.Speech~~~ja-JP~0.0.1.0"
+    "Language.TextToSpeech~~~ja-JP~0.0.1.0"
+    "Language.Fonts.Japanese~~~ja-JP~0.0.1.0"
+  )
+  foreach ($capability in $Capabilities) {
+    $state = (Get-WindowsCapability -Online -Name $capability).State
+    if ($state -ne "Installed") {
+      Add-WindowsCapability -Online -Name $capability | Out-Null
+    }
+  }
 }
 
 Set-WinUserLanguageList -LanguageList ja-JP, en-US -Force

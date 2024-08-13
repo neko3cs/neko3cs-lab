@@ -28,15 +28,28 @@ DISK_SIZE_GB={CDriveSize}
 
 ### 3. 日本語環境の設定
 
-`Install-JapaneseLanguagePack.ps1` 実行する。
+設定用スクリプトは手動でBastionのコピー&ペーストの機能を使用して持ち込む。（これが一番簡単な実現方法だった...）
 
-実行後に再起動が実行される。
+以下のパスに空ファイルを作成する。
+
+- `C:\Setup\Install-JapaneseLanguagePack.ps1`
+
+本リポジトリにある `Install-JapaneseLanguagePack.ps1` の中身をサーバー上の `Install-JapaneseLanguagePack.ps1` にコピペする。
+
+`C:\Setup\Install-JapaneseLanguagePack.ps1` を実行する。
+
+実行後、自動的に再起動され、日本語化される。
+
+> [!WARNING]
+> 2024年8月現在、PowerShellの `Add-WindowsCapability` コマンドは不完全なようで、一部GUIでの対応が必要になっている。
+> 設定アプリの `[Time & Language] > [Language] > [Preferred languages] > [Japanese] > [Options]` を開き、ダウンロードされていないパッケージをダウンロードする。
+> ※大体Language Packがされていない。
 
 ## 接続方法
 
 Azure Bastionを利用してログインする。
 
-Azure BastionはAzure Portalから作成したVirtual Machineを開き、[概要] > [接続] > [要塞]からログインする。
+Azure BastionはAzure Portalから作成したVirtual Machineを開き、[概要] > [接続] > [Bastion]からログインする。
 
 ログインに成功すると操作用のタブが開く。
 
