@@ -1,4 +1,4 @@
-export const APP_PORT = 3000;
+export const APP_PORT = 80;
 export const USE_NAT_GATEWAY = true;
 export const API_APP_CONTAINER_TAG = process.env.API_APP_CONTAINER_TAG;
 export const PAGE_APP_CONTAINER_TAG = process.env.PAGE_APP_CONTAINER_TAG;

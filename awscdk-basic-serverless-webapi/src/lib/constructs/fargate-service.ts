@@ -6,8 +6,6 @@ import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from "constructs"
 import { CfnOutput } from 'aws-cdk-lib';
 
-import { APP_PORT } from '../settings';
-
 interface Props {
   vpc: ec2.Vpc;
   vpcSubnets: ec2.SubnetSelection;
@@ -32,8 +30,6 @@ export class FargateService extends Construct {
       databaseHost,
       databasePort,
       containerPort,
-      apiTargetGroup,
-      pageTargetGroup,
     }: Props
   ) {
     super(scope, id);
@@ -46,9 +42,10 @@ export class FargateService extends Construct {
       cluster,
       taskImageOptions: {
         image: ecs.ContainerImage.fromRegistry('httpd:latest'),
-        containerPort: APP_PORT,
+        containerPort: containerPort,
       },
       publicLoadBalancer: true,
+      taskSubnets: vpcSubnets,
       securityGroups: [securityGroup]
     });
 
