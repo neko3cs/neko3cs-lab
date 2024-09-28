@@ -4,8 +4,7 @@ import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 
 import { Construct } from 'constructs';
 
-const APP_PORT = 80;
-const ACM_ARN = '';
+import { APP_PORT, ACM_ARN } from '../settings';
 
 interface Props {
   vpc: ec2.Vpc;

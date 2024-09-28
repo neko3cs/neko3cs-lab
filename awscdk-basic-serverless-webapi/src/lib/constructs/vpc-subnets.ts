@@ -1,5 +1,8 @@
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import { Construct } from "constructs";
+
+import { Construct } from 'constructs';
+
+import { USE_NAT_GATEWAY } from '../settings';
 
 interface Props {
   cidr?: string;
@@ -11,11 +14,7 @@ export class VpcSubnets extends Construct {
   public readonly appSubnets: ec2.SelectedSubnets;
   public readonly dbSubnets: ec2.SelectedSubnets;
 
-  constructor(
-    scope: Construct,
-    id: string,
-    { cidr }: Props
-  ) {
+  constructor(scope: Construct, id: string, { cidr }: Props) {
     super(scope, id);
     this.vpc = new ec2.Vpc(this, 'Vpc', {
       ipAddresses: ec2.IpAddresses.cidr(cidr || '10.0.0.0/16'),
@@ -27,7 +26,9 @@ export class VpcSubnets extends Construct {
         },
         {
           name: 'App',
-          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+          subnetType: USE_NAT_GATEWAY
+            ? ec2.SubnetType.PRIVATE_WITH_EGRESS
+            : ec2.SubnetType.PUBLIC,
         },
         {
           name: 'Db',

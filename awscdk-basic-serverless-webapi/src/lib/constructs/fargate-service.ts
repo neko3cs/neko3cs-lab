@@ -1,10 +1,12 @@
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
-import * as ecr from 'aws-cdk-lib/aws-ecr';
-import * as logs from 'aws-cdk-lib/aws-logs';
+import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patterns";
 import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from "constructs"
+import { CfnOutput } from 'aws-cdk-lib';
+
+import { APP_PORT } from '../settings';
 
 interface Props {
   vpc: ec2.Vpc;
@@ -35,5 +37,23 @@ export class FargateService extends Construct {
     }: Props
   ) {
     super(scope, id);
+
+    const cluster = new ecs.Cluster(this, 'Cluster', {
+      vpc,
+    });
+
+    const fargateService = new ApplicationLoadBalancedFargateService(this, 'FargateService', {
+      cluster,
+      taskImageOptions: {
+        image: ecs.ContainerImage.fromRegistry('httpd:latest'),
+        containerPort: APP_PORT,
+      },
+      publicLoadBalancer: true,
+      securityGroups: [securityGroup]
+    });
+
+    new CfnOutput(this, 'LoadBalancerDNS', {
+      value: fargateService.loadBalancer.loadBalancerDnsName
+    })
   }
 }
