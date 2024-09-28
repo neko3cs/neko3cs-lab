@@ -1,7 +1,8 @@
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+
 import { Construct } from 'constructs';
 
-const APP_PORT = 80;
+import { APP_PORT } from '../settings';
 
 interface Props {
   vpc: ec2.Vpc;
