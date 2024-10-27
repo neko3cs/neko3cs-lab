@@ -16,6 +16,8 @@ export class AppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    cdk.Tags.of(this).add('CdkStackName', 'Neko3csAppStack');
+
     const { vpc, publicSubnets, appSubnets, dbSubnets } = new VpcSubnets(
       this,
       'VpcSubnets',
