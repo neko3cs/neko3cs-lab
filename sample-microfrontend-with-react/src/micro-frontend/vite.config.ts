@@ -21,5 +21,9 @@ export default defineConfig({
         entryFileNames: '[name].js'
       }
     }
+  },
+  define: {
+    // Node環境変数をエミュレート
+    'process.env.NODE_ENV': JSON.stringify('production'),
   }
 })
