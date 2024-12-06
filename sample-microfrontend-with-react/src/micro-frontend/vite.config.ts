@@ -13,7 +13,10 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [
+        // ここにReactやReactDomを書かないこと
+        // マイクロフロントエンド事にReactのバージョン管理するため
+      ],
       output: {
         entryFileNames: '[name].js'
       }
