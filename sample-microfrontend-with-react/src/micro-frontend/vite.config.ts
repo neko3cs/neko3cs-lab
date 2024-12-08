@@ -6,16 +6,11 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: {
-        MicroFrontrendComponent: './src/MicroFrontrendComponent.tsx',
-      },
+      entry: './src/main.tsx',
+      name: 'MicroFrontend',
+      fileName: 'micro-frontend',
       formats: ['es'],
     },
-    rollupOptions: {
-      output: {
-        entryFileNames: '[name].js',
-      }
-    }
   },
   define: {
     // Node環境変数をエミュレート

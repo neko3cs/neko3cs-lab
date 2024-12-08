@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { DefaultButton, Spinner, SpinnerSize, Text } from '@fluentui/react';
+import { DefaultButton, IStackStyles, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
 import { useMicroFrontend } from './hooks/useMicroFrontend';
 
 const Layout = styled.div`
@@ -37,22 +37,33 @@ const ContentArea = styled.main`
   justify-content: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 `;
+const stackStyle: IStackStyles = {
+  root: {
+    width: 300,
+    margin: '0 auto',
+    padding: 10,
+  }
+};
 const buttonStyle = {
   root: {
     margin: '10px 0'
   }
 };
-const textStyle = {
-  root: {
-    marginBottom: '20px'
-  }
-};
 
 const App: React.FC = () => {
-  const MicroFrontrendComponent = useMicroFrontend(
-    'http://localhost:5050/MicroFrontrendComponent.js',
-    'MicroFrontrendComponent'
-  );
+  const component = useMicroFrontend('http://localhost:5050/micro-frontend.js');
+
+  useEffect(() => {
+    if (component) {
+      component.mount('micro-frontend');
+    }
+
+    return () => {
+      if (component) {
+        component.unmount('micro-frontend')
+      }
+    };
+  });
 
   return (
     <Layout>
@@ -64,18 +75,15 @@ const App: React.FC = () => {
         <Text variant="large">
           Menu
         </Text>
-        <DefaultButton text="Page1" styles={buttonStyle} />
-        <DefaultButton text="リンク2" styles={buttonStyle} />
+        <Stack styles={stackStyle}>
+          <DefaultButton text="Page1" styles={buttonStyle} />
+          <DefaultButton text="リンク2" styles={buttonStyle} />
+        </Stack>
       </Sidebar>
 
       <ContentArea>
-        <Text
-          variant='xxLarge'
-          styles={textStyle}>
-          Micro Frontend
-        </Text>
-        {MicroFrontrendComponent ? (
-          <MicroFrontrendComponent />
+        {component ? (
+          <div id='micro-frontend' />
         ) : (
           <Spinner size={SpinnerSize.large} label='Loading...' />
         )}
