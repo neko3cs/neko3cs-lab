@@ -13,12 +13,8 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: [
-        // ここにReactやReactDomを書かないこと
-        // マイクロフロントエンド事にReactのバージョン管理するため
-      ],
       output: {
-        entryFileNames: '[name].js'
+        entryFileNames: '[name].js',
       }
     }
   },
