@@ -1,21 +1,31 @@
 import { useState, useEffect } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useMicroFrontend = <T = any>(url: string, moduleName: string) => {
-  const [Component, setComponent] = useState<React.ComponentType<T> | null>(null);
+interface MicroFrontendModule {
+  mount: (containerId: string) => void;
+  unmount: (containerId: string) => void;
+}
 
+export const useMicroFrontend = (url: string) => {
+  const [microFrontend, setMicroFrontend] = useState<MicroFrontendModule | null>(null);
   useEffect(() => {
-    const loadComponent = async () => {
+    let isMounted = true;
+    const loadMicroFrontendComponent = async () => {
       try {
-        const module = await import(/* @vite-ignore */ url);
-        setComponent(() => module.default);
+        const { mount, unmount } = await import(/* @vite-ignore */ url);
+        if (isMounted) {
+          setMicroFrontend({ mount: mount, unmount: unmount });
+        }
       } catch (err) {
-        console.error(`Failed to load ${moduleName} from ${url}`, err);
+        console.error(`Failed to load MicroFrontend from ${url}`, err);
       }
     };
 
-    loadComponent();
-  }, [url, moduleName]);
+    loadMicroFrontendComponent();
 
-  return Component;
+    return () => {
+      isMounted = false;
+    };
+  }, [url]);
+
+  return microFrontend;
 };
