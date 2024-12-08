@@ -7,8 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        FeatureA: './src/FeatureA.tsx',
-        FeatureB: './src/FeatureB.tsx',
+        MicroFrontrendComponent: './src/MicroFrontrendComponent.tsx',
       },
       formats: ['es'],
     },
