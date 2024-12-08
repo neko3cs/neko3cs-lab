@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "serve dist -l 5173"
   },
   "dependencies": {
     "react": "^17.0.0",
@@ -22,6 +23,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
+    "serve": "^14.2.4",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.15.0",
     "vite": "^6.0.3"
