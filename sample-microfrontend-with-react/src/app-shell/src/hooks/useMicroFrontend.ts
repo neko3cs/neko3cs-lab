@@ -8,7 +8,7 @@ export const useMicroFrontend = <T = any>(url: string, moduleName: string) => {
     const loadComponent = async () => {
       try {
         const module = await import(/* @vite-ignore */ url);
-        setComponent(() => module[moduleName]);
+        setComponent(() => module.default);
       } catch (err) {
         console.error(`Failed to load ${moduleName} from ${url}`, err);
       }
