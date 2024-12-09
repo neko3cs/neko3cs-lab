@@ -1,30 +1,17 @@
 import React from 'react';
-import { Text } from '@fluentui/react';
-
-const titleStyle = {
-  root: {
-    marginBottom: '20px'
-  }
-};
-const textStyle = {
-  root: {
-    textAlign: 'center',
-    color: '#333'
-  }
-};
+import { Stack, Text } from '@fluentui/react';
 
 const MicroFrontrendComponent: React.FC = () => {
   return (
-    <div>
-      <Text
-        variant='xxLarge'
-        styles={titleStyle}>
+    <Stack style={{ minWidth: 500, minHeight: 200, border: '2px solid #000000', borderRadius: 10, padding: 16 }}>
+      <Text variant='xxLarge' styles={{ root: { marginBottom: '20px' } }}>
         Micro Frontend
       </Text>
-      <Text variant="large" styles={textStyle}>
+
+      <Text variant="large" styles={{ root: { textAlign: 'center', color: '#333' } }}>
         これはマイクロフロントエンドのコンポーネントです。
       </Text>
-    </div>
+    </Stack>
   );
 };
 
