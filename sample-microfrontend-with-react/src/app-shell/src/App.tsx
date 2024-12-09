@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { DefaultButton, IStackStyles, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
+import { DefaultButton, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
 import { useMicroFrontend } from './hooks/useMicroFrontend';
 
 const Layout = styled.div`
@@ -37,18 +37,6 @@ const ContentArea = styled.main`
   justify-content: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 `;
-const stackStyle: IStackStyles = {
-  root: {
-    width: 300,
-    margin: '0 auto',
-    padding: 10,
-  }
-};
-const buttonStyle = {
-  root: {
-    margin: '10px 0'
-  }
-};
 
 const App: React.FC = () => {
   const component = useMicroFrontend('http://localhost:5050/micro-frontend.js');
@@ -67,17 +55,17 @@ const App: React.FC = () => {
 
   return (
     <Layout>
-      <Header>
+      <Header style={{ color: 'white' }}>
         ホストアプリケーション
       </Header>
 
-      <Sidebar>
+      <Sidebar style={{ width: 200 }}>
         <Text variant="large">
           Menu
         </Text>
-        <Stack styles={stackStyle}>
-          <DefaultButton text="Page1" styles={buttonStyle} />
-          <DefaultButton text="リンク2" styles={buttonStyle} />
+        <Stack styles={{ root: { width: 200, margin: '0 auto', padding: 10 } }}>
+          <DefaultButton text="Page1" styles={{ root: { width: 180, margin: '10px 0' } }} />
+          <DefaultButton text="Page2" styles={{ root: { width: 180, margin: '10px 0' } }} />
         </Stack>
       </Sidebar>
 
