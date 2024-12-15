@@ -1,0 +1,22 @@
+﻿@inherits LayoutComponentBase
+
+<FluentLayout>
+    <FluentHeader>
+        AspNetCoreBlazor App
+        <FluentSpacer />
+        <FluentAnchor Href="https://learn.microsoft.com/en-us/aspnet/core/blazor" Target="_blank"
+            IconStart="@(new Icons.Regular.Size16.Globe())">
+            About Blazor
+        </FluentAnchor>
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+        <FluentBodyContent>
+            <div class="content">
+                @Body
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>

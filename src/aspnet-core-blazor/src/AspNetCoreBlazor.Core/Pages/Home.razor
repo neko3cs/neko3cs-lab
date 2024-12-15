@@ -1,0 +1,15 @@
+﻿@page "/"
+@inject IJSRuntime JS
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<FluentCard Width="800px" Height="250px">
+  <h2>Welcome to your new app.</h2>
+  <FluentButton Appearance="@Appearance.Accent" @onclick="Alert">Click Me</FluentButton>
+</FluentCard>
+
+@code {
+  private async Task Alert() => await JS.InvokeVoidAsync("alert", "Hello!");
+}
