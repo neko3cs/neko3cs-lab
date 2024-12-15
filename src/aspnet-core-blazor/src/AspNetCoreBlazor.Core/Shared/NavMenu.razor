@@ -1,0 +1,19 @@
+﻿@inject PlatformDetection Platform
+
+<FluentNavMenu Width="250" Collapsible="true" Title="Custom navigation menu">
+    <FluentNavLink Href="/" Match="NavLinkMatch.All" IconColor="Color.Accent" Icon="@(new Icons.Regular.Size20.Home())">
+        Home
+    </FluentNavLink>
+    <FluentNavLink Href="counter" IconColor="Color.Accent" Icon="@(new Icons.Regular.Size20.Calculator())">
+        Counter
+    </FluentNavLink>
+    <FluentNavLink Href="coffee" IconColor="Color.Accent" Icon="@(new Icons.Regular.Size20.DrinkCoffee())">
+        Coffee
+    </FluentNavLink>
+    @if (Platform.Current is not PlatformKind.Browser)
+    {
+        <FluentNavLink Href="securestorage" IconColor="Color.Accent" Icon="@(new Icons.Regular.Size20.Storage())">
+            Secure Storage
+        </FluentNavLink>
+    }
+</FluentNavMenu>
