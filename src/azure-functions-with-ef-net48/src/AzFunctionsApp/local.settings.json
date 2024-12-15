@@ -1,0 +1,8 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "ConnectionStrings:AzFunctionsAppDatabaseContext": "metadata=res://*/AdventureWorksLT2016Model.csdl|res://*/AdventureWorksLT2016Model.ssdl|res://*/AdventureWorksLT2016Model.msl;provider=System.Data.SqlClient;provider connection string=\";data source=localhost;initial catalog=AdventureWorksLT2016;persist security info=True;user id=sa;password=YOUR_PASSWORD;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework\";"
+  }
+}

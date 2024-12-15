@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>AspNetCoreBlazor.Maui</title>
+  <base href="/" />
+  <link rel="stylesheet" href="_content/AspNetCoreBlazor.Core/css/bootstrap/bootstrap.min.css" />
+  <link href="_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css" rel="stylesheet" />
+  <link href="app.css" rel="stylesheet" />
+  <link href="AspNetCoreBlazor.Maui.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="status-bar-safe-area"></div>
+
+  <div id="app">Loading...</div>
+
+  <div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+  </div>
+
+  <script app-name="AspNetCoreBlazor.Maui"
+    src="./_content/Microsoft.FluentUI.AspNetCore.Components/js/initializersLoader.webview.js"></script>
+  <script src="_content/Microsoft.FluentUI.AspNetCore.Components/Microsoft.FluentUI.AspNetCore.Components.lib.module.js"
+    type="module" async></script>
+  <script src="_framework/blazor.webview.js" autostart="false"></script>
+
+</body>
+
+</html>
