@@ -1,0 +1,43 @@
+{
+  "tasks": {
+    "start": "deno run -A ./src/main.ts"
+  },
+  "imports": {
+    "oak": "https://deno.land/x/oak@14.2.0/mod.ts"
+  },
+  "compilerOptions": {
+    "allowJs": false,
+    "lib": [
+      "deno.window"
+    ],
+    "strict": true
+  },
+  "lock": false,
+  "nodeModulesDir": false,
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "semiColons": true,
+    "singleQuote": true,
+    "proseWrap": "preserve",
+    "include": [
+      "src/",
+      "test/"
+    ]
+  },
+  "lint": {
+    "include": [
+      "src/",
+      "test/"
+    ]
+  },
+  "test": {
+    "include": [
+      "test/"
+    ]
+  },
+  "exclude": [
+    "dist/"
+  ]
+}
