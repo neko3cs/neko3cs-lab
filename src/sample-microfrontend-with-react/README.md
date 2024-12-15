@@ -4,16 +4,10 @@ Reactベースのマイクロフロントエンドのサンプルコードにな
 
 ## 実行方法
 
-## app-shell
+app-shell、micro-frontend、ともに以下のコマンドで実行します。
 
 ```sh
-yarn dev
-```
-
-## micro-frontend
-
-```sh
-npx serve dist --cors -l 5050
+yarn serve
 ```
 
 ## 参考文献
