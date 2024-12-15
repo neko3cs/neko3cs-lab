@@ -1,0 +1,47 @@
+﻿@page "/securestorage"
+@inject IUserService UserService
+
+<h3>Secure Storage</h3>
+
+<div>
+  <FluentTextField Label="UserID" @bind-Value="@userIdForInput" tabindex="0" />
+  <FluentTextField Label="Password" @bind-Value="@passwordForInput" />
+  <FluentButton @onclick="@Submit" Appearance="Appearance.Accent">送信</FluentButton>
+</div>
+
+<hr />
+
+<div>
+  <FluentTextField Label="UserID" @bind-Value="@userIdForShow" ReadOnly tabindex="-1" />
+  <FluentTextField Label="Password" @bind-Value="@passwordForShow" ReadOnly tabindex="-1" />
+  <FluentButton @onclick="@Load" Appearance="Appearance.Accent">読込</FluentButton>
+</div>
+
+<hr />
+
+<FluentButton @onclick="@Clear" Appearance="Appearance.Accent">クリア</FluentButton>
+
+@code {
+  string userIdForInput = string.Empty;
+  string passwordForInput = string.Empty;
+  string userIdForShow = string.Empty;
+  string passwordForShow = string.Empty;
+
+  async void Submit() => await UserService.SetCurrentUserAsync(new User(userIdForInput, passwordForInput));
+
+  async void Load()
+  {
+    var user = await UserService.GetCurrentUserAsync();
+    userIdForShow = user.UserId;
+    passwordForShow = user.Password;
+  }
+
+  void Clear()
+  {
+    userIdForInput = string.Empty;
+    passwordForInput = string.Empty;
+    userIdForShow = string.Empty;
+    passwordForShow = string.Empty;
+    UserService.DeleteUser();
+  }
+}
