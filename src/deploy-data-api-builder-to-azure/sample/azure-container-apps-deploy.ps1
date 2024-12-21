@@ -3,7 +3,7 @@ $ErrorActionPreference = 'Stop'
 
 # 設定値
 $RESOURCE_GROUP = "sample-dab-api"
-$STORAGE_ACCOUNT = "samplestorage"
+$STORAGE_ACCOUNT = "samplestorage" + (Get-Random -Minimum 10000 -Maximum 100000)
 $LOCATION = "japaneast"
 $LOG_ANALYTICS_WORKSPACE = "sample-loganalytics-ws"
 $CONTAINERAPPS_ENVIRONMENT = "dm-dab-aca-env"
