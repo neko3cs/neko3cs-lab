@@ -59,3 +59,5 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
     zoneRedundant: false
   }
 }
+// Outputs ------------------------------------------------------------------------------------------------------------
+output connectionString string = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase.name};Persist Security Info=False;User ID=${adminLogin};Password=${adminLoginPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;'
