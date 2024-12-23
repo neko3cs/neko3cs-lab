@@ -29,7 +29,7 @@ resource firewallRulesAllowAzureServiceAccess 'Microsoft.Sql/servers/firewallRul
     startIpAddress: '0.0.0.0'
   }
 }
-resource firewallRulesAllowLocalPC 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = {
+resource firewallRulesAllowLocalPC 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = if (publicIpAddress != '*') {
   name: 'allow-access-local-pc'
   parent: sqlServer
   properties: {
