@@ -57,3 +57,6 @@ e2e/*.map
 go.work
 
 # End of https://www.toptal.com/developers/gitignore/api/go,angular
+
+# neko3cs gitignore
+package.json.md5
