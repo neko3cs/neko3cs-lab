@@ -16,7 +16,7 @@ az deployment group create `
   --name "DatabaseDeploy" `
   --resource-group $ResourceGroup `
   --template-file ./Database.bicep `
-  --parameters ./Database.bicepparam `
+  --parameters ./Development.bicepparam `
   --output table
 
 $connectionString = az deployment group show `
