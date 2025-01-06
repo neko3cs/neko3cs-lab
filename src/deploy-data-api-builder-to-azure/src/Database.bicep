@@ -25,24 +25,24 @@ resource firewallRulesAllowAzureServiceAccess 'Microsoft.Sql/servers/firewallRul
   name: 'allow-access-azure-services'
   parent: sqlServer
   properties: {
-    endIpAddress: '0.0.0.0'
     startIpAddress: '0.0.0.0'
+    endIpAddress: '0.0.0.0'
   }
 }
 resource firewallRulesAllowLocalPC 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = if (publicIpAddress != '*') {
   name: 'allow-access-local-pc'
   parent: sqlServer
   properties: {
-    endIpAddress: publicIpAddress
     startIpAddress: publicIpAddress
+    endIpAddress: publicIpAddress
   }
 }
 resource firewallRulesAllowAllDevice 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = if (publicIpAddress == '*') {
   name: 'allow-access-all-device'
   parent: sqlServer
   properties: {
-    endIpAddress: '0.0.0.0'
-    startIpAddress: '255.255.255.255'
+    startIpAddress: '0.0.0.0'
+    endIpAddress: '255.255.255.255'
   }
 }
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
