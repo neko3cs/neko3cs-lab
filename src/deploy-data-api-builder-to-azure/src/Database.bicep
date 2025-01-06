@@ -68,4 +68,4 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
   }
 }
 // Outputs ------------------------------------------------------------------------------------------------------------
-output connectionString string = 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Database=${sqlDatabase.name};User ID=${adminLogin};Password=${adminLoginPassword};Encrypt=True;TrustServerCertificate=True;'
+output connectionString string = 'Data Source=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDatabase.name};User ID=${adminLogin};Password=${adminLoginPassword};Encrypt=True;TrustServerCertificate=True;'
