@@ -21,7 +21,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
     restrictOutboundNetworkAccess: 'Enabled'
   }
 }
-resource firewallRulesAllowAzureServiceAccess 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = {
+resource firewallRulesAllowAzureServiceAccess 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = if (publicIpAddress != '*') {
   name: 'allow-access-azure-services'
   parent: sqlServer
   properties: {
