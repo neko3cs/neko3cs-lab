@@ -37,6 +37,14 @@ resource firewallRulesAllowLocalPC 'Microsoft.Sql/servers/firewallRules@2023-05-
     startIpAddress: publicIpAddress
   }
 }
+resource firewallRulesAllowAllDevice 'Microsoft.Sql/servers/firewallRules@2023-05-01-preview' = if (publicIpAddress == '*') {
+  name: 'allow-access-all-device'
+  parent: sqlServer
+  properties: {
+    endIpAddress: '0.0.0.0'
+    startIpAddress: '255.255.255.255'
+  }
+}
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
   name: sqlDBName
   parent: sqlServer
