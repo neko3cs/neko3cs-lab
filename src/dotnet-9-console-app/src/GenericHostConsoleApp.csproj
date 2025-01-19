@@ -8,12 +8,8 @@
 
     <!-- AOTコンパイル有効化 -->
     <PublishAot>true</PublishAot>
-    <!-- macOS Intel CPU向け -->
-    <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
-    <!-- macOS Apple Silicon向け -->
-    <!-- <RuntimeIdentifier>osx-arm64</RuntimeIdentifier> -->
-    <!-- Windows向け -->
-    <!-- <RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
+    <!-- ランタイム指定 -> Windows 64bit -->
+     <RuntimeIdentifier>win-x64</RuntimeIdentifier> 
     <!-- 自己展開式バンドルの無効化 -> 直接実行可能なexeになる -->
     <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
     <!-- デバッグ情報の削除有効化 -->
@@ -27,6 +23,12 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
