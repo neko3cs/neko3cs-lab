@@ -1,42 +1,27 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GenericHostConsoleApp;
 
-public class Worker : BackgroundService
-{
-  private readonly ILogger<Worker> _logger;
-  private readonly IConfiguration _configuration;
-  private readonly IHostApplicationLifetime _applicationLifetime;
-
-  public Worker(
+public class Worker(
     ILogger<Worker> logger,
     IConfiguration configuration,
     IHostApplicationLifetime applicationLifetime
-  )
-  {
-    _logger = logger;
-    _configuration = configuration;
-    _applicationLifetime = applicationLifetime;
-  }
+) : BackgroundService
+{
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Worker starting at: {time}", DateTimeOffset.Now);
 
-  protected override async Task ExecuteAsync(CancellationToken cancellationToken)
-  {
-    _logger.LogInformation("Worker starting at: {time}", DateTimeOffset.Now);
+        var appName = configuration["Settings:ApplicationName"];
+        var awaitAtMilliSeconds = int.Parse(configuration["Settings:AwaitAtMilliSeconds"] ?? "0");
 
-    var appName = _configuration["Settings:ApplicationName"];
-    var version = _configuration["Settings:Version"];
-    var awaitAt_ms = int.Parse(_configuration["Settings:AwaitAt_ms"]);
+        logger.LogInformation($"Application Name: {appName}");
+        await Task.Delay(awaitAtMilliSeconds, cancellationToken);
 
-    _logger.LogInformation("Application Name: {AppName}, Version: {Version}", appName, version);
-    await Task.Delay(awaitAt_ms, cancellationToken);
+        logger.LogInformation("Worker stopping at: {time}", DateTimeOffset.Now);
 
-    _logger.LogInformation("Worker stopping at: {time}", DateTimeOffset.Now);
-
-    _applicationLifetime.StopApplication();
-  }
+        applicationLifetime.StopApplication();
+    }
 }
