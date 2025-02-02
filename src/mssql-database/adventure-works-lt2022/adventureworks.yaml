@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adventureworks
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adventureworks
+  template:
+    metadata:
+      labels:
+        app: adventureworks
+    spec:
+      containers:
+      - name: database
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+        - containerPort: 1433
+        volumeMounts:
+        - name: db-volume
+          mountPath: /data
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: "P@ssword!"
+      volumes:
+      - name: db-volume
+        hostPath:
+          path: /data/
+          type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adventureworks-service
+spec:
+  selector:
+    app: adventureworks
+  ports:
+  - protocol: TCP
+    port: 1433
+    targetPort: 1433
+  type: LoadBalancer
