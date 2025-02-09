@@ -1,6 +1,12 @@
-# AWS CDK Serverless WebAPI サンプルコード
+# [WIP]AWS CDK Serverless WebAPI サンプルコード
 
 AWS CDKを用いた、サーバーレスWeb APIのIaCサンプルコードです。
+
+## 作成中です！
+
+なんか上手くデプロイできないのでいつかやる。
+
+従量課金制じゃない環境だと途中まで上手くデプロイ出来るのでアカウントの問題なのかもしれない。
 
 ## 参考文献
 
