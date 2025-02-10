@@ -7,7 +7,7 @@ internal class SampleDbContext(
 ) : DbContext
 {
 
-    public DbSet<Person> People { get; set; }
+    public DbSet<DimCustomer> DimCustomer { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
