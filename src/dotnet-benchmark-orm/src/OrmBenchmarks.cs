@@ -1,10 +1,11 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNetOrmBench;
 
-[MemoryDiagnoser]
+[Config(typeof(BenchmarkConfig))]
 public class OrmBenchmarks
 {
     private const string ConnectionString = "Data Source=localhost,1433;Initial Catalog=AdventureWorksDW2019;Trusted_Connection=True;TrustServerCertificate=True";
@@ -68,10 +69,16 @@ public class OrmBenchmarks
         }
     }
 
-    [Benchmark(Description = "EntityFramework Core - SELECT")]
-    public void EfCoreBenchmark()
+    [Benchmark(Description = "EntityFramework Core (from Model) - SELECT")]
+    public void EfCoreModelBenchmark()
     {
         var customers = _dbContext!.DimCustomer.ToList();
+    }
+
+    [Benchmark(Description = "EntityFramework Core (from SQL) - SELECT")]
+    public void EfCoreRawSqlBenchmark()
+    {
+        var customers = _dbContext!.DimCustomer.FromSqlRaw("SELECT * FROM DimCustomer").ToList();
     }
 
     [Benchmark(Description = "Dapper - SELECT")]
