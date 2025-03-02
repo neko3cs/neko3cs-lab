@@ -3,18 +3,6 @@ kind: Pod
 metadata:
   name: adventureworks-db
   spec:
-    initContainers:
-    - name: download-bak-file
-      image: busybox
-      command: ["/bin/sh", "-c"]
-      args:
-        - |
-          wget --no-verbose --show-progress --https-only \
-            --output-document=AdventureWorksLT2022.bak \
-            https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksLT2022.bak
-      volumeMounts:
-      - name: db-volume
-        mountPath: /var/opt/mssql/data
     containers:
     - name: database
       image: mcr.microsoft.com/mssql/server:2022-latest
@@ -26,6 +14,18 @@ metadata:
         value: "Y"
       - name: SA_PASSWORD
         value: "P@ssword!"
+      volumeMounts:
+      - name: db-volume
+        mountPath: /var/opt/mssql/data
+    initContainers:
+    - name: download-bak-file
+      image: busybox
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          wget --no-verbose --show-progress --https-only \
+            --output-document=AdventureWorksLT2022.bak \
+            https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksLT2022.bak
       volumeMounts:
       - name: db-volume
         mountPath: /var/opt/mssql/data
