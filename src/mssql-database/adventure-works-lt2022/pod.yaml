@@ -28,8 +28,11 @@ spec:
     command: ["/bin/sh", "-c"]
     args:
       - |
-        apk add --no-cache wget &&
-        wget --no-verbose --tries=10 --continue --https-only --output-document=/var/opt/mssql/data/AdventureWorksLT2022.bak \
+        # 所有者を UID=10001, GID=10001 (mssql) に変更
+        chown -R 10001:10001 /var/opt/mssql/data && \
+        apk add --no-cache wget && \
+        wget --no-verbose --https-only \
+          --output-document=/var/opt/mssql/data/AdventureWorksLT2022.bak \
           https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksLT2022.bak
     volumeMounts:
     - name: db-volume
