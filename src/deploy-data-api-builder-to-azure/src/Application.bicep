@@ -1,9 +1,9 @@
 // Params -------------------------------------------------------------------------------------------------------------
-param location string = resourceGroup().location
 param appName string
-var useHttps = false // Httpsを使う場合はMEMOコメントの部分の設定をおこなう
 
 // ResourceNames ------------------------------------------------------------------------------------------------------
+var useHttps = false // Httpsを使う場合はMEMOコメントの部分の設定をおこなう
+var location = resourceGroup().location
 var acaSubnetName = '${appName}-aca-subnet'
 var agwSubnetName = '${appName}-agw-subnet'
 var applicationGatewayName = '${appName}-agw'
@@ -44,64 +44,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   }
   resource agwSubnet 'subnets' existing = {
     name: agwSubnetName
-  }
-}
-resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-11-02-preview' = {
-  name: '${appName}-cae'
-  location: location
-  properties: {
-    vnetConfiguration: {
-      internal: true
-      infrastructureSubnetId: virtualNetwork::acaSubnet.id
-    }
-  }
-}
-resource containerApp 'Microsoft.App/containerApps@2023-11-02-preview' = {
-  name: '${appName}-aca'
-  location: location
-  properties: {
-    configuration: {
-      ingress: {
-        external: true
-        targetPort: 80
-      }
-    }
-    environmentId: containerAppEnvironment.id
-    template: {
-      containers: [
-        {
-          name: 'nginx-container'
-          image: 'nginx:latest'
-        }
-      ]
-    }
-  }
-}
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.${appName}-private-dns-zone'
-  location: 'global'
-}
-resource privateDnsVNet 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  name: '${appName}-private-dns-zone-vnet'
-  location: 'global'
-  parent: privateDnsZone
-  properties: {
-    registrationEnabled: false
-    virtualNetwork: {
-      id: virtualNetwork.id
-    }
-  }
-}
-resource containerAppDnsRecordApps 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
-  name: '*'
-  parent: privateDnsZone
-  properties: {
-    ttl: 3600
-    aRecords: [
-      {
-        ipv4Address: containerAppEnvironment.properties.staticIp
-      }
-    ]
   }
 }
 resource publicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
@@ -256,20 +198,14 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-09-01' =
       }
     ]
   }
-  dependsOn: [
-    privateDnsVNet
-  ]
 }
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: '${appName}-logAnalyticsWorkspace'
   location: location
   properties: {
+    retentionInDays: 30
     sku: {
       name: 'Standalone'
-    }
-    retentionInDays: 7
-    features: {
-      enableLogAccessUsingOnlyResourcePermissions: true
     }
   }
 }
@@ -311,5 +247,36 @@ resource diagnpsticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
         enabled: true
       }
     ]
+  }
+}
+resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-11-02-preview' = {
+  name: '${appName}-cae'
+  location: location
+  properties: {
+    vnetConfiguration: {
+      internal: true
+      infrastructureSubnetId: virtualNetwork::acaSubnet.id
+    }
+  }
+}
+resource containerApp 'Microsoft.App/containerApps@2023-11-02-preview' = {
+  name: '${appName}-aca'
+  location: location
+  properties: {
+    configuration: {
+      ingress: {
+        external: true
+        targetPort: 80
+      }
+    }
+    environmentId: containerAppEnvironment.id
+    template: {
+      containers: [
+        {
+          name: 'nginx-container'
+          image: 'nginx:latest'
+        }
+      ]
+    }
   }
 }
