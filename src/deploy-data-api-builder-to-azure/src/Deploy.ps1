@@ -9,28 +9,28 @@ az group create `
   --location $Location `
   --output table
 
-$DatabaseDeployName = "SampleDabApp.Database-$(Get-Date -Format 'yyyyMMddHHmmss')"
 az deployment group create `
-  --name $DatabaseDeployName `
+  --name "SampleDabApp.Database" `
   --resource-group $ResourceGroup `
   --template-file Database.bicep `
   --parameters Development.bicepparam `
   --output table
 
-$connectionString = az deployment group show `
-  --resource-group $ResourceGroup `
-  --name $DatabaseDeployName `
-  --query properties.outputs.connectionString.value
-
-Invoke-Sqlcmd `
-  -ConnectionString $connectionString `
-  -InputFile ./CreateTable.sql
-
-# az provider register --namespace "Microsoft.App"
-# az provider register --namespace "Microsoft.ContainerService"
-# az deployment group create `
-#   --name "SampleDabApp.Application-$(Get-Date -Format 'yyyyMMddHHmmss')" `
+# $connectionString = az deployment group show `
 #   --resource-group $ResourceGroup `
-#   --template-file Application.bicep `
-#   --parameters Development.bicepparam `
-#   --output table
+#   --name "SampleDabApp.Database" `
+#   --query properties.outputs.connectionString.value
+
+# TODO: なぜかエラーする。手動でコマンド打つと実行できる。
+# Invoke-Sqlcmd `
+#   -ConnectionString $connectionString `
+#   -InputFile ./CreateTable.sql
+
+az provider register --namespace "Microsoft.App"
+az provider register --namespace "Microsoft.ContainerService"
+az deployment group create `
+  --name "SampleDabApp.Application" `
+  --resource-group $ResourceGroup `
+  --template-file Application.bicep `
+  --parameters Application.bicepparam `
+  --output table
