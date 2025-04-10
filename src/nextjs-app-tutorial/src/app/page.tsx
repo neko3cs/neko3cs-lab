@@ -1,4 +1,6 @@
+import Link from "next/link";
 import styles from "./page.module.css";
+import { Button } from "antd";
 
 export default function Home() {
   return (
@@ -7,6 +9,10 @@ export default function Home() {
         <h1>
           Hello World!
         </h1>
+
+        <Link href="/about">
+          <Button type="primary">About</Button>
+        </Link>
       </main>
     </div>
   );
