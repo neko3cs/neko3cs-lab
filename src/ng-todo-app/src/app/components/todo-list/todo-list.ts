@@ -7,18 +7,18 @@ import { Todo } from '../../models/todo';
   standalone: true,
   imports: [TodoItem],
   template: `
-    @for (todo of todos; track todo.id) {
-      <app-todo-item
-      [todo]="todo"
-      (toggle)="toggleTodo.emit(todo.id)"
-      (delete)="deleteTodo.emit(todo.id)">
-    </app-todo-item>
-  }
-
     @if (todos.length === 0) {
       <p style="text-align: center; margin-top: 1rem;">
         No todos yet.
       </p>
+    } @else {
+      @for (todo of todos; track todo.id) {
+        <app-todo-item
+          [todo]="todo"
+          (toggle)="toggleTodo.emit(todo.id)"
+          (delete)="deleteTodo.emit(todo.id)">
+        </app-todo-item>
+      }
     }
   `
 })
