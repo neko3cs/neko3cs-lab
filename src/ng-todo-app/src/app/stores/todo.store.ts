@@ -1,16 +1,13 @@
-import { signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Todo } from '../models/todo';
 
+@Injectable({ providedIn: 'root' })
 export class TodoStore {
   readonly todos = signal<Todo[]>([]);
 
   add(title: string) {
     this.todos.update(todos => [
-      {
-        id: crypto.randomUUID(),
-        title,
-        completed: false
-      },
+      { id: crypto.randomUUID(), title, completed: false },
       ...todos
     ]);
   }
