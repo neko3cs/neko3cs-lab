@@ -39,9 +39,17 @@ import { Person } from './person';
           <th mat-header-cell *matHeaderCellDef> 年齢 </th>
           <td mat-cell *matCellDef="let p"> {{ p.Age }} </td>
         </ng-container>
+        <ng-container matColumnDef="Remove">
+          <th mat-header-cell *matHeaderCellDef> 削除 </th>
+          <td mat-cell *matCellDef="let p">
+            <button mat-icon-button color="warn" (click)="remove(p.Id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="['Name', 'Age']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['Name', 'Age']"></tr>
+        <tr mat-header-row *matHeaderRowDef="['Name', 'Age', 'Remove']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['Name', 'Age', 'Remove']"></tr>
       </table>
     </mat-card>
   `,
@@ -56,5 +64,11 @@ export class App {
   add(): void {
     const person: Person = { Id: crypto.randomUUID(), Name: this.name(), Age: this.age() };
     this.people.update(list => [...list, person]);
+    this.name.set('');
+    this.age.set(0);
+  }
+
+  remove(id: string): void {
+    this.people.update(list => list.filter(p => p.Id !== id));
   }
 }
