@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
-import { Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { Person } from './person';
 
 @Component({
@@ -64,27 +64,41 @@ import { Person } from './person';
 })
 export class App {
   private firestore = inject(Firestore);
+  private peopleRef = collection(this.firestore, 'people');
 
   name = signal('');
   age = signal(0);
   people = signal<Person[]>([]);
   editingId = signal<string | null>(null);
 
-  save(): void {
+  constructor() {
+    onSnapshot(this.peopleRef, snapshot => {
+      const list = snapshot.docs.map(doc => ({
+        Id: doc.id,
+        ...(doc.data() as Omit<Person, 'Id'>),
+      }));
+      this.people.set(list);
+    });
+  }
+
+  async save(): Promise<void> {
     if (this.name() === '') return;
     if (this.age() === 0) return;
 
     const id = this.editingId();
     if (id) {
-      this.people.update(list =>
-        list.map(p =>
-          p.Id === id ? { ...p, Name: this.name(), Age: this.age() } : p
-        )
-      );
+      const ref = doc(this.firestore, 'people', id);
+      await updateDoc(ref, {
+        Name: this.name(),
+        Age: this.age(),
+      });
     } else {
-      const person: Person = { Id: crypto.randomUUID(), Name: this.name(), Age: this.age() };
-      this.people.update(list => [...list, person]);
+      await addDoc(this.peopleRef, {
+        Name: this.name(),
+        Age: this.age(),
+      });
     }
+
     this.name.set('');
     this.age.set(0);
     this.editingId.set(null);
@@ -103,7 +117,8 @@ export class App {
     this.editingId.set(person.Id);
   }
 
-  remove(id: string): void {
-    this.people.update(list => list.filter(p => p.Id !== id));
+  async remove(id: string): Promise<void> {
+    const ref = doc(this.firestore, 'people', id);
+    await deleteDoc(ref);
   }
 }
