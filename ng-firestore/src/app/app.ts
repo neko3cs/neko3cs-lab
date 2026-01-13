@@ -25,8 +25,8 @@ import { Person } from './person';
       </mat-form-field>
 
       <div style="text-align: center;">
-        <button mat-raised-button color="accent" (click)="add()" style="width: 100%;">
-          登録
+        <button mat-raised-button color="accent" (click)="save()" style="width: 100%;">
+          {{ editingId() ? '更新' : '登録' }}
         </button>
       </div>
 
@@ -39,6 +39,14 @@ import { Person } from './person';
           <th mat-header-cell *matHeaderCellDef> 年齢 </th>
           <td mat-cell *matCellDef="let p"> {{ p.Age }} </td>
         </ng-container>
+        <ng-container matColumnDef="Edit">
+          <th mat-header-cell *matHeaderCellDef> 編集 </th>
+          <td mat-cell *matCellDef="let p">
+            <button mat-icon-button color="primary" (click)="edit(p)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="Remove">
           <th mat-header-cell *matHeaderCellDef> 削除 </th>
           <td mat-cell *matCellDef="let p">
@@ -48,8 +56,8 @@ import { Person } from './person';
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="['Name', 'Age', 'Remove']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['Name', 'Age', 'Remove']"></tr>
+        <tr mat-header-row *matHeaderRowDef="['Name', 'Age', 'Edit', 'Remove']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['Name', 'Age', 'Edit', 'Remove']"></tr>
       </table>
     </mat-card>
   `,
@@ -60,12 +68,39 @@ export class App {
   name = signal('');
   age = signal(0);
   people = signal<Person[]>([]);
+  editingId = signal<string | null>(null);
 
-  add(): void {
-    const person: Person = { Id: crypto.randomUUID(), Name: this.name(), Age: this.age() };
-    this.people.update(list => [...list, person]);
+  save(): void {
+    if (this.name() === '') return;
+    if (this.age() === 0) return;
+
+    const id = this.editingId();
+    if (id) {
+      this.people.update(list =>
+        list.map(p =>
+          p.Id === id ? { ...p, Name: this.name(), Age: this.age() } : p
+        )
+      );
+    } else {
+      const person: Person = { Id: crypto.randomUUID(), Name: this.name(), Age: this.age() };
+      this.people.update(list => [...list, person]);
+    }
     this.name.set('');
     this.age.set(0);
+    this.editingId.set(null);
+  }
+
+  edit(person: Person): void {
+    if (this.editingId()) {
+      this.name.set('');
+      this.age.set(0);
+      this.editingId.set(null);
+      return;
+    }
+
+    this.name.set(person.Name);
+    this.age.set(person.Age);
+    this.editingId.set(person.Id);
   }
 
   remove(id: string): void {
