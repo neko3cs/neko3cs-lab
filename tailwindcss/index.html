@@ -7,33 +7,55 @@
     <link rel="stylesheet" href="/src/style.css" />
     <title>TailwindCSS Sample</title>
   </head>
-  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <body
+    class="bg-slate-50 flex flex-col items-center justify-center min-h-screen p-6"
+  >
     <div
-      class="mt-10 max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden p-8 text-center border border-gray-200 transform hover:scale-105 transition-transform duration-300"
+      class="group relative w-full max-w-md bg-white rounded-3xl shadow-xl overflow-hidden transition-all hover:shadow-2xl"
     >
       <div
-        class="w-24 h-24 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl shadow-lg"
-      >
-        🚀
-      </div>
-      <h2 class="text-2xl font-bold text-gray-800">Deno ユーザー</h2>
-      <p class="text-gray-500 mt-2 text-sm">
-        Vite + Tailwind CSS v4でモダンなフロントエンド開発を学習中。
-      </p>
-      <button
-        id="alertBtn"
-        class="mt-6 w-full py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 active:bg-black transition-colors"
-      >
-        応援する
-      </button>
+        class="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+      ></div>
 
-      <button
-        id="colorBtn"
-        class="mt-8 px-6 py-3 bg-blue-500 text-white font-bold rounded-full shadow-lg transition-all active:scale-95"
-      >
-        色を変えるよ！🎨
-      </button>
+      <div class="absolute top-16 left-1/2 -translate-x-1/2">
+        <div class="w-32 h-32 bg-white rounded-full p-2 shadow-lg">
+          <div
+            class="w-full h-full bg-slate-200 rounded-full flex items-center justify-center text-5xl grayscale group-hover:grayscale-0 transition-all"
+          >
+            🦕
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-20 pb-10 px-8 text-center">
+        <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+          Deno Developer
+        </h2>
+        <p class="text-indigo-600 font-medium text-sm mt-1">@modern_web_fan</p>
+
+        <p class="mt-6 text-slate-600 leading-relaxed">
+          ViteとTailwind v4を使いこなして、次世代のWebサイトを構築しています。
+          <span class="font-bold text-slate-800">Deno</span>
+          の実行速度に感動中！🚀
+        </p>
+
+        <div class="mt-8 flex gap-3">
+          <button
+            id="alertBtn"
+            class="flex-1 py-3 px-6 bg-slate-900 text-white font-bold rounded-2xl hover:bg-slate-800 active:scale-95 transition-all"
+          >
+            応援する
+          </button>
+          <button
+            id="colorBtn"
+            class="p-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 active:scale-90 transition-all"
+          >
+            🎨
+          </button>
+        </div>
+      </div>
     </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
