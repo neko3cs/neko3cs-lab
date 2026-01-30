@@ -8,11 +8,25 @@
     <title>TailwindCSS Sample</title>
   </head>
   <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <h1
-      class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
+    <div
+      class="mt-10 max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden p-8 text-center border border-gray-200 transform hover:scale-105 transition-transform duration-300"
     >
-      Viteで動いてるよ！✨
-    </h1>
+      <div
+        class="w-24 h-24 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl shadow-lg"
+      >
+        🚀
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800">Deno ユーザー</h2>
+      <p class="text-gray-500 mt-2 text-sm">
+        Vite + Tailwind CSS v4でモダンなフロントエンド開発を学習中。
+      </p>
+      <button
+        id="alertBtn"
+        class="mt-6 w-full py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 active:bg-black transition-colors"
+      >
+        応援する
+      </button>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
