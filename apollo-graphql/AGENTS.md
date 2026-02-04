@@ -97,25 +97,30 @@ Resolvers should follow a consistent signature: `(parent, args, context, info)`.
 
 ## 5. Project Structure
 
-閲覧性とシンプルさを重視し、プロダクトコードのような複雑なディレクトリ分割は行いません。可能な限りファイルをまとめ、コードの全容を把握しやすくしてください。
+閲覧性とシンプルさを重視したモノレポ構成（pnpm workspace）を採用しています。
 
 ```text
 apollo-graphql/
 ├── src/
-│   ├── client/           # Apollo Client / Frontend
-│   │   ├── index.html    # エントリーポイントとなるHTML
-│   │   └── App.tsx       # 全てのコンポーネント、Query/Mutation、キャッシュ設定をここに集約
-│   └── server/           # Apollo Server / Backend
-│       ├── main.ts       # サーバー起動、スキーマ定義、リゾルバーをここに集約
-│       └── data/         # 生のJSONデータ（DBの代わり）
-├── tailwind.config.cjs   # Tailwind設定 (CommonJS形式)
-├── postcss.config.cjs    # PostCSS設定 (CommonJS形式)
-├── vite.config.ts        # Vite設定
-├── .gitignore
-├── package.json
-├── tsconfig.json
+│   ├── client/           # Frontend (Vite + Apollo Client)
+│   │   ├── index.html    # エントリーポイント
+│   │   ├── App.tsx       # メインコンポーネント
+│   │   ├── graphql.ts    # クエリ定義
+│   │   ├── style.css     # Tailwind CSS
+│   │   ├── package.json  # クライアント用依存関係
+│   │   ├── vite.config.ts
+│   │   └── tsconfig.json
+│   └── server/           # Backend (Apollo Server)
+│       ├── main.ts       # サーバー本体
+│       ├── schema.graphql # スキーマ定義
+│       ├── data/         # 生のJSONデータ
+│       ├── package.json  # サーバー用依存関係
+│       └── tsconfig.json
+├── package.json          # 全体の起動スクリプト管理
+├── pnpm-workspace.yaml   # モノレポ設定
 └── pnpm-lock.yaml
 ```
+
 
 ## 6. Documentation & Communication
 
