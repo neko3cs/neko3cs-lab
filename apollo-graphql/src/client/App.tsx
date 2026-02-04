@@ -8,35 +8,7 @@ import {
   gql,
 } from '@apollo/client';
 import './style.css';
-
-// GraphQL Queries
-const GET_COFFEES = gql`
-  query GetCoffees {
-    coffees {
-      id
-      name
-      price
-      category
-    }
-  }
-`;
-
-const GET_COFFEE_DETAIL = gql`
-  query GetCoffeeDetail($id: ID!) {
-    coffee(id: $id) {
-      id
-      name
-      price
-      category
-      description
-      options {
-        size
-        milk
-        sugar
-      }
-    }
-  }
-`;
+import { GET_COFFEES, GET_COFFEE_DETAIL } from './queries';
 
 // Apollo Clientの設定
 const client = new ApolloClient({
