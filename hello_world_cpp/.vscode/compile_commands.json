@@ -1,0 +1,6 @@
+[
+{
+  "directory": "/Users/neko3cs/src/neko3cs-lab/hello_world_cpp",
+  "arguments": ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++", "-c", "-Qunused-arguments", "-arch", "x86_64", "-target", "x86_64-apple-macos15.7", "-isysroot", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk", "-g", "-Wall", "-Wextra", "-O0", "-std=c++20", "-o", "build/.objs/hello_world_cpp/macosx/x86_64/debug/src/main.cpp.o", "src/main.cpp"],
+  "file": "src/main.cpp"
+}]
