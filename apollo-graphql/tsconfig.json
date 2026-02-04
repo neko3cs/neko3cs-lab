@@ -7,7 +7,6 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "esnext",
-    "moduleResolution": "node",
     "target": "esnext",
     "lib": ["ESNext", "DOM"],
     "moduleResolution": "bundler",
@@ -23,5 +22,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  "include": ["src/**/*"]
 }
