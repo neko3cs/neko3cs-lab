@@ -1,0 +1,32 @@
+"""
+コーヒーのカスタマイズオプション
+"""
+type Options {
+  size: [String]
+  milk: [String]
+  sugar: [String]
+}
+
+"""
+コーヒー商品情報
+"""
+type Coffee {
+  id: ID!
+  name: String!
+  price: Int!
+  category: String!
+  description: String
+  options: Options
+}
+
+type Query {
+  """
+  全てのコーヒー商品を取得します
+  """
+  coffees: [Coffee]
+
+  """
+  IDを指定して特定のコーヒー商品を取得します
+  """
+  coffee(id: ID!): Coffee
+}
