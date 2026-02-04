@@ -1,0 +1,242 @@
+[
+  {
+    "id": "c001",
+    "name": "エスプレッソ",
+    "price": 380,
+    "category": "Espresso",
+    "description": "濃厚でコクのある、コーヒーの旨味を凝縮した一杯です。",
+    "options": {
+      "size": ["Single", "Double"],
+      "milk": null,
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c002",
+    "name": "アメリカーノ",
+    "price": 420,
+    "category": "Espresso",
+    "description": "エスプレッソをお湯で割り、すっきりとした味わいに仕上げました。",
+    "options": {
+      "size": ["Short", "Tall", "Grande"],
+      "milk": null,
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c003",
+    "name": "カフェラテ",
+    "price": 480,
+    "category": "Milk Based",
+    "description": "エスプレッソとたっぷりのスチームミルクの絶妙なハーモニー。",
+    "options": {
+      "size": ["Short", "Tall", "Grande"],
+      "milk": ["通常", "低脂肪", "無脂肪", "豆乳", "オーツミルク"],
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c004",
+    "name": "カプチーノ",
+    "price": 480,
+    "category": "Milk Based",
+    "description": "ふわふわのフォームミルクが特徴の、口当たりの優しいラテ。",
+    "options": {
+      "size": ["Short", "Tall"],
+      "milk": ["通常", "低脂肪", "豆乳"],
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c005",
+    "name": "キャラメルマキアート",
+    "price": 540,
+    "category": "Milk Based",
+    "description": "バニラシロップとキャラメルソースの甘い誘惑。",
+    "options": {
+      "size": ["Short", "Tall", "Grande"],
+      "milk": ["通常", "豆乳"],
+      "sugar": ["調整不可"]
+    }
+  },
+  {
+    "id": "c006",
+    "name": "カフェモカ",
+    "price": 520,
+    "category": "Milk Based",
+    "description": "エスプレッソにチョコレートシロップを加えた、ほろ苦く甘い一杯。",
+    "options": {
+      "size": ["Short", "Tall", "Grande"],
+      "milk": ["通常", "豆乳"],
+      "sugar": ["調整不可"]
+    }
+  },
+  {
+    "id": "c007",
+    "name": "コールドブリュー",
+    "price": 450,
+    "category": "Cold",
+    "description": "時間をかけてゆっくり抽出した、雑味のないクリアなアイスコーヒー。",
+    "options": {
+      "size": ["Tall", "Grande"],
+      "milk": null,
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c008",
+    "name": "ナイトロコールドブリュー",
+    "price": 580,
+    "category": "Cold",
+    "description": "窒素を注入し、クリーミーな泡立ちと滑らかな質感を実現しました。",
+    "options": {
+      "size": ["Tall"],
+      "milk": null,
+      "sugar": ["なし"]
+    }
+  },
+  {
+    "id": "c009",
+    "name": "ハンドドリップ（エチオピア）",
+    "price": 600,
+    "category": "Brewed",
+    "description": "ベリーのような華やかな酸味と香りが特徴のシングルオリジン。",
+    "options": {
+      "size": ["Regular"],
+      "milk": null,
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c010",
+    "name": "ハンドドリップ（ブラジル）",
+    "price": 550,
+    "category": "Brewed",
+    "description": "ナッツのような香ばしさと程よい苦味、バランスの取れた味わい。",
+    "options": {
+      "size": ["Regular"],
+      "milk": null,
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c011",
+    "name": "フラットホワイト",
+    "price": 500,
+    "category": "Milk Based",
+    "description": "エスプレッソの味がより際立つ、きめ細やかなミルクのラテ。",
+    "options": {
+      "size": ["Short"],
+      "milk": ["通常"],
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c012",
+    "name": "バニララテ",
+    "price": 520,
+    "category": "Milk Based",
+    "description": "ふんわり香るバニラがエスプレッソのコクを引き立てます。",
+    "options": {
+      "size": ["Short", "Tall", "Grande"],
+      "milk": ["通常", "豆乳", "オーツミルク"],
+      "sugar": ["調整可"]
+    }
+  },
+  {
+    "id": "c013",
+    "name": "カフェオレ",
+    "price": 440,
+    "category": "Brewed",
+    "description": "ドリップコーヒーと温かいミルクを半分ずつ合わせた、優しい味わい。",
+    "options": {
+      "size": ["Short", "Tall"],
+      "milk": ["通常", "低脂肪"],
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c014",
+    "name": "コルタード",
+    "price": 460,
+    "category": "Espresso",
+    "description": "少量の温かいミルクでエスプレッソの酸味を和らげた一杯。",
+    "options": {
+      "size": ["Single"],
+      "milk": ["通常"],
+      "sugar": ["なし"]
+    }
+  },
+  {
+    "id": "c015",
+    "name": "アフォガート",
+    "price": 650,
+    "category": "Dessert",
+    "description": "冷たいバニラアイスに熱々のエスプレッソをかけて楽しむデザート。",
+    "options": {
+      "size": null,
+      "milk": null,
+      "sugar": null
+    }
+  },
+  {
+    "id": "c016",
+    "name": "アイスコーヒー",
+    "price": 400,
+    "category": "Cold",
+    "description": "厳選された豆を使用した、香り高い定番のアイスコーヒー。",
+    "options": {
+      "size": ["Short", "Tall", "Grande"],
+      "milk": ["なし", "フレッシュ追加"],
+      "sugar": ["なし", "ガムシロップ"]
+    }
+  },
+  {
+    "id": "c017",
+    "name": "デカフェ アメリカーノ",
+    "price": 450,
+    "category": "Decaf",
+    "description": "カフェインを気にする方へ。風味を損なわずカフェインをカットしました。",
+    "options": {
+      "size": ["Short", "Tall", "Grande"],
+      "milk": null,
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c018",
+    "name": "抹茶エスプレッソラテ",
+    "price": 580,
+    "category": "Mixed",
+    "description": "和の抹茶と洋のエスプレッソが融合した、奥深い味わいのラテ。",
+    "options": {
+      "size": ["Tall"],
+      "milk": ["通常", "豆乳"],
+      "sugar": ["調整不可"]
+    }
+  },
+  {
+    "id": "c019",
+    "name": "ダーティチャイラテ",
+    "price": 560,
+    "category": "Mixed",
+    "description": "スパイシーなチャイラテにエスプレッソショットを追加した刺激的な味。",
+    "options": {
+      "size": ["Tall", "Grande"],
+      "milk": ["通常", "豆乳", "オーツミルク"],
+      "sugar": ["なし", "あり"]
+    }
+  },
+  {
+    "id": "c020",
+    "name": "フレンチプレス",
+    "price": 550,
+    "category": "Brewed",
+    "description": "コーヒーオイルまで余さず抽出する、豆本来の味を楽しめる抽出法。",
+    "options": {
+      "size": ["Regular"],
+      "milk": null,
+      "sugar": ["なし", "あり"]
+    }
+  }
+]
