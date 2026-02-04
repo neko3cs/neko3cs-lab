@@ -103,6 +103,7 @@ Resolvers should follow a consistent signature: `(parent, args, context, info)`.
 apollo-graphql/
 ├── src/
 │   ├── client/           # Apollo Client / Frontend
+│   │   ├── index.html    # エントリーポイントとなるHTML
 │   │   └── App.tsx       # 全てのコンポーネント、Query/Mutation、キャッシュ設定をここに集約
 │   └── server/           # Apollo Server / Backend
 │       ├── main.ts       # サーバー起動、スキーマ定義、リゾルバーをここに集約
