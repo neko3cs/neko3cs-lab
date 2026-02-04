@@ -10,41 +10,8 @@ const coffeeData = JSON.parse(
   readFileSync(join(__dirname, 'data/coffee.json'), 'utf-8')
 );
 
-// スキーマ定義
-const typeDefs = `#graphql
-  """
-  コーヒーのカスタマイズオプション
-  """
-  type Options {
-    size: [String]
-    milk: [String]
-    sugar: [String]
-  }
-
-  """
-  コーヒー商品情報
-  """
-  type Coffee {
-    id: ID!
-    name: String!
-    price: Int!
-    category: String!
-    description: String
-    options: Options
-  }
-
-  type Query {
-    """
-    全てのコーヒー商品を取得します
-    """
-    coffees: [Coffee]
-
-    """
-    IDを指定して特定のコーヒー商品を取得します
-    """
-    coffee(id: ID!): Coffee
-  }
-`;
+// スキーマ定義の読み込み
+const typeDefs = readFileSync(join(__dirname, 'schema.graphql'), 'utf-8');
 
 // リゾルバーの実装
 const resolvers = {

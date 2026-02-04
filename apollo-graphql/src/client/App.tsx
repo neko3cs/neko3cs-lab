@@ -9,12 +9,6 @@ import {
 } from '@apollo/client';
 import './style.css';
 
-// Apollo Clientの設定
-const client = new ApolloClient({
-  uri: 'http://localhost:4000',
-  cache: new InMemoryCache(),
-});
-
 // GraphQL Queries
 const GET_COFFEES = gql`
   query GetCoffees {
@@ -43,6 +37,12 @@ const GET_COFFEE_DETAIL = gql`
     }
   }
 `;
+
+// Apollo Clientの設定
+const client = new ApolloClient({
+  uri: 'http://localhost:4000',
+  cache: new InMemoryCache(),
+});
 
 // コンポーネント: コーヒー詳細
 const CoffeeDetail = ({ id, onBack }: { id: string, onBack: () => void }) => {
