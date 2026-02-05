@@ -18,9 +18,16 @@ target("hello_cpp_api")
     add_files("src/*.cpp")
     add_packages("drogon")
 
--- テストプログラム
+-- テストプログラム (Hello)
 target("test_hello_cpp_api")
     set_kind("binary")
-    add_files("src/HelloApi.cpp", "test/*.cpp")
+    add_files("src/HelloApi.cpp", "test/HelloApiTest.cpp")
+    add_packages("drogon", "gtest")
+    add_links("gtest_main")
+
+-- テストプログラム (Todo)
+target("test_todo_api")
+    set_kind("binary")
+    add_files("src/TodoApi.cpp", "test/TodoApiTest.cpp")
     add_packages("drogon", "gtest")
     add_links("gtest_main")
