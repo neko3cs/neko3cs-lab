@@ -1,8 +1,14 @@
+add_rules("mode.debug", "mode.release")
+
+add_requires("drogon", "gtest")
+
 local project_name = path.basename(os.projectdir())
 set_languages("c++20")
+
 target(project_name)
     set_kind("binary")
-    add_files("src/main.cpp")
+    add_files("src/*.cpp")
+    add_packages("drogon")
     if is_mode("release") then
         set_optimize("fastest")
     else
@@ -10,6 +16,12 @@ target(project_name)
         set_optimize("none")
     end
     set_warnings("all", "extra")
+
+target("test_hello_cpp_api")
+    set_kind("binary")
+    add_files("src/HelloApi.cpp", "test/*.cpp")
+    add_packages("drogon", "gtest")
+    add_rules("mode.debug", "mode.release")
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
 --
