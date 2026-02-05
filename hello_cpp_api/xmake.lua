@@ -15,19 +15,12 @@ end
 -- メインアプリ
 target("hello_cpp_api")
     set_kind("binary")
-    add_files("src/*.cpp")
+    add_files("src/*.cc")
     add_packages("drogon")
 
--- テストプログラム (Hello)
-target("test_hello_cpp_api")
+-- テストプログラム
+target("test")
     set_kind("binary")
-    add_files("src/HelloApi.cpp", "test/HelloApiTest.cpp")
+    add_files("src/hello_api.cc", "src/todo_api.cc")
+    add_files("test/*.cc")
     add_packages("drogon", "gtest")
-    add_links("gtest_main")
-
--- テストプログラム (Todo)
-target("test_todo_api")
-    set_kind("binary")
-    add_files("src/TodoApi.cpp", "test/TodoApiTest.cpp")
-    add_packages("drogon", "gtest")
-    add_links("gtest_main")
