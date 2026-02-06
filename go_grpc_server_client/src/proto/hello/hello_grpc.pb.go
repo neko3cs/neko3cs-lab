@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             v6.33.4
-// source: src/proto/hello.proto
+// source: src/proto/hello/hello.proto
 
-package proto
+package hello
 
 import (
 	context "context"
@@ -117,5 +117,5 @@ var Greeter_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "src/proto/hello.proto",
+	Metadata: "src/proto/hello/hello.proto",
 }
