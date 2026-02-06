@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package todo;
+
+option go_package = "example.com/hello-grpc/src/proto/todo";
+
+service TodoService {
+  rpc CreateTodo (CreateTodoRequest) returns (CreateTodoResponse);
+  rpc GetTodo (GetTodoRequest) returns (GetTodoResponse);
+  rpc ListTodos (ListTodosRequest) returns (ListTodosResponse);
+  rpc UpdateTodo (UpdateTodoRequest) returns (UpdateTodoResponse);
+  rpc DeleteTodo (DeleteTodoRequest) returns (DeleteTodoResponse);
+}
+
+message Todo {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  bool done = 4;
+}
+
+// Create
+message CreateTodoRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message CreateTodoResponse {
+  Todo todo = 1;
+}
+
+// Get
+message GetTodoRequest {
+  string id = 1;
+}
+
+message GetTodoResponse {
+  Todo todo = 1;
+}
+
+// List
+message ListTodosRequest {}
+
+message ListTodosResponse {
+  repeated Todo todos = 1;
+}
+
+// Update
+message UpdateTodoRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  bool done = 4;
+}
+
+message UpdateTodoResponse {
+  Todo todo = 1;
+}
+
+// Delete
+message DeleteTodoRequest {
+  string id = 1;
+}
+
+message DeleteTodoResponse {
+  bool success = 1;
+}
