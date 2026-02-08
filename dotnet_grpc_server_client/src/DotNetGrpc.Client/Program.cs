@@ -18,4 +18,11 @@ builder.Services.AddScoped(services =>
     return new Greeter.GreeterClient(channel);
 });
 
+builder.Services.AddScoped(services => 
+{
+    var httpClient = new HttpClient(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()));
+    var channel = GrpcChannel.ForAddress("http://localhost:5002", new GrpcChannelOptions { HttpClient = httpClient });
+    return new DotNetGrpc.Shared.Todo.TodoClient(channel);
+});
+
 await builder.Build().RunAsync();

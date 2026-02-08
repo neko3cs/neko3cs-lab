@@ -26,6 +26,7 @@ app.UseCors("AllowAll");
 app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
 
 app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<TodoService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client.");
 
 app.Run();
