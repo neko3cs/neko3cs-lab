@@ -8,8 +8,8 @@
 <h1>Todo List</h1>
 
 <p>
-    <input @bind="newTodoTitle" placeholder="Enter todo title" />
-    <button @onclick="AddTodo">Add Todo</button>
+    <input @bind="newTodoTitle" placeholder="Enter new todo title" />
+    <button class="btn btn-primary" @onclick="AddTodo">Add Todo</button>
 </p>
 
 @if (todos == null)
@@ -18,15 +18,32 @@
 }
 else
 {
-    <ul>
-        @foreach (var todo in todos)
-        {
-            <li>
-                <input type="checkbox" checked="@todo.IsCompleted" @onchange="() => ToggleTodo(todo)" />
-                <span style="@(todo.IsCompleted ? "text-decoration: line-through;" : "")">@todo.Title</span>
-            </li>
-        }
-    </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Done</th>
+                <th>Title</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var todo in todos)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" checked="@todo.IsCompleted" @onchange="() => ToggleTodo(todo)" />
+                    </td>
+                    <td>
+                        <input class="form-control" @bind="todo.Title" style="@(todo.IsCompleted ? "text-decoration: line-through;" : "")" />
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-success" @onclick="() => UpdateTodo(todo)">Update</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteTodo(todo)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @if (!string.IsNullOrEmpty(error))
@@ -50,6 +67,7 @@ else
         {
             var response = await TodoClient.GetTodosAsync(new EmptyRequest());
             todos = response.Items.ToList();
+            error = "";
         }
         catch (Exception ex)
         {
@@ -83,6 +101,32 @@ else
         catch (Exception ex)
         {
             error = $"Error toggling todo: {ex.Message}";
+        }
+    }
+
+    private async Task UpdateTodo(TodoItem item)
+    {
+        try
+        {
+            await TodoClient.UpdateTodoAsync(new UpdateTodoRequest { Id = item.Id, Title = item.Title });
+            await LoadTodos();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error updating todo: {ex.Message}";
+        }
+    }
+
+    private async Task DeleteTodo(TodoItem item)
+    {
+        try
+        {
+            await TodoClient.DeleteTodoAsync(new DeleteTodoRequest { Id = item.Id });
+            await LoadTodos();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error deleting todo: {ex.Message}";
         }
     }
 }

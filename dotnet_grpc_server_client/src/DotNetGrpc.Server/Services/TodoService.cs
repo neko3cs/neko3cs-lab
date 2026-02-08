@@ -39,4 +39,24 @@ public class TodoService : DotNetGrpc.Shared.Todo.TodoBase
         }
         return Task.FromResult(item ?? new TodoItem());
     }
+
+    public override Task<TodoItem> UpdateTodo(UpdateTodoRequest request, ServerCallContext context)
+    {
+        var item = _todos.FirstOrDefault(t => t.Id == request.Id);
+        if (item != null)
+        {
+            item.Title = request.Title;
+        }
+        return Task.FromResult(item ?? new TodoItem());
+    }
+
+    public override Task<EmptyResponse> DeleteTodo(DeleteTodoRequest request, ServerCallContext context)
+    {
+        var item = _todos.FirstOrDefault(t => t.Id == request.Id);
+        if (item != null)
+        {
+            _todos.Remove(item);
+        }
+        return Task.FromResult(new EmptyResponse());
+    }
 }
