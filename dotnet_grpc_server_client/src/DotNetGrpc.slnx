@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DotNetGrpc.Client/DotNetGrpc.Client.csproj" />
+  <Project Path="DotNetGrpc.Server/DotNetGrpc.Server.csproj" />
+</Solution>
