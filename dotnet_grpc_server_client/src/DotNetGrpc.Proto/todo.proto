@@ -8,9 +8,12 @@ service Todo {
   rpc GetTodos (EmptyRequest) returns (TodoList);
   rpc AddTodo (AddTodoRequest) returns (TodoItem);
   rpc ToggleTodo (ToggleTodoRequest) returns (TodoItem);
+  rpc UpdateTodo (UpdateTodoRequest) returns (TodoItem);
+  rpc DeleteTodo (DeleteTodoRequest) returns (EmptyResponse);
 }
 
 message EmptyRequest {}
+message EmptyResponse {}
 
 message TodoItem {
   int32 id = 1;
@@ -27,5 +30,14 @@ message AddTodoRequest {
 }
 
 message ToggleTodoRequest {
+  int32 id = 1;
+}
+
+message UpdateTodoRequest {
+  int32 id = 1;
+  string title = 2;
+}
+
+message DeleteTodoRequest {
   int32 id = 1;
 }
