@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Protobuf Include="..\DotNetGrpc.Proto\greet.proto" GrpcServices="Client" Link="Protos\greet.proto" />
+    <Protobuf Include="..\DotNetGrpc.Proto\todo.proto" GrpcServices="Client" Link="Protos\todo.proto" />
   </ItemGroup>
 
 </Project>

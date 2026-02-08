@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Protobuf Include="..\DotNetGrpc.Proto\greet.proto" GrpcServices="Server" Link="Protos\greet.proto" />
+    <Protobuf Include="..\DotNetGrpc.Proto\todo.proto" GrpcServices="Server" Link="Protos\todo.proto" />
   </ItemGroup>
 
   <ItemGroup>

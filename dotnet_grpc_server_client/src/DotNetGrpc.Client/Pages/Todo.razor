@@ -1,0 +1,88 @@
+@page "/todo"
+@using DotNetGrpc.Shared
+@using Grpc.Net.Client
+@inject DotNetGrpc.Shared.Todo.TodoClient TodoClient
+
+<PageTitle>Todo List</PageTitle>
+
+<h1>Todo List</h1>
+
+<p>
+    <input @bind="newTodoTitle" placeholder="Enter todo title" />
+    <button @onclick="AddTodo">Add Todo</button>
+</p>
+
+@if (todos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var todo in todos)
+        {
+            <li>
+                <input type="checkbox" checked="@todo.IsCompleted" @onchange="() => ToggleTodo(todo)" />
+                <span style="@(todo.IsCompleted ? "text-decoration: line-through;" : "")">@todo.Title</span>
+            </li>
+        }
+    </ul>
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <p class="text-danger">@error</p>
+}
+
+@code {
+    private List<TodoItem> todos;
+    private string newTodoTitle = "";
+    private string error = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTodos();
+    }
+
+    private async Task LoadTodos()
+    {
+        try
+        {
+            var response = await TodoClient.GetTodosAsync(new EmptyRequest());
+            todos = response.Items.ToList();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error loading todos: {ex.Message}";
+        }
+    }
+
+    private async Task AddTodo()
+    {
+        if (string.IsNullOrWhiteSpace(newTodoTitle)) return;
+
+        try
+        {
+            await TodoClient.AddTodoAsync(new AddTodoRequest { Title = newTodoTitle });
+            newTodoTitle = "";
+            await LoadTodos();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error adding todo: {ex.Message}";
+        }
+    }
+
+    private async Task ToggleTodo(TodoItem item)
+    {
+        try
+        {
+            await TodoClient.ToggleTodoAsync(new ToggleTodoRequest { Id = item.Id });
+            await LoadTodos();
+        }
+        catch (Exception ex)
+        {
+            error = $"Error toggling todo: {ex.Message}";
+        }
+    }
+}
