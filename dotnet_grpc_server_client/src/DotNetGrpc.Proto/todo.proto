@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option csharp_namespace = "DotNetGrpc.Shared";
+
+package todo;
+
+service Todo {
+  rpc GetTodos (EmptyRequest) returns (TodoList);
+  rpc AddTodo (AddTodoRequest) returns (TodoItem);
+  rpc ToggleTodo (ToggleTodoRequest) returns (TodoItem);
+}
+
+message EmptyRequest {}
+
+message TodoItem {
+  int32 id = 1;
+  string title = 2;
+  bool is_completed = 3;
+}
+
+message TodoList {
+  repeated TodoItem items = 1;
+}
+
+message AddTodoRequest {
+  string title = 1;
+}
+
+message ToggleTodoRequest {
+  int32 id = 1;
+}
