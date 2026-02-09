@@ -1,0 +1,25 @@
+graph TD
+    User([User])
+    subgraph VPC
+        IGW[Internet Gateway]
+        subgraph Public_Subnets[Public Subnets]
+            ALB[Application Load Balancer]
+        end
+        subgraph App_Subnets[App Subnets]
+            Fargate[ECS Fargate Service]
+        end
+        subgraph Db_Subnets[Db Subnets]
+            RDS[(Aurora PostgreSQL)]
+        end
+        subgraph VPCEndpoints[VPC Endpoints]
+            ECR[ECR]
+            Secrets[Secrets Manager]
+            Logs[CloudWatch Logs]
+        end
+    end
+
+    User --> IGW
+    IGW --> ALB
+    ALB --> Fargate
+    Fargate --> RDS
+    Fargate -.-> VPCEndpoints
