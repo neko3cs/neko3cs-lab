@@ -17,7 +17,7 @@ test('Infrastructure Resource Validation', () => {
   // 2. RDS Validation (PostgreSQL)
   template.hasResourceProperties('AWS::RDS::DBCluster', {
     Engine: 'aurora-postgresql',
-    EngineVersion: '15.5',
+    EngineVersion: '17.7',
     DatabaseName: 'app',
   });
 
