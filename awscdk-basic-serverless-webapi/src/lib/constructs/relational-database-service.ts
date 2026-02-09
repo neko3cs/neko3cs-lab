@@ -27,8 +27,8 @@ export class RelationalDatabaseService extends Construct {
       description: 'Database subnet group',
     });
 
-    const engine = rds.DatabaseClusterEngine.auroraMysql({
-      version: rds.AuroraMysqlEngineVersion.VER_3_07_0,
+    const engine = rds.DatabaseClusterEngine.auroraPostgres({
+      version: rds.AuroraPostgresEngineVersion.VER_15_5,
     });
 
     const parameterGroup = new rds.ParameterGroup(
@@ -37,17 +37,11 @@ export class RelationalDatabaseService extends Construct {
       {
         engine,
         parameters: {
-          character_set_client: 'utf8mb4',
-          character_set_connection: 'utf8mb4',
-          character_set_database: 'utf8mb4',
-          character_set_results: 'utf8mb4',
-          character_set_server: 'utf8mb4',
-          time_zone: 'Asia/Tokyo',
-          aurora_parallel_query: '1',
-          slow_query_log: '1',
+          'search_path': 'public',
         },
       },
     );
+
 
     const databaseInstanceOptions: rds.ProvisionedClusterInstanceProps = {
       instanceType: ec2.InstanceType.of(
@@ -66,7 +60,9 @@ export class RelationalDatabaseService extends Construct {
       vpc,
       subnetGroup,
       engine,
+      port: 5432,
       credentials: rds.Credentials.fromGeneratedSecret('app_user'),
+
       parameterGroup,
       defaultDatabaseName,
       writer: rds.ClusterInstance.provisioned(
@@ -79,12 +75,17 @@ export class RelationalDatabaseService extends Construct {
       securityGroups: [securityGroup],
       monitoringInterval: cdk.Duration.minutes(1),
       cloudwatchLogsRetention: logs.RetentionDays.ONE_YEAR,
-      cloudwatchLogsExports: ['audit', 'error', 'slowquery'],
+      cloudwatchLogsExports: ['postgresql'],
       backup: {
         retention: cdk.Duration.days(7),
         // UTC 19:00-20:00 -> JST 04:00-05:00
         preferredWindow: '19:00-20:00',
       },
     });
+
+    new cdk.CfnOutput(this, 'DatabaseEndpoint', {
+      value: this.dbCluster.clusterEndpoint.hostname,
+    });
   }
 }
+

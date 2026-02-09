@@ -38,13 +38,19 @@ export class AppStack extends cdk.Stack {
       appSecurityGroup,
     });
 
-    const { apiTargetGroup, pageTargetGroup } = new LoadBalancer(
+    const { apiTargetGroup, pageTargetGroup, loadBalancer } = new LoadBalancer(
       this,
       'LoadBalancer',
       {
         vpc,
         vpcSubnets: publicSubnets,
       },
+    );
+
+    appSecurityGroup.addIngressRule(
+      loadBalancer.connections.securityGroups[0],
+      ec2.Port.tcp(APP_PORT),
+      'Allow ALB to App',
     );
 
     const { dbCluster } = new RelationalDatabaseService(
@@ -59,7 +65,7 @@ export class AppStack extends cdk.Stack {
 
     dbSecurityGroup.addIngressRule(
       appSecurityGroup,
-      ec2.Port.tcp(dbCluster.clusterEndpoint.port),
+      ec2.Port.tcp(5432),
     );
 
     new FargateService(this, 'FargateService', {

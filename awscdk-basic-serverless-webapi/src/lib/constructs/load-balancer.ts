@@ -12,18 +12,20 @@ interface Props {
 }
 
 export class LoadBalancer extends Construct {
+  public readonly loadBalancer: elbv2.ApplicationLoadBalancer;
   public readonly apiTargetGroup: elbv2.ApplicationTargetGroup;
   public readonly pageTargetGroup: elbv2.ApplicationTargetGroup;
 
   constructor(scope: Construct, id: string, { vpc, vpcSubnets }: Props) {
     super(scope, id);
-    const alb = new elbv2.ApplicationLoadBalancer(this, 'LoadBalancer', {
+    this.loadBalancer = new elbv2.ApplicationLoadBalancer(this, 'LoadBalancer', {
       vpc,
       internetFacing: true,
       vpcSubnets,
     });
 
-    const appListener = alb.addListener(
+    const appListener = this.loadBalancer.addListener(
+
       ACM_ARN ? 'HttpsListener' : 'HttpListener',
       {
         port: ACM_ARN ? 443 : 80,
@@ -42,7 +44,7 @@ export class LoadBalancer extends Construct {
 
     if (ACM_ARN) {
       // httpsにリダイレクトする設定
-      alb.addListener('HttpListener', {
+      this.loadBalancer.addListener('HttpListener', {
         port: 80,
         protocol: elbv2.ApplicationProtocol.HTTP,
         defaultAction: elbv2.ListenerAction.redirect({
@@ -52,6 +54,7 @@ export class LoadBalancer extends Construct {
         }),
       });
     }
+
 
     this.apiTargetGroup = new elbv2.ApplicationTargetGroup(
       this,
@@ -95,7 +98,8 @@ export class LoadBalancer extends Construct {
     const protocal = ACM_ARN ? 'https' : 'http';
     new cdk.CfnOutput(this, 'OutputApplicationUrl', {
       exportName: 'ApplicationUrl',
-      value: `${protocal}://${alb.loadBalancerDnsName}`,
+      value: `${protocal}://${this.loadBalancer.loadBalancerDnsName}`,
     });
+
   }
 }

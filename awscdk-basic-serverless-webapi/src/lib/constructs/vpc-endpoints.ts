@@ -42,8 +42,9 @@ export class VpcEndpoints extends Construct {
       subnets: appSubnets,
     });
     vpc.addGatewayEndpoint('S3Endpoint', {
-      service: ec2.InterfaceVpcEndpointAwsService.S3,
+      service: ec2.GatewayVpcEndpointAwsService.S3,
       subnets: [appSubnets],
     });
+
   }
 }
