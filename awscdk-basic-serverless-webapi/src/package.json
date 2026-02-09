@@ -6,7 +6,8 @@
     "app": "bin/app.js"
   },
   "scripts": {
-    "clean": "rm -rf ${PWD}/node_modules",
+    "clean:node_modules": "rm -rf ${PWD}/node_modules",
+    "clean:js": "find bin lib test -type f \\( -name \"*.js\" -o -name \"*.d.ts\" \\) -exec rm -f {} +",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
