@@ -1,10 +1,9 @@
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
-import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patterns";
 import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import { Construct } from "constructs"
-import { CfnOutput } from 'aws-cdk-lib';
 
 interface Props {
   vpc: ec2.Vpc;
@@ -19,6 +18,8 @@ interface Props {
 }
 
 export class FargateService extends Construct {
+  public readonly service: ecs.FargateService;
+
   constructor(
     scope: Construct,
     id: string,
@@ -30,6 +31,8 @@ export class FargateService extends Construct {
       databaseHost,
       databasePort,
       containerPort,
+      apiTargetGroup,
+      pageTargetGroup,
     }: Props
   ) {
     super(scope, id);
@@ -38,19 +41,42 @@ export class FargateService extends Construct {
       vpc,
     });
 
-    const fargateService = new ApplicationLoadBalancedFargateService(this, 'FargateService', {
-      cluster,
-      taskImageOptions: {
-        image: ecs.ContainerImage.fromRegistry('httpd:latest'),
-        containerPort: containerPort,
-      },
-      publicLoadBalancer: true,
-      taskSubnets: vpcSubnets,
-      securityGroups: [securityGroup]
+    const taskDefinition = new ecs.FargateTaskDefinition(this, 'TaskDef', {
+      memoryLimitMiB: 512,
+      cpu: 256,
     });
 
-    new CfnOutput(this, 'LoadBalancerDNS', {
-      value: fargateService.loadBalancer.loadBalancerDnsName
-    })
+    const container = taskDefinition.addContainer('AppContainer', {
+      image: ecs.ContainerImage.fromRegistry('httpd:latest'),
+      logging: ecs.LogDrivers.awsLogs({
+        streamPrefix: 'App',
+        logRetention: logs.RetentionDays.ONE_WEEK,
+      }),
+      environment: {
+        DB_HOST: databaseHost,
+        DB_PORT: databasePort.toString(),
+      },
+      secrets: {
+        DB_PASSWORD: ecs.Secret.fromSecretsManager(dbCredential, 'password'),
+        DB_USER: ecs.Secret.fromSecretsManager(dbCredential, 'username'),
+      },
+    });
+
+    container.addPortMappings({
+      containerPort: containerPort,
+      protocol: ecs.Protocol.TCP,
+    });
+
+    this.service = new ecs.FargateService(this, 'Service', {
+      cluster,
+      taskDefinition,
+      vpcSubnets,
+      securityGroups: [securityGroup],
+      desiredCount: 1,
+    });
+
+    // 既存のターゲットグループにサービスを登録
+    apiTargetGroup.addTarget(this.service);
+    pageTargetGroup.addTarget(this.service);
   }
 }
