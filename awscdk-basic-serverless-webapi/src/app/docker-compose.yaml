@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_USER=neko3cs
+      - DB_PASSWORD=
+      - DB_NAME=postgres
+      - DB_PORT=5432
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
