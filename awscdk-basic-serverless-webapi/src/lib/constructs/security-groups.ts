@@ -26,9 +26,10 @@ export class SecurityGroups extends Construct {
       ec2.Port.tcp(APP_PORT),
     );
 
-    this.dbSecurityGroup = new ec2.SecurityGroup(this, 'DnSecurityGroup', {
+    this.dbSecurityGroup = new ec2.SecurityGroup(this, 'DbSecurityGroup', {
       vpc,
       description: 'Database security group',
     });
+
   }
 }
