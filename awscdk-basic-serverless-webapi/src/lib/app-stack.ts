@@ -10,10 +10,31 @@ import { SecurityGroups } from './constructs/security-groups';
 import { RelationalDatabaseService } from './constructs/relational-database-service';
 import { FargateService } from './constructs/fargate-service';
 
-import { APP_PORT } from './settings';
+interface AppStackProps extends cdk.StackProps {
+  appPort: number;
+  useNatGateway?: boolean;
+  acmArn?: string;
+  apiAppContainerTag?: string;
+  pageAppContainerTag?: string;
+  apiAppRepositoryName?: string;
+  pageAppRepositoryName?: string;
+}
 
 export class AppStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(
+    scope: Construct,
+    id: string,
+    {
+      appPort,
+      useNatGateway = true,
+      acmArn,
+      apiAppContainerTag,
+      pageAppContainerTag,
+      apiAppRepositoryName,
+      pageAppRepositoryName,
+      ...props
+    }: AppStackProps
+  ) {
     super(scope, id, props);
 
     cdk.Tags.of(this).add('CdkStackName', 'Neko3csAppStack');
@@ -21,7 +42,9 @@ export class AppStack extends cdk.Stack {
     const { vpc, publicSubnets, appSubnets, dbSubnets } = new VpcSubnets(
       this,
       'VpcSubnets',
-      {},
+      {
+        useNatGateway,
+      },
     );
 
     const { appSecurityGroup, dbSecurityGroup } = new SecurityGroups(
@@ -44,12 +67,14 @@ export class AppStack extends cdk.Stack {
       {
         vpc,
         vpcSubnets: publicSubnets,
+        appPort,
+        acmArn,
       },
     );
 
     appSecurityGroup.addIngressRule(
       loadBalancer.connections.securityGroups[0],
-      ec2.Port.tcp(APP_PORT),
+      ec2.Port.tcp(appPort),
       'Allow ALB to App',
     );
 
@@ -75,7 +100,7 @@ export class AppStack extends cdk.Stack {
       dbCredential: dbCluster.secret!,
       databaseHost: dbCluster.clusterEndpoint.hostname,
       databasePort: dbCluster.clusterEndpoint.port,
-      containerPort: APP_PORT,
+      containerPort: appPort,
       apiTargetGroup,
       pageTargetGroup,
     }).node.addDependency(dbCluster);

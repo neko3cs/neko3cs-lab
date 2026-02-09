@@ -4,7 +4,9 @@ import { AppStack } from '../lib/app-stack';
 
 test('Infrastructure Resource Validation', () => {
   const app = new cdk.App();
-  const stack = new AppStack(app, 'MyTestStack');
+  const stack = new AppStack(app, 'MyTestStack', {
+    appPort: 80,
+  });
   const template = Template.fromStack(stack);
 
   // 1. VPC Validation

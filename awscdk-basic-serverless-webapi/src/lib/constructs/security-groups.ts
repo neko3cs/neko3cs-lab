@@ -2,8 +2,6 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 import { Construct } from 'constructs';
 
-import { APP_PORT } from '../settings';
-
 interface Props {
   vpc: ec2.Vpc;
 }
@@ -20,11 +18,6 @@ export class SecurityGroups extends Construct {
       description: 'App security group',
       allowAllOutbound: true,
     });
-
-    this.appSecurityGroup.addIngressRule(
-      this.appSecurityGroup,
-      ec2.Port.tcp(APP_PORT),
-    );
 
     this.dbSecurityGroup = new ec2.SecurityGroup(this, 'DbSecurityGroup', {
       vpc,

@@ -4,11 +4,11 @@ import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 
 import { Construct } from 'constructs';
 
-import { APP_PORT, ACM_ARN } from '../settings';
-
 interface Props {
   vpc: ec2.Vpc;
   vpcSubnets: ec2.SubnetSelection;
+  appPort: number;
+  acmArn?: string;
 }
 
 export class LoadBalancer extends Construct {
@@ -16,7 +16,7 @@ export class LoadBalancer extends Construct {
   public readonly apiTargetGroup: elbv2.ApplicationTargetGroup;
   public readonly pageTargetGroup: elbv2.ApplicationTargetGroup;
 
-  constructor(scope: Construct, id: string, { vpc, vpcSubnets }: Props) {
+  constructor(scope: Construct, id: string, { vpc, vpcSubnets, appPort, acmArn }: Props) {
     super(scope, id);
     this.loadBalancer = new elbv2.ApplicationLoadBalancer(this, 'LoadBalancer', {
       vpc,
@@ -25,15 +25,14 @@ export class LoadBalancer extends Construct {
     });
 
     const appListener = this.loadBalancer.addListener(
-
-      ACM_ARN ? 'HttpsListener' : 'HttpListener',
+      acmArn ? 'HttpsListener' : 'HttpListener',
       {
-        port: ACM_ARN ? 443 : 80,
-        protocol: ACM_ARN
+        port: acmArn ? 443 : 80,
+        protocol: acmArn
           ? elbv2.ApplicationProtocol.HTTPS
           : elbv2.ApplicationProtocol.HTTP,
-        certificates: ACM_ARN
-          ? [elbv2.ListenerCertificate.fromArn(ACM_ARN)]
+        certificates: acmArn
+          ? [elbv2.ListenerCertificate.fromArn(acmArn)]
           : undefined,
         defaultAction: elbv2.ListenerAction.fixedResponse(404, {
           contentType: 'text/plain',
@@ -42,7 +41,7 @@ export class LoadBalancer extends Construct {
       },
     );
 
-    if (ACM_ARN) {
+    if (acmArn) {
       // httpsにリダイレクトする設定
       this.loadBalancer.addListener('HttpListener', {
         port: 80,
@@ -61,7 +60,7 @@ export class LoadBalancer extends Construct {
       'ApiTargetGroup',
       {
         vpc,
-        port: APP_PORT,
+        port: appPort,
         protocol: elbv2.ApplicationProtocol.HTTP,
         targetType: elbv2.TargetType.IP,
         healthCheck: {
@@ -75,7 +74,7 @@ export class LoadBalancer extends Construct {
       'PageTargetGroup',
       {
         vpc,
-        port: APP_PORT,
+        port: appPort,
         protocol: elbv2.ApplicationProtocol.HTTP,
         targetType: elbv2.TargetType.IP,
         healthCheck: {
@@ -95,7 +94,8 @@ export class LoadBalancer extends Construct {
       targetGroups: [this.pageTargetGroup],
     });
 
-    const protocal = ACM_ARN ? 'https' : 'http';
+    const protocal = acmArn ? 'https' : 'http';
+
     new cdk.CfnOutput(this, 'OutputApplicationUrl', {
       exportName: 'ApplicationUrl',
       value: `${protocal}://${this.loadBalancer.loadBalancerDnsName}`,
