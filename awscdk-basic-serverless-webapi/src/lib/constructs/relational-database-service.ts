@@ -28,7 +28,7 @@ export class RelationalDatabaseService extends Construct {
     });
 
     const engine = rds.DatabaseClusterEngine.auroraPostgres({
-      version: rds.AuroraPostgresEngineVersion.VER_15_5,
+      version: rds.AuroraPostgresEngineVersion.of('17.7', '17'),
     });
 
     const parameterGroup = new rds.ParameterGroup(
