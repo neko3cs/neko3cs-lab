@@ -5,6 +5,7 @@
 
 # output files
 connectionString.txt
+dabUrl.txt
 
 # dotenv files
 .env
