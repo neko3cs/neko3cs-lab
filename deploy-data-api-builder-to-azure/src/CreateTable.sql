@@ -1,5 +1,3 @@
-USE [SampleAppDatabase]
-
 SET ANSI_NULLS ON
 
 DROP TABLE IF EXISTS [data]
