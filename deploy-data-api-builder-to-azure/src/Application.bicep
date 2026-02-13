@@ -1,5 +1,12 @@
 // Params -------------------------------------------------------------------------------------------------------------
 param appName string
+@secure()
+param connectionString string
+param storageAccountName string
+@secure()
+param storageAccountKey string
+param dabConfigFileName string = 'dab-config.json'
+param mountedStorageName string = 'dabconfig'
 
 // ResourceNames ------------------------------------------------------------------------------------------------------
 var useHttps = false // Httpsを使う場合はMEMOコメントの部分の設定をおこなう
@@ -13,6 +20,7 @@ var sslCertificatesName = '${applicationGatewayName}-sslCertificates'
 var backendAddressPoolsName = '${applicationGatewayName}-backendAddressPools'
 var backendHttpSettingsName = '${applicationGatewayName}-backendHttpSettings'
 var httpListenerName = '${applicationGatewayName}-httpListeners'
+var dabConfigFilePath = '--ConfigFileName=/${mountedStorageName}/${dabConfigFileName}'
 
 // Resources ----------------------------------------------------------------------------------------------------------
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
@@ -29,6 +37,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
         name: acaSubnetName
         properties: {
           addressPrefix: '192.168.0.0/23'
+          delegations: [
+            {
+              name: 'delegation'
+              properties: {
+                serviceName: 'Microsoft.App/environments'
+              }
+            }
+          ]
         }
       }
       {
@@ -54,6 +70,9 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
   }
   properties: {
     publicIPAllocationMethod: 'Static'
+    dnsSettings: {
+      domainNameLabel: '${appName}-${uniqueString(resourceGroup().id)}'
+    }
   }
 }
 resource applicationGateway 'Microsoft.Network/applicationGateways@2023-09-01' = {
@@ -129,8 +148,8 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-09-01' =
         name: backendHttpSettingsName
         properties: {
           cookieBasedAffinity: 'Disabled'
-          port: useHttps ? 443 : 80
-          protocol: useHttps ? 'Https' : 'Http'
+          port: 80
+          protocol: 'Http'
           requestTimeout: 30
           pickHostNameFromBackendAddress: true
         }
@@ -209,41 +228,35 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
     }
   }
 }
-resource diagnpsticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  name: '${appName}-diagnpsticSettings'
+resource diagnosticSettingsAgw 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: '${appName}-agw-diagnostic'
+  scope: applicationGateway
   properties: {
     workspaceId: logAnalyticsWorkspace.id
     logs: [
       {
-        category: 'Administrative'
+        category: 'ApplicationGatewayAccessLog'
         enabled: true
       }
       {
-        category: 'Security'
+        category: 'ApplicationGatewayPerformanceLog'
         enabled: true
       }
       {
-        category: 'ServiceHealth'
+        category: 'ApplicationGatewayFirewallLog'
         enabled: true
       }
+    ]
+  }
+}
+resource diagnosticSettingsCae 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: '${appName}-cae-diagnostic'
+  scope: containerAppEnvironment
+  properties: {
+    workspaceId: logAnalyticsWorkspace.id
+    logs: [
       {
-        category: 'Alert'
-        enabled: true
-      }
-      {
-        category: 'Recommendation'
-        enabled: true
-      }
-      {
-        category: 'Policy'
-        enabled: true
-      }
-      {
-        category: 'Autoscale'
-        enabled: true
-      }
-      {
-        category: 'ResourceHealth'
+        category: 'ContainerAppConsoleLogs'
         enabled: true
       }
     ]
@@ -253,12 +266,32 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-11-02-p
   name: '${appName}-cae'
   location: location
   properties: {
+    workloadProfiles: [
+      {
+        name: 'Consumption'
+        workloadProfileType: 'Consumption'
+      }
+    ]
     vnetConfiguration: {
-      internal: true
+      internal: false
       infrastructureSubnetId: virtualNetwork::acaSubnet.id
     }
   }
 }
+
+resource environmentStorage 'Microsoft.App/managedEnvironments/storages@2023-11-02-preview' = {
+  parent: containerAppEnvironment
+  name: mountedStorageName
+  properties: {
+    azureFile: {
+      accountName: storageAccountName
+      accountKey: storageAccountKey
+      shareName: mountedStorageName
+      accessMode: 'ReadWrite'
+    }
+  }
+}
+
 resource containerApp 'Microsoft.App/containerApps@2023-11-02-preview' = {
   name: '${appName}-aca'
   location: location
@@ -266,17 +299,51 @@ resource containerApp 'Microsoft.App/containerApps@2023-11-02-preview' = {
     configuration: {
       ingress: {
         external: true
-        targetPort: 80
+        targetPort: 5000
+        allowInsecure: true
       }
     }
     environmentId: containerAppEnvironment.id
+    workloadProfileName: 'Consumption'
     template: {
       containers: [
         {
-          name: 'nginx-container'
-          image: 'nginx:latest'
+          name: 'dab-container'
+          image: 'mcr.microsoft.com/azure-databases/data-api-builder:latest'
+          env: [
+            {
+              name: 'DATABASE_CONNECTION_STRING'
+              value: connectionString
+            }
+          ]
+          args: [
+            dabConfigFilePath
+          ]
+          volumeMounts: [
+            {
+              volumeName: 'azure-file-volume'
+              mountPath: '/${mountedStorageName}'
+            }
+          ]
+        }
+      ]
+      scale: {
+        minReplicas: 1
+        maxReplicas: 10
+      }
+      volumes: [
+        {
+          name: 'azure-file-volume'
+          storageType: 'AzureFile'
+          storageName: mountedStorageName
         }
       ]
     }
   }
+  dependsOn: [
+    environmentStorage
+  ]
 }
+
+output dabUrl string = 'http://${publicIp.properties.dnsSettings.fqdn}'
+output containerAppFqdn string = containerApp.properties.configuration.ingress.fqdn
