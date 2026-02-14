@@ -5,25 +5,21 @@ $ErrorActionPreference = 'Stop'
 $ResourceGroup = "rg-sampledabapi-dev-japaneast-001"
 $Location = "japaneast"
 $AppName = "sampledabapp"
-
 # データベース設定
 $SqlDBServerName = "sample-app-sqldatabase-server"
 $SqlDBName = "SampleAppDatabase"
 $SqlAdminLogin = "db_admin"
 $SqlAdminPassword = "P@ssword!"
 $SqlPublicIpAddress = "*"
-
 # ストレージ設定 (ACA Managed Environment の制限により、ストレージ名は固定にする必要があります)
 $StorageAccountName = "st" + $AppName.ToLower() + "001"
 $FileShareName = "dabconfig"
 $DabConfigFileName = "dab-config.json"
 
 # リソースグループの作成
-Write-Output "Creating resource group '$ResourceGroup'..."
 az group create --name $ResourceGroup --location $Location --output table
 
 # データベースのデプロイ
-Write-Output "Deploying SQL Database..."
 az deployment group create `
   --name "SampleDabApp.Database" `
   --resource-group $ResourceGroup `
@@ -42,14 +38,11 @@ $connectionString = az deployment group show `
   --query properties.outputs.connectionString.value -o tsv
 
 $connectionString | Out-File -FilePath "connectionString.txt" -Encoding utf8
-Write-Output "Connection string saved to connectionString.txt"
 
-# テーブルの作成
-Write-Output "Creating database table..."
+# データベースの初期化 (テーブルの作成)
 Invoke-Sqlcmd -ConnectionString $connectionString -InputFile ./CreateTable.sql
 
 # ストレージのデプロイ
-Write-Output "Deploying Storage Account '$StorageAccountName'..."
 az deployment group create `
   --name "SampleDabApp.Storage" `
   --resource-group $ResourceGroup `
@@ -61,25 +54,23 @@ $storageAccountKey = $(az storage account keys list `
     -g $ResourceGroup `
     -n $StorageAccountName `
     --query '[0].value' -o tsv)
-
 $storageConnectionString = $(az storage account show-connection-string `
     --name $StorageAccountName `
     -g $ResourceGroup `
     --query connectionString -o tsv)
 
-# 設定ファイルのアップロード
-Write-Output "Uploading configuration file '$DabConfigFileName'..."
+# ストレージにDABの設定ファイルをアップロード
 az storage file upload `
   --source ./dab-config.json `
   --path $DabConfigFileName `
   --share-name $FileShareName `
   --connection-string $storageConnectionString --output table
 
-# アプリケーションのデプロイ
-Write-Output "Deploying Application (DAB on ACA)..."
+# ACA と ACR のリソースプロバイダーを登録
 az provider register --namespace "Microsoft.App"
 az provider register --namespace "Microsoft.ContainerService"
 
+# アプリケーションのデプロイ
 az deployment group create `
   --name "SampleDabApp.Application" `
   --resource-group $ResourceGroup `
@@ -98,6 +89,3 @@ $dabUrl = az deployment group show `
   --query properties.outputs.dabUrl.value -o tsv
 
 $dabUrl | Out-File -FilePath "dabUrl.txt" -Encoding utf8
-Write-Output "DAB URL saved to dabUrl.txt: $dabUrl"
-
-Write-Output "Deployment completed successfully."
