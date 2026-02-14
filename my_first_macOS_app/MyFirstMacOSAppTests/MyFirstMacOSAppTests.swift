@@ -6,12 +6,30 @@
 //
 
 import Testing
+import Foundation
 @testable import MyFirstMacOSApp
 
 struct MyFirstMacOSAppTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @MainActor
+    @Test func sidebarItemProperties() async throws {
+        let counter = SidebarItem.counter
+        let counterRaw = counter.rawValue
+        let counterIcon = counter.icon
+        #expect(counterRaw == "カウンター")
+        #expect(counterIcon == "number.circle")
+        
+        let history = SidebarItem.history
+        let historyRaw = history.rawValue
+        let historyIcon = history.icon
+        #expect(historyRaw == "履歴")
+        #expect(historyIcon == "clock.arrow.circlepath")
+    }
+
+    @Test func historyItemInitialization() async throws {
+        let now = Date()
+        let item = HistoryItem(timestamp: now)
+        #expect(item.timestamp == now)
     }
 
 }
