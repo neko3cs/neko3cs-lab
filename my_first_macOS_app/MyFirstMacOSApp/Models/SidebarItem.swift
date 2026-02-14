@@ -5,6 +5,8 @@
 //  Created by neko3cs on 2026/02/14.
 //
 
+import Foundation
+
 enum SidebarItem: String, CaseIterable, Identifiable {
     case counter = "カウンター"
     case history = "履歴"
