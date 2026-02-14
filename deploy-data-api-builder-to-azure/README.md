@@ -2,8 +2,8 @@
 
 ## はじめに
 
-このリポジトリは、Azure Data API Builder (DAB) をAzure Container Apps (ACA) 上に構築し、Application Gatewayを介してセキュアに公開するためのaC (Infrastructure as Code) プロジェクトです。
-バックエンドのデータベースとしてzure SQL Database使用し、一連の構築フローを自動化しています。
+このリポジトリは、Azure Data API Builder (DAB) をAzure Container Apps (ACA) 上に構築し、Application Gatewayを介してセキュアに公開するためのIaC (Infrastructure as Code) プロジェクトです。
+バックエンドのデータベースとしてAzure SQL Database使用し、一連の構築フローを自動化しています。
 
 ## 実行方法
 
