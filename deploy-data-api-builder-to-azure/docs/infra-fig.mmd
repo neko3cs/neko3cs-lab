@@ -1,0 +1,26 @@
+graph TB
+    User((User))
+    Internet[Internet]
+    
+    subgraph ResourceGroup [Resource Group]
+        subgraph VNet [Virtual Network]
+            subgraph AGW_Subnet [Application Gateway Subnet]
+                AGW[Application Gateway / WAF]
+            end
+            
+            subgraph ACA_Subnet [Container Apps Subnet]
+                subgraph ManagedEnv [Managed Environment]
+                    DAB[Container App: Data API Builder]
+                end
+            end
+        end
+        
+        SQL[(Azure SQL Database)]
+        Storage[(Storage Account / Azure Files)]
+    end
+    
+    User --> Internet
+    Internet --> AGW
+    AGW --> DAB
+    DAB --> SQL
+    DAB -- Mounts --> Storage
