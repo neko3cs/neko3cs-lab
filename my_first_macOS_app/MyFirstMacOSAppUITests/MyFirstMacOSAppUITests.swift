@@ -23,12 +23,32 @@ final class MyFirstMacOSAppUITests: XCTestCase {
     }
 
     @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    func testCounterAndHistoryNavigation() throws {
         let app = XCUIApplication()
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // 1. カウンター画面の確認
+        // macOSではウィンドウタイトルや静的テキストとして現れることが多いため、汎用的な検索を行う
+        XCTAssertTrue(app.staticTexts["カウンター"].waitForExistence(timeout: 5))
+        
+        // 2. カウントアップ操作
+        let countUpButton = app.buttons["カウントアップ"]
+        XCTAssertTrue(countUpButton.exists)
+        countUpButton.click()
+        
+        // 3. サイドバーで履歴に切り替え
+        // macOSのSidebarでは、NavigationLinkはボタンや行として認識されることが多い
+        let sidebarHistoryLink = app.buttons["履歴"].exists ? app.buttons["履歴"] : app.staticTexts["履歴"]
+        XCTAssertTrue(sidebarHistoryLink.waitForExistence(timeout: 5), "サイドバーの '履歴' が見つかりません")
+        sidebarHistoryLink.click()
+        
+        // 4. 履歴画面の確認
+        XCTAssertTrue(app.staticTexts["履歴"].waitForExistence(timeout: 5))
+        
+        // 履歴アイテム（テーブル/リスト/アウトライン）が存在するか確認
+        // macOSのSwiftUI ListはOutlineとして認識されることが多い
+        let historyList = app.outlines.firstMatch.exists ? app.outlines.firstMatch : app.tables.firstMatch
+        XCTAssertTrue(historyList.waitForExistence(timeout: 5), "履歴リストが見つかりません。")
     }
 
     @MainActor
