@@ -1,5 +1,5 @@
 //
-//  SidebarView.swift
+//  SidebarItem.swift
 //  MyFirstMacOSApp
 //
 //  Created by neko3cs on 2026/02/14.
