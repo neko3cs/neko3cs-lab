@@ -8,28 +8,21 @@
 import SwiftUI
 import SwiftData
 
-struct HistoryListView: View {
+struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
     var history: [HistoryItem]
     
     var body: some View {
         List {
             ForEach(history) { item in
-                HStack {
-                    Image(systemName: "calendar")
-                        .foregroundStyle(.blue)
-                    Text(item.timestamp.formatted(date: .numeric, time: .standard))
-                }
-                .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
+                historyRow(for: item)
             }
             .onDelete(perform: deleteItems)
         }
         .navigationTitle("履歴")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button(role: .destructive) {
-                    resetHistory()
-                } label: {
+                Button(role: .destructive, action: resetHistory) {
                     Label("すべて削除", systemImage: "trash")
                 }
                 .disabled(history.isEmpty)
@@ -37,22 +30,48 @@ struct HistoryListView: View {
         }
         .overlay {
             if history.isEmpty {
-                ContentUnavailableView("履歴なし", systemImage: "clock", description: Text("カウントするとここに表示されます"))
+                emptyStateView
             }
         }
     }
     
+    private func historyRow(for item: HistoryItem) -> some View {
+        HStack {
+            Image(systemName: "calendar")
+                .foregroundStyle(.blue)
+            Text(item.timestamp.formatted(date: .numeric, time: .standard))
+        }
+        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
+    }
+    
+    private var emptyStateView: some View {
+        ContentUnavailableView(
+            "履歴なし",
+            systemImage: "clock",
+            description: Text("カウントするとここに表示されます")
+        )
+    }
+    
     private func resetHistory() {
         withAnimation {
-            try? modelContext.delete(model: HistoryItem.self)
-            try? modelContext.save()
+            do {
+                try modelContext.delete(model: HistoryItem.self)
+                try modelContext.save()
+            } catch {
+                print("Failed to clear history: \(error)")
+            }
         }
     }
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
                 modelContext.delete(history[index])
-                try? modelContext.save()
+            }
+            do {
+                try modelContext.save()
+            } catch {
+                print("Failed to delete items: \(error)")
             }
         }
     }

@@ -9,30 +9,33 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Query(sort: \HistoryItem.timestamp, order: .reverse) var history: [HistoryItem]
+    @Query(sort: \HistoryItem.timestamp, order: .reverse) private var history: [HistoryItem]
     @Environment(\.modelContext) private var modelContext
     @State private var selectedItem: SidebarItem? = .counter
     
     var body: some View {
         NavigationSplitView {
-            List(SidebarItem.allCases, selection: $selectedItem) { item in
-                NavigationLink(value: item) {
-                    Label(item.rawValue, systemImage: item.icon)
-                }
-            }
+            SidebarListView(selection: $selectedItem)
         } detail: {
-            if let item = selectedItem {
-                switch item {
-                case .counter:
-                    CounterView(
-                        count: history.count,
-                        onAdd: { addRecord() },
-                        onReset: { resetRecord() }
-                    )
-                case .history:
-                    HistoryListView(history: history)
-                }
+            detailView
+        }
+    }
+    
+    @ViewBuilder
+    private var detailView: some View {
+        if let item = selectedItem {
+            switch item {
+            case .counter:
+                CounterView(
+                    count: history.count,
+                    onAdd: addRecord,
+                    onReset: resetRecord
+                )
+            case .history:
+                HistoryView(history: history)
             }
+        } else {
+            ContentUnavailableView("選択してください", systemImage: "sidebar.left")
         }
     }
 
@@ -42,14 +45,20 @@ struct ContentView: View {
             modelContext.insert(newItem)
         }
     }
+    
     private func resetRecord() {
         withAnimation {
-            try? modelContext.delete(model: HistoryItem.self)
-            try? modelContext.save()
+            do {
+                try modelContext.delete(model: HistoryItem.self)
+                try modelContext.save()
+            } catch {
+                print("Failed to reset record: \(error)")
+            }
         }
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: HistoryItem.self, inMemory: true)
 }
