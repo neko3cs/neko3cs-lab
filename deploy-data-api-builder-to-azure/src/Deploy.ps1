@@ -13,8 +13,8 @@ $SqlAdminLogin = "db_admin"
 $SqlAdminPassword = "P@ssword!"
 $SqlPublicIpAddress = "*"
 
-# ストレージ設定
-$StorageAccountName = "samplestorage" + (Get-Random -Minimum 10000 -Maximum 100000)
+# ストレージ設定 (ACA Managed Environment の制限により、ストレージ名は固定にする必要があります)
+$StorageAccountName = "st" + $AppName.ToLower() + "001"
 $FileShareName = "dabconfig"
 $DabConfigFileName = "dab-config.json"
 
