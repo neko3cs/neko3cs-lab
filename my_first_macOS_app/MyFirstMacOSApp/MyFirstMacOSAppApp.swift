@@ -16,9 +16,10 @@ struct MyFirstMacOSAppApp: App {
         WindowGroup {
             ContentView()
         }
+        // SwiftDataの保存対象を指定。配下のViewで@Queryが使用可能になる
         .modelContainer(for: HistoryItem.self)
         .defaultSize(width: 800, height: 500)
-        // 最小サイズを指定してレイアウト崩れを防ぐ
+        // コンテンツのサイズ制約をウィンドウに適用
         .windowResizability(.contentSize)
 
         Settings {

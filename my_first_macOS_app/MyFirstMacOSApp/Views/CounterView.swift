@@ -18,6 +18,7 @@ struct CounterView: View {
             
             Text("\(count)")
                 .font(.system(size: 80, weight: .bold, design: .rounded))
+                // 数字のカウントアップ・ダウンに適したアニメーションを適用
                 .contentTransition(.numericText())
                 .animation(.snappy, value: count)
             
