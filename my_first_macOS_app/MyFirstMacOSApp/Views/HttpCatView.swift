@@ -34,12 +34,19 @@ struct HttpCatView: View {
                         .aspectRatio(contentMode: .fit)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .shadow(radius: 10)
-                        .accessibilityLabel("猫の画像")
                         .accessibilityIdentifier("http-cat-image")
-                case .failure:
-                    errorView
+                case .failure(let error):
+                    VStack {
+                        errorView
+                        // デバッグ用：エラー内容を表示
+                        Text(error.localizedDescription)
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                    }
+                    .accessibilityIdentifier("http-cat-error")
                 case .empty:
                     ProgressView()
+                        .accessibilityIdentifier("http-cat-loading")
                 @unknown default:
                     EmptyView()
                 }
@@ -47,6 +54,7 @@ struct HttpCatView: View {
             .frame(maxWidth: 500, maxHeight: 400)
             // IDを変更することでURL更新時にAsyncImageの再描画（フェッチ）を強制する
             .id(currentCode)
+            .accessibilityIdentifier("http-cat-async-image")
             
             Text("Status Code: \(currentCode)")
                 .font(.title3.monospacedDigit())
