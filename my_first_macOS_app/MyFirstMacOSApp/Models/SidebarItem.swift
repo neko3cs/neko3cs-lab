@@ -10,12 +10,14 @@ import Foundation
 enum SidebarItem: String, CaseIterable, Identifiable {
     case counter = "カウンター"
     case history = "履歴"
+    case httpCat = "HttpCat"
     
     var id: String { self.rawValue }
     var icon: String {
         switch self {
         case .counter: return "number.circle"
         case .history: return "clock.arrow.circlepath"
+        case .httpCat: return "cat.fill"
         }
     }
 }

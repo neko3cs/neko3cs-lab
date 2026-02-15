@@ -37,6 +37,8 @@ struct ContentView: View {
                 )
             case .history:
                 HistoryView(history: history)
+            case .httpCat:
+                HttpCatView()
             }
         } else {
             ContentUnavailableView("選択してください", systemImage: "sidebar.left")
