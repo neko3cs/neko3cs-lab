@@ -11,6 +11,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case counter = "カウンター"
     case history = "履歴"
     case httpCat = "HttpCat"
+    case posts = "Posts"
     
     var id: String { self.rawValue }
     
@@ -19,6 +20,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .counter: return "number.circle"
         case .history: return "clock.arrow.circlepath"
         case .httpCat: return "cat.fill"
+        case .posts: return "text.bubble.fill"
         }
     }
 }

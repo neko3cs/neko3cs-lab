@@ -84,6 +84,24 @@ final class MyFirstMacOSAppUITests: XCTestCase {
             // エラーがなく、ステータスコードが表示されていればOKとする
             XCTAssertTrue(statusCodeText.exists, "ステータスコードが表示されていません")
         }
+        
+        // 7. Posts画面の操作
+        let sidebarPostsLink = app.buttons["Posts"].exists ? app.buttons["Posts"] : app.staticTexts["Posts"]
+        XCTAssertTrue(sidebarPostsLink.waitForExistence(timeout: 5))
+        sidebarPostsLink.click()
+        
+        // Posts画面のタイトル確認
+        XCTAssertTrue(app.staticTexts["Posts"].waitForExistence(timeout: 5))
+        
+        // リストアイテムの読み込み待機（ネットワーク通信があるため少し長めに）
+        // 最初の投稿のタイトルが表示されるのを待つ
+        let firstPostTitle = "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
+        let firstPost = app.staticTexts[firstPostTitle]
+        let exists = NSPredicate(format: "exists == 1")
+        expectation(for: exists, evaluatedWith: firstPost, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
+        
+        XCTAssertTrue(firstPost.exists, "Postsリストが読み込まれていません")
     }
 
     @MainActor
