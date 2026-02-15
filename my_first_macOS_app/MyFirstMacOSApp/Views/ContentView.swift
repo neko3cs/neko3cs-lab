@@ -15,7 +15,11 @@ struct ContentView: View {
     
     var body: some View {
         NavigationSplitView {
-            SidebarListView(selection: $selectedItem)
+            List(SidebarItem.allCases, selection: $selectedItem) { item in
+                NavigationLink(value: item) {
+                    Label(item.rawValue, systemImage: item.icon)
+                }
+            }
         } detail: {
             detailView
         }
