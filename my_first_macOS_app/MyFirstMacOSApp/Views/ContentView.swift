@@ -9,7 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    // データの変更を監視し、自動でViewを再描画する
     @Query(sort: \HistoryItem.timestamp, order: .reverse) private var history: [HistoryItem]
+    // データの永続化操作（保存・削除）を担う
     @Environment(\.modelContext) private var modelContext
     @State private var selectedItem: SidebarItem? = .counter
     
@@ -46,6 +48,7 @@ struct ContentView: View {
     }
 
     private func addRecord() {
+        // bounceを設定することで、追加時に弾むような動きを与える
         withAnimation(.spring(duration: 0.4, bounce: 0.3)) {
             let newItem = HistoryItem(timestamp: Date())
             modelContext.insert(newItem)

@@ -17,6 +17,7 @@ struct HistoryView: View {
             ForEach(history) { item in
                 historyRow(for: item)
             }
+            // リストの削除操作（スワイプ等）を有効化
             .onDelete(perform: deleteItems)
         }
         .navigationTitle("履歴")
@@ -41,6 +42,7 @@ struct HistoryView: View {
                 .foregroundStyle(.blue)
             Text(item.timestamp.formatted(date: .numeric, time: .standard))
         }
+        // 追加時（横からスライド）と削除時（フェード）で異なるアニメーションを適用
         .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity), removal: .opacity))
     }
     

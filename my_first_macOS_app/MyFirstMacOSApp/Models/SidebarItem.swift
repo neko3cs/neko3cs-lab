@@ -13,6 +13,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case httpCat = "HttpCat"
     
     var id: String { self.rawValue }
+    
     var icon: String {
         switch self {
         case .counter: return "number.circle"
