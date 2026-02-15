@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct MyFirstMacOSAppApp: App {
+    @AppStorage("isDarkMode") private var isDarkMode = true
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -20,7 +22,14 @@ struct MyFirstMacOSAppApp: App {
         .windowResizability(.contentSize)
 
         Settings {
-            SettingsView()
+            Form {
+                Section("表示設定") {
+                    Toggle("ダークモード固定（仮）", isOn: $isDarkMode)
+                }
+            }
+            .formStyle(.grouped)
+            .frame(width: 350, height: 250)
+            .navigationTitle("設定")
         }
 
         MenuBarExtra("MyFirstMacOSApp", systemImage: "star.fill") {

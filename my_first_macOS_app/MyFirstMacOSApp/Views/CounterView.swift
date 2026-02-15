@@ -16,7 +16,10 @@ struct CounterView: View {
         VStack(spacing: 20) {
             Text("現在のカウント").font(.headline)
             
-            NumberDisplay(value: count)
+            Text("\(count)")
+                .font(.system(size: 80, weight: .bold, design: .rounded))
+                .contentTransition(.numericText())
+                .animation(.snappy, value: count)
             
             HStack(spacing: 15) {
                 Button(action: onAdd) {
