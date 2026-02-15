@@ -34,6 +34,8 @@ struct HttpCatView: View {
                         .aspectRatio(contentMode: .fit)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .shadow(radius: 10)
+                        .accessibilityLabel("猫の画像")
+                        .accessibilityIdentifier("http-cat-image")
                 case .failure:
                     errorView
                 case .empty:
@@ -43,6 +45,7 @@ struct HttpCatView: View {
                 }
             }
             .frame(maxWidth: 500, maxHeight: 400)
+            // IDを変更することでURL更新時にAsyncImageの再描画（フェッチ）を強制する
             .id(currentCode)
             
             Text("Status Code: \(currentCode)")
