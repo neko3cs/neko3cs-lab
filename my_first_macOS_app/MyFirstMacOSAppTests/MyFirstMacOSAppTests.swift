@@ -24,6 +24,12 @@ struct MyFirstMacOSAppTests {
         let historyIcon = history.icon
         #expect(historyRaw == "履歴")
         #expect(historyIcon == "clock.arrow.circlepath")
+        
+        let httpCat = SidebarItem.httpCat
+        let httpCatRaw = httpCat.rawValue
+        let httpCatIcon = httpCat.icon
+        #expect(httpCatRaw == "HttpCat")
+        #expect(httpCatIcon == "cat.fill")
     }
 
     @Test func historyItemInitialization() async throws {

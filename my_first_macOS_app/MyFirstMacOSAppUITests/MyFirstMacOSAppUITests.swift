@@ -49,7 +49,23 @@ final class MyFirstMacOSAppUITests: XCTestCase {
         // macOSのSwiftUI ListはOutlineとして認識されることが多い
         let historyList = app.outlines.firstMatch.exists ? app.outlines.firstMatch : app.tables.firstMatch
         XCTAssertTrue(historyList.waitForExistence(timeout: 5), "履歴リストが見つかりません。")
+        
+        // 5. SidebarでHttpCatに切り替え
+        let sidebarHttpCatLink = app.buttons["HttpCat"].exists ? app.buttons["HttpCat"] : app.staticTexts["HttpCat"]
+        XCTAssertTrue(sidebarHttpCatLink.waitForExistence(timeout: 5))
+        sidebarHttpCatLink.click()
+        
+        // 6. HttpCat画面の操作
+        XCTAssertTrue(app.staticTexts["HttpCat"].waitForExistence(timeout: 5))
+        
+        let randomButton = app.buttons["ランダムな猫を表示"]
+        XCTAssertTrue(randomButton.exists)
+        randomButton.click()
+        
+        // 画像（AsyncImage）が表示されるのを待機
+        XCTAssertTrue(app.images.firstMatch.waitForExistence(timeout: 10))
     }
+
 
     @MainActor
     func testLaunchPerformance() throws {
