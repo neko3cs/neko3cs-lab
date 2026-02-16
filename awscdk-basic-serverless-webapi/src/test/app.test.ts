@@ -5,7 +5,7 @@ import { AppStack } from '../lib/app-stack';
 test('Infrastructure Resource Validation', () => {
   const app = new cdk.App();
   const stack = new AppStack(app, 'MyTestStack', {
-    appPort: 80,
+    appPort: 3000,
   });
   const template = Template.fromStack(stack);
 
@@ -23,15 +23,14 @@ test('Infrastructure Resource Validation', () => {
     DatabaseName: 'app',
   });
 
-  // 3. ECS/Fargate Validation (httpd:latest)
+  // 3. ECS/Fargate Validation (Hono App Asset)
   template.hasResourceProperties('AWS::ECS::TaskDefinition', {
     ContainerDefinitions: [
       {
-        Image: 'httpd:latest',
         Name: 'AppContainer',
         PortMappings: [
           {
-            ContainerPort: 80,
+            ContainerPort: 3000,
             Protocol: 'tcp',
           },
         ],
@@ -40,9 +39,16 @@ test('Infrastructure Resource Validation', () => {
   });
 
   // 4. Security Group Validation
-  // App SG should allow traffic on port 80 (for httpd)
+  // App SG should allow traffic on port 3000 (for Hono)
   template.hasResourceProperties('AWS::EC2::SecurityGroup', {
     GroupDescription: 'App security group',
+  });
+
+  // ALB to App ingress rule
+  template.hasResourceProperties('AWS::EC2::SecurityGroupIngress', {
+    FromPort: 3000,
+    ToPort: 3000,
+    IpProtocol: 'tcp',
   });
 
   // DB SG should allow traffic on port 5432
