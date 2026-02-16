@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
@@ -47,7 +48,7 @@ export class FargateService extends Construct {
     });
 
     const container = taskDefinition.addContainer('AppContainer', {
-      image: ecs.ContainerImage.fromRegistry('httpd:latest'),
+      image: ecs.ContainerImage.fromAsset(path.join(__dirname, '../../app')),
       logging: ecs.LogDrivers.awsLogs({
         streamPrefix: 'App',
         logRetention: logs.RetentionDays.ONE_WEEK,
