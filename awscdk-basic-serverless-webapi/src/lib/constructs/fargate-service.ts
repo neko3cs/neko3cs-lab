@@ -56,6 +56,7 @@ export class FargateService extends Construct {
       environment: {
         DB_HOST: databaseHost,
         DB_PORT: databasePort.toString(),
+        DB_NAME: 'app',
       },
       secrets: {
         DB_PASSWORD: ecs.Secret.fromSecretsManager(dbCredential, 'password'),
