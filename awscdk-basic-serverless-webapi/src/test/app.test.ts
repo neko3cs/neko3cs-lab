@@ -9,21 +9,17 @@ test('Infrastructure Resource Validation', () => {
   });
   const template = Template.fromStack(stack);
 
-  // 1. VPC Validation
   template.hasResourceProperties('AWS::EC2::VPC', {
     CidrBlock: '10.0.0.0/16',
   });
-  // Check Subnets (2 AZs * 3 types = 6 subnets)
   template.resourceCountIs('AWS::EC2::Subnet', 6);
 
-  // 2. RDS Validation (PostgreSQL)
   template.hasResourceProperties('AWS::RDS::DBCluster', {
     Engine: 'aurora-postgresql',
     EngineVersion: '17.7',
     DatabaseName: 'app',
   });
 
-  // 3. ECS/Fargate Validation (Hono App Asset)
   template.hasResourceProperties('AWS::ECS::TaskDefinition', {
     ContainerDefinitions: [
       {
@@ -38,23 +34,32 @@ test('Infrastructure Resource Validation', () => {
     ],
   });
 
-  // 4. Security Group Validation
-  // App SG should allow traffic on port 3000 (for Hono)
   template.hasResourceProperties('AWS::EC2::SecurityGroup', {
-    GroupDescription: 'App security group',
+    GroupDescription: 'Security group for Application',
+    SecurityGroupIngress: [
+      {
+        FromPort: 443,
+        ToPort: 443,
+        IpProtocol: 'tcp',
+      },
+      {
+        Description: 'Allow ALB to access Application',
+        FromPort: 3000,
+        ToPort: 3000,
+        IpProtocol: 'tcp',
+      }
+    ]
   });
 
-  // ALB to App ingress rule
-  template.hasResourceProperties('AWS::EC2::SecurityGroupIngress', {
-    FromPort: 3000,
-    ToPort: 3000,
-    IpProtocol: 'tcp',
-  });
-
-  // DB SG should allow traffic on port 5432
-  template.hasResourceProperties('AWS::EC2::SecurityGroupIngress', {
-    FromPort: 5432,
-    ToPort: 5432,
-    IpProtocol: 'tcp',
+  template.hasResourceProperties('AWS::EC2::SecurityGroup', {
+    GroupDescription: 'Security group for Database',
+    SecurityGroupIngress: [
+      {
+        Description: 'Allow Application to access Database',
+        FromPort: 5432,
+        ToPort: 5432,
+        IpProtocol: 'tcp',
+      }
+    ]
   });
 });
