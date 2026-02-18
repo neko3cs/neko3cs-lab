@@ -4,6 +4,8 @@ import { Client } from 'pg'
 
 const app = new Hono()
 
+app.get('/healthCheck', (c) => c.json({ status: 'ok' }))
+
 app.get('/conn-db', async (c) => {
   const client = new Client({
     host: process.env.DB_HOST,
