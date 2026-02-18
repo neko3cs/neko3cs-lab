@@ -11,8 +11,9 @@ app.get('/conn-db', async (c) => {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME || 'postgres',
+    database: process.env.DB_NAME || 'app',
     port: parseInt(process.env.DB_PORT || '5432'),
+    ssl: { rejectUnauthorized: false },
   })
 
   try {
