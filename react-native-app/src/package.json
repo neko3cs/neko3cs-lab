@@ -10,8 +10,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "clean-all": "react-native clean --include android,cocoapods,metro,npm,bun,watchman,yarn && rm -rf $HOME/Library/Developer/Xcode/DerivedData/*",
-    "install-all": "yarn install && cd $INIT_CWD/ios && pod install && cd $INIT_CWD/macos && pod install && cd $INIT_CWD"
+    "clean-all": "react-native clean --include android,cocoapods,metro,npm,pnpm,watchman && rm -rf $HOME/Library/Developer/Xcode/DerivedData/*",
+    "install-all": "pnpm install && cd $INIT_CWD/ios && pod install && cd $INIT_CWD/macos && pod install && cd $INIT_CWD"
   },
   "dependencies": {
     "@rneui/base": "^4.0.0-rc.8",
