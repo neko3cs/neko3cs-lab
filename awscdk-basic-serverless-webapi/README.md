@@ -10,7 +10,7 @@ AWS CDK v2を用いた、サーバーレスWeb APIインフラのIaC（Infrastru
 
 このインフラ構成は、マルチAZ冗長化とサブネットによる階層的なセキュリティ管理を行っています。
 
-![Infrastructure Configuration](docs/images/infra-fig.png)
+![Infrastructure Configuration](docs/infra-fig.png)
 
 ### 主な特徴
 
