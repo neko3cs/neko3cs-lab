@@ -57,6 +57,7 @@ export class DatabaseConstruct extends Construct {
         preferredWindow: '19:00-20:00',
       },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      enableDataApi: true, // Enable Data API for RDS Query Editor
     });
   }
 }
