@@ -6,9 +6,11 @@ This document provides essential guidelines, commands, and conventions for AI ag
 
 - **Technology Stack**: AWS CDK v2, TypeScript, Node.js.
 - **Purpose**: A serverless Web API infrastructure including VPC, Fargate, RDS, and Load Balancer.
-- **Package Manager**: `pnpm` (Primary package manager. Ensure `pnpm-lock.yaml` is respected).
+- **Package Manager**: `pnpm` (Workspace root has no `package.json`, use `src/` directory for development).
 
 ## 1. Development Commands
+
+**Note: Always run these commands from the `src/` directory.**
 
 ### Build & Compilation
 
@@ -31,78 +33,64 @@ This document provides essential guidelines, commands, and conventions for AI ag
 
 ## 2. Directory Structure
 
-- `bin/`: Application entry point (`app.ts`).
-- `lib/`: Main stack definitions.
-- `lib/constructs/`: Modularized L2/L3 constructs (VPC, RDS, Fargate, etc.).
-- `lib/settings.ts`: Configuration constants and environment variable mappings.
-- `test/`: Infrastructure tests using `@aws-cdk/assertions`.
+- `src/bin/`: Application entry point (`app.ts`). Environment variables are handled here.
+- `src/lib/`: Stack and Construct definitions.
+  - `app-stack.ts`: The main stack orchestrating all constructs.
+  - `*-construct.ts`: Modularized L2/L3 constructs (Network, Database, Application).
+- `src/test/`: Infrastructure tests using `@aws-cdk/assertions`.
+- `src/app/`: (If exists) Application source code running on Fargate.
 
 ## 3. Code Style & Conventions
 
 ### Imports
 
-- **Grouping**: Group imports in the following order, separated by a blank line:
+- **Grouping**: Group imports in the following order:
   1. AWS CDK libraries (`import * as cdk from 'aws-cdk-lib'`)
   2. Third-party libraries (`import { Construct } from 'constructs'`)
-  3. Local constructs and modules
-  4. Local settings/constants
-- **Namespace Imports**: Prefer `import * as ec2 from 'aws-cdk-lib/aws-ec2'` for CDK modules to keep the code readable and consistent with existing files.
+  3. Local constructs and modules (`import { X } from './x'`)
+- **Namespace Imports**: Prefer `import * as [service] from 'aws-cdk-lib/aws-[service]'` (e.g., `aws-ec2`, `aws-rds`) to maintain consistency.
 
 ### Naming Conventions
 
-- **Classes/Constructs**: `PascalCase` (e.g., `VpcSubnets`, `FargateService`).
-- **Variables/Instances**: `camelCase` (e.g., `appSecurityGroup`, `dbCluster`).
-- **Interfaces/Props**: `PascalCase` named as `Props` within the file or `[ClassName]Props`.
-- **Constants**: `SCREAMING_SNAKE_CASE` (e.g., `APP_PORT`, `USE_NAT_GATEWAY`).
+- **Classes/Constructs**: `PascalCase` (e.g., `NetworkConstruct`).
+- **Variables/Instances**: `camelCase` (e.g., `vpc`, `dbCluster`).
+- **Interfaces/Props**: `PascalCase` named as `[ClassName]Props` (e.g., `AppStackProps`).
+- **Constants**: `SCREAMING_SNAKE_CASE` (e.g., `APP_PORT`).
 
 ### TypeScript Usage
 
-- **Strict Typing**: Always define interfaces for construct props.
-- **Public/Private**: Explicitly mark construct members as `public readonly` if they need to be accessed by other constructs.
-- **Initialization**: Prefer constructor-based initialization of resources.
-
-### AWS CDK Patterns
-
-- **Construct Granularity**: Break down large stacks into smaller, reusable `Construct` classes located in `lib/constructs/`.
-- **Dependency Management**: Use `node.addDependency()` only when implicit dependencies (e.g., passing a resource to another) are insufficient.
-- **Security Groups**: Manage ingress/egress rules as close to the resource definition as possible, or within the `SecurityGroups` construct.
-- **Tags**: Apply standard tags at the stack level in `lib/app-stack.ts`.
+- **Strict Typing**: Define interfaces for all construct props.
+- **Public/Private**: Mark construct members as `public readonly` if required by other constructs (e.g., `vpc` in `NetworkConstruct`).
 
 ## 4. Resource Specific Guidelines
 
-### VPC & Networking
+### Networking
 
-- Always define explicit subnet configurations (Public, App, Db).
-- Use `ec2.SubnetType.PRIVATE_ISOLATED` for databases.
-- Use `ec2.SubnetType.PRIVATE_WITH_EGRESS` for application logic if a NAT Gateway is available.
+- Subnets: Explicitly use `Public`, `App` (Private with Egress), and `Db` (Isolated) subnet groups.
+- Security Groups: Define rules within the construct or via dedicated methods like `addConnectivityRules()`.
 
-### RDS (Relational Database Service)
+### RDS & ECS
 
-- Use `aws-cdk-lib/aws-rds` for Aurora/RDS clusters.
-- Store credentials in AWS Secrets Manager (standard CDK behavior).
-- Ensure the database is placed in the `Db` subnet group.
+- **RDS**: Use Aurora PostgreSQL or RDS. Credentials are automatically managed via AWS Secrets Manager.
+- **ECS/Fargate**: Use `ApplicationLoadBalancedFargateService` for standard web APIs. Use `container.addEnvironment()` and `container.addSecret()` for configuration.
 
-### ECS/Fargate
+## 5. Gemini-Specific Workflow
 
-- Use `ApplicationLoadBalancedFargateService` or manual `FargateService` depending on the complexity.
-- Map environment variables from `settings.ts`.
+### Research & Strategy
 
-## 5. Testing Policy
+- **File Discovery**: Always check the `src/lib/` directory first for infrastructure logic.
+- **Context**: Read `src/bin/app.ts` to understand how environment variables map to stack properties.
 
-- **Assertions**: Use `Template.fromStack(stack)` and `template.hasResourceProperties()` to verify infrastructure.
-- **Fine-grained Tests**: Write tests for individual constructs in `lib/constructs/` when logic involves conditions or loops.
+### Execution
 
-## 6. Error Handling & Validation
+- **Atomic Changes**: Modify one construct at a time.
+- **Validation**: After modifying a construct, run `pnpm exec cdk synth` in the `src/` directory to ensure no synthesis errors.
+- **Test-Driven**: Update tests in `src/test/` concurrently with infrastructure changes.
 
-- **Input Validation**: Validate props in the construct constructor (e.g., checking CIDR formats or port ranges).
-- **Graceful Failures**: Provide sensible defaults for optional props using the `??` or `||` operators.
+### Security
 
-## 7. Security Best Practices
-
-- **No Secrets**: Never hardcode API keys, passwords, or tokens. Use `settings.ts` to map environment variables.
-- **Least Privilege**: Grant minimum required permissions for IAM roles.
-- **Encryption**: Enable encryption for RDS and S3 resources by default.
+- **No Secrets**: Never hardcode credentials. Use environment variables in `src/bin/app.ts` or CDK Secrets.
 
 ---
 
-_Note: This file is automatically generated for AI agents. Please update it if project conventions change._
+_Note: This file is optimized for AI agents. Update it when project patterns evolve._
