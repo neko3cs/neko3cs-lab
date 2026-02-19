@@ -28,7 +28,7 @@ export class DatabaseConstruct extends Construct {
       },
     });
 
-    const instanceProps: rds.ProvisionedClusterInstanceProps = {
+    const instanceProps: rds.ClusterInstanceProps = {
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MEDIUM),
     };
 
@@ -44,10 +44,12 @@ export class DatabaseConstruct extends Construct {
       credentials: rds.Credentials.fromGeneratedSecret('app_user'),
       parameterGroup,
       defaultDatabaseName: props.databaseName ?? 'app',
-      writer: rds.ClusterInstance.provisioned('Instance1', instanceProps),
+      writer: rds.ClusterInstance.serverlessV2('Instance1'),
       readers: [
-        rds.ClusterInstance.provisioned('Instance2', instanceProps),
+        rds.ClusterInstance.serverlessV2('Instance2'),
       ],
+      serverlessV2MinCapacity: 0.5,
+      serverlessV2MaxCapacity: 1,
       securityGroups: [props.securityGroup],
       monitoringInterval: cdk.Duration.minutes(1),
       cloudwatchLogsRetention: logs.RetentionDays.ONE_YEAR,
