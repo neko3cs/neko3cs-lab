@@ -28,10 +28,6 @@ export class DatabaseConstruct extends Construct {
       },
     });
 
-    const instanceProps: rds.ClusterInstanceProps = {
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MEDIUM),
-    };
-
     this.cluster = new rds.DatabaseCluster(this, 'Cluster', {
       vpc: props.vpc,
       subnetGroup: new rds.SubnetGroup(this, 'SubnetGroup', {
