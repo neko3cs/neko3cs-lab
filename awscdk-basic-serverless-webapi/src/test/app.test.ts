@@ -18,6 +18,17 @@ test('Infrastructure Resource Validation', () => {
     Engine: 'aurora-postgresql',
     EngineVersion: '17.7',
     DatabaseName: 'app',
+    EnableHttpEndpoint: true,
+    ServerlessV2ScalingConfiguration: {
+      MinCapacity: 0.5,
+      MaxCapacity: 1,
+    },
+  });
+
+  template.hasOutput('*', {
+    Export: {
+      Name: 'ApplicationUrl',
+    },
   });
 
   template.hasResourceProperties('AWS::ECS::TaskDefinition', {
