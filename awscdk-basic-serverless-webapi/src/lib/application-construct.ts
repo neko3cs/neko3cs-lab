@@ -77,6 +77,7 @@ export class ApplicationConstruct extends Construct {
 
     new cdk.CfnOutput(this, 'ApplicationUrl', {
       value: `http://${this.loadBalancer.loadBalancerDnsName}`,
+      exportName: 'ApplicationUrl',
     });
   }
 }
