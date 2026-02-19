@@ -14,6 +14,7 @@ export class NetworkConstruct extends Construct {
   public readonly albSecurityGroup: ec2.SecurityGroup;
   public readonly appSecurityGroup: ec2.SecurityGroup;
   public readonly dbSecurityGroup: ec2.SecurityGroup;
+  public readonly eicSecurityGroup: ec2.SecurityGroup;
 
   constructor(scope: Construct, id: string, props: NetworkConstructProps) {
     super(scope, id);
@@ -61,6 +62,12 @@ export class NetworkConstruct extends Construct {
       description: 'Security group for Database',
     });
 
+    this.eicSecurityGroup = new ec2.SecurityGroup(this, 'EicSG', {
+      vpc: this.vpc,
+      allowAllOutbound: true,
+      description: 'Security group for EC2 Instance Connect Endpoint',
+    });
+
     this.addEndpoints();
   }
 
@@ -76,6 +83,12 @@ export class NetworkConstruct extends Construct {
       ec2.Peer.securityGroupId(this.appSecurityGroup.securityGroupId),
       ec2.Port.tcp(5432),
       'Allow Application to access Database'
+    );
+
+    this.dbSecurityGroup.addIngressRule(
+      ec2.Peer.securityGroupId(this.eicSecurityGroup.securityGroupId),
+      ec2.Port.tcp(5432),
+      'Allow EIC Endpoint to access Database'
     );
   }
 
@@ -99,6 +112,11 @@ export class NetworkConstruct extends Construct {
         subnets: this.appSubnets,
         securityGroups: [this.appSecurityGroup],
       });
+    });
+
+    new ec2.CfnInstanceConnectEndpoint(this, 'EicEndpoint', {
+      subnetId: this.appSubnets.subnetIds[0],
+      securityGroupIds: [this.eicSecurityGroup.securityGroupId],
     });
   }
 }
