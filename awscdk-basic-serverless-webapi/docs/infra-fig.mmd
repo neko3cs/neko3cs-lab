@@ -1,5 +1,6 @@
 graph TD
     User([User])
+    Admin([Admin/Developer])
     subgraph VPC
         IGW[Internet Gateway]
         subgraph Public_Subnets[Public Subnets]
@@ -9,13 +10,18 @@ graph TD
             Fargate[ECS Fargate Service]
         end
         subgraph Db_Subnets[Db Subnets]
-            RDS[(Aurora PostgreSQL)]
+            RDS[(Aurora Serverless v2)]
         end
         subgraph VPCEndpoints[VPC Endpoints]
             ECR[ECR]
             Secrets[Secrets Manager]
             Logs[CloudWatch Logs]
+            SSM[SSM]
         end
+    end
+    
+    subgraph AWS_Console[AWS Management Console]
+        QueryEditor[RDS Query Editor]
     end
 
     User --> IGW
@@ -23,3 +29,6 @@ graph TD
     ALB --> Fargate
     Fargate --> RDS
     Fargate -.-> VPCEndpoints
+    
+    Admin --> QueryEditor
+    QueryEditor -- "Data API (HTTPS)" --> RDS
