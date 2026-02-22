@@ -63,12 +63,27 @@ public class OrmBenchmarks
         var _ = dbContext!.Person.ToList();
     }
 
+    [Benchmark(Description = "EntityFramework Core (from Model and AsNoTracking) - SELECT")]
+    public static void EfCoreModelAsNoTrackingBenchmark()
+    {
+        using var dbContext = new SampleDbContext(ConnectionString);
+        var _ = dbContext!.Person.AsNoTracking().ToList();
+    }
+
     [Benchmark(Description = "EntityFramework Core (from SQL) - SELECT")]
     public static void EfCoreRawSqlBenchmark()
     {
         using var dbContext = new SampleDbContext(ConnectionString);
         var _ = dbContext!.Person.FromSqlRaw("SELECT * FROM Person.Person").ToList();
     }
+
+    [Benchmark(Description = "EntityFramework Core (from SQL and AsNoTracking) - SELECT")]
+    public static void EfCoreRawSqlAsNoTrackingBenchmark()
+    {
+        using var dbContext = new SampleDbContext(ConnectionString);
+        var _ = dbContext!.Person.FromSqlRaw("SELECT * FROM Person.Person").AsNoTracking().ToList();
+    }
+
 
     [Benchmark(Description = "Dapper - SELECT")]
     public static void DapperBenchmark()
