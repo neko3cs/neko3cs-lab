@@ -1,0 +1,13 @@
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    container_name: adventureworks
+    ports:
+      - 1433:1433
+    volumes:
+      - type: bind
+        source: $PWD
+        target: /data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssword!
