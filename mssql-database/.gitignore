@@ -4,6 +4,7 @@
 ## Get latest from `dotnet new gitignore`
 
 # Additonal Settings
+AdventureWorks2025.bak
 AdventureWorksLT2022.bak
 
 # dotenv files
