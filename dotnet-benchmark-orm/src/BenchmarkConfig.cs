@@ -15,7 +15,7 @@ public class BenchmarkConfig : ManualConfig
     public BenchmarkConfig()
     {
         AddJob(Job.Default
-            .WithRuntime(CoreRuntime.Core90)
+            .WithRuntime(CoreRuntime.Core10_0)
             .WithToolchain(InProcessEmitToolchain.Instance)
             .WithGcServer(true)
             .WithGcConcurrent(true)
