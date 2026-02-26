@@ -4,6 +4,7 @@ param adminUsername string
 @secure()
 param adminPassword string
 param OSVersion string
+param isDesktop bool = false
 param vmSize string
 param vmName string
 @maxLength(15)
@@ -24,6 +25,7 @@ var virtualNetworkName = '${vmName}-VNET'
 var bastionPublicIpName = '${vmName}-BastionPublicIP'
 var bastionPublicIPAllocationMethod = 'Static'
 var bastionPublicIpSku = 'Standard'
+var securityType = isDesktop ? 'Standard' : 'TrustedLaunch'
 var securityProfileJson = {
   uefiSettings: {
     secureBootEnabled: true
@@ -36,7 +38,6 @@ var extensionPublisher = 'Microsoft.Azure.Security.WindowsAttestation'
 var extensionVersion = '1.0'
 var maaTenantName = 'GuestAttestation'
 var maaEndpoint = substring('emptyString', 0, 0)
-var securityType = 'TrustedLaunch'
 
 // Resources ----------------------------------------------------------------------------------------------------------
 resource bootDiagStorageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
@@ -117,12 +118,19 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
       adminPassword: adminPassword
     }
     storageProfile: {
-      imageReference: {
-        publisher: 'MicrosoftWindowsServer'
-        offer: 'WindowsServer'
-        sku: OSVersion
-        version: 'latest'
-      }
+      imageReference: isDesktop
+        ? {
+            publisher: 'MicrosoftWindowsDesktop'
+            offer: 'Windows-11'
+            sku: OSVersion
+            version: 'latest'
+          }
+        : {
+            publisher: 'MicrosoftWindowsServer'
+            offer: 'WindowsServer'
+            sku: OSVersion
+            version: 'latest'
+          }
       osDisk: {
         createOption: 'FromImage'
         managedDisk: {
