@@ -1,29 +1,31 @@
 #Requires -PSEdition Core
 $ErrorActionPreference = 'Stop'
 
-$Environ = Get-Content -Path .env | ConvertFrom-StringData
-$ResourceGroup = $Environ.RESOURCE_GROUP
-$Location = $Environ.LOCATION
+$ResourceGroup = "rg-azurevm-dev-japaneast-001"
+$Location = "japaneast"
+$AdminUsername = "azureuser"
+$AdminPassword = "P@ssword!123"
+$OSVersion = "2022-datacenter-g2"
+$IsDesktop = $false
+# $OSVersion = "win11-25h2-pro"
+# $IsDesktop = $true
+$VMSize = "Standard_D2s_v5"
+$VMName = "azurevm-dev-001"
+$ComputerName = "AZUREVM-DEV-001"
+$DiskSizeGB = 256
 
-$VirtualMachineParameters = @{
-  "adminUsername" = @{ "value" = [string]$Environ.ADMIN_USERNAME };
-  "adminPassword" = @{ "value" = [string]$Environ.ADMIN_PASSWORD };
-  "OSVersion"     = @{ "value" = [string]$Environ.OS_VERSION };
-  "vmSize"        = @{ "value" = [string]$Environ.VM_SIZE };
-  "vmName"        = @{ "value" = [string]$Environ.VM_NAME };
-  "computerName"  = @{ "value" = [string]$Environ.COMPUTER_NAME };
-  "diskSizeGB"    = @{ "value" = [int]$Environ.DISK_SIZE_GB };
-} |
-ConvertTo-Json -Compress |
-ForEach-Object { $_ -replace '"', '\"' }
-
-az group create `
-  --name $ResourceGroup `
-  --location $Location `
-  --output table
+az group create --name $ResourceGroup --location $Location --output table
 
 az deployment group create `
   --resource-group $ResourceGroup `
   --template-file ./CreateWindowsServerVirtualMachine.bicep `
-  --parameters $VirtualMachineParameters `
+  --parameters `
+  adminUsername=$AdminUsername `
+  adminPassword=$AdminPassword `
+  OSVersion=$OSVersion `
+  isDesktop=$IsDesktop `
+  vmSize=$VMSize `
+  vmName=$VMName `
+  computerName=$ComputerName `
+  diskSizeGB=$DiskSizeGB `
   --output table

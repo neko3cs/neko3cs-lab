@@ -4,23 +4,26 @@ Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルで
 
 ## デプロイ方法
 
-### 1. 設定ファイルの作成
+### 1. 設定の見直し
 
-`Deploy-VirtualMachine.ps1` と同一階層のフォルダーに以下内容の `.env` ファイルを作成する。
+`Deploy-VirtualMachine.ps1` を開き、設定用変数を見直す。
 
-`{}` で囲われた部分は適宜、用途に合わせて修正する。
+デフォルト値は以下の通り。
 
-```.env
-RESOURCE_GROUP={YourResourceGroupName}
-LOCATION=japaneast
-ADMIN_USERNAME={YourAdminUserName}
-ADMIN_PASSWORD={YourAdminUserPassword}
-OS_VERSION={OSVersionDefinedByAzure}
-VM_SIZE={VMSizeDefinedByAzure}
-VM_NAME={YourVirtualMachineName}
-COMPUTER_NAME={YourComputerNameOfServer}
-DISK_SIZE_GB={CDriveSize}
 ```
+$ResourceGroup = "rg-azurevm-dev-japaneast-001"
+$Location = "japaneast"
+$AdminUsername = "azureuser"
+$AdminPassword = "P@ssword!123"
+$OSVersion = "2022-datacenter-g2"
+$IsDesktop = $false
+$VMSize = "Standard_D2s_v5"
+$VMName = "vm-azurevm-dev-001"
+$ComputerName = "VM-AZUREVM-DEV-001"
+$DiskSizeGB = 256
+```
+
+`$IsDesktop` を `$true` にし、 `$OSVersion` をWindows 11のものに変更すれば、Windows 11として起動できる。
 
 ### 2. 仮想マシンのデプロイ
 
@@ -49,7 +52,7 @@ DISK_SIZE_GB={CDriveSize}
 
 Azure Bastionを利用してログインする。
 
-Azure BastionはAzure Portalから作成したVirtual Machineを開き、[概要] > [接続] > [Bastion]からログインする。
+Azure BastionはAzure Portalから作成したVirtual Machineを開き、`[概要] > [接続] > [Bastion]`からログインする。
 
 ログインに成功すると操作用のタブが開く。
 
@@ -87,14 +90,14 @@ az vm list-sizes --location japaneast | ConvertFrom-Json | where numberOfCores -
 
 設定できる条件は以下のとおりです。
 
-|パラメーター|値|
-|--|--|
-|name|VMサイズの名前|
-|numberOfCores|CPUコア数|
-|osDiskSizeInMb|OSディスクのサイズ（MB）|
-|resourceDiskSizeInMb|リソースディスクのサイズ（MB）|
-|memoryInMb|メモリサイズ（MB）|
-|maxDataDiskCount|データディスクの最大数|
+| パラメーター         | 値                             |
+| -------------------- | ------------------------------ |
+| name                 | VMサイズの名前                 |
+| numberOfCores        | CPUコア数                      |
+| osDiskSizeInMb       | OSディスクのサイズ（MB）       |
+| resourceDiskSizeInMb | リソースディスクのサイズ（MB） |
+| memoryInMb           | メモリサイズ（MB）             |
+| maxDataDiskCount     | データディスクの最大数         |
 
 ### COMPUTER_NAME
 
