@@ -38,6 +38,14 @@ function createWindow(): void {
 function configureIpcHandlers(): void {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.on('say-hello', (_event, name = 'World') => {
+    console.log(`Hello, ${name}!`)
+  })
+
+  ipcMain.on('print-user', (_event, user: { name: string; age: number }) => {
+    console.log(`${user.name} age is ${user.age}!`)
+  })
 }
 
 // This method will be called when Electron has finished
