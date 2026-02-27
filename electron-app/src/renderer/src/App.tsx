@@ -2,8 +2,6 @@ import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
 
 function App(): React.JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-
   return (
     <>
       <img alt="logo" className="logo" src={electronLogo} />
@@ -22,7 +20,7 @@ function App(): React.JSX.Element {
           </a>
         </div>
         <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
+          <a target="_blank" rel="noreferrer" onClick={window.api.ping}>
             Send IPC
           </a>
         </div>
