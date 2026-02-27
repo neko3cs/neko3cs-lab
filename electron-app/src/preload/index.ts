@@ -3,7 +3,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-  ping: (): void => ipcRenderer.send('ping')
+  ping: (): void => ipcRenderer.send('ping'),
+  sayHello: (name?: string) => ipcRenderer.send('say-hello', name),
+  printUser: (user: { name: string; age: number }) => ipcRenderer.send('print-user', user)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
