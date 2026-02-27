@@ -1,0 +1,8 @@
+{
+"track_id": "component_refactoring_20260227",
+"type": "feature",
+"status": "new",
+"created_at": "2026-02-27T13:23:54Z",
+"updated_at": "2026-02-27T13:23:54Z",
+"description": "コンポーネント分割：実装した機能を壊さないように、コード管理しやすい可読性の高いコンポーネント分割をおこないます"
+}

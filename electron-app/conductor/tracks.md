@@ -16,3 +16,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [ ] **Track: ロジックの実装：メモ帳としての機能を実装していきます。まだ、コンポーネント化はしません。**
   *Link: [./tracks/logic_implementation_20260227/](./tracks/logic_implementation_20260227/)*
+
+---
+
+- [ ] **Track: コンポーネント分割：実装した機能を壊さないように、コード管理しやすい可読性の高いコンポーネント分割をおこないます**
+  *Link: [./tracks/component_refactoring_20260227/](./tracks/component_refactoring_20260227/)*
