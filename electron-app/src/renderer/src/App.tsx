@@ -24,6 +24,20 @@ function App(): React.JSX.Element {
             Send IPC
           </a>
         </div>
+        <div className="action">
+          <a target="_blank" rel="noreferrer" onClick={() => window.api.sayHello('Electron')}>
+            Say Hello
+          </a>
+        </div>
+        <div className="action">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => window.api.printUser({ name: 'Alice', age: 30 })}
+          >
+            Print User
+          </a>
+        </div>
       </div>
       <Versions></Versions>
     </>
