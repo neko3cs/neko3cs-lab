@@ -65,6 +65,26 @@ function configureIpcHandlers(): void {
       event.sender.send('file-open-error', err.message)
     }
   })
+
+  ipcMain.on('save-file', async (event, { content, filePath }) => {
+    try {
+      let targetPath = filePath
+      if (!targetPath) {
+        const result = await dialog.showSaveDialog({
+          filters: [{ name: 'Text Files', extensions: ['txt', 'md'] }]
+        })
+        if (result.canceled) return
+        targetPath = result.filePath
+      }
+      if (targetPath) {
+        await fs.writeFile(targetPath, content, { encoding: 'utf8' })
+        event.sender.send('file-saved', targetPath)
+      }
+    } catch (err) {
+      console.error('Failed to save file:', err)
+      event.sender.send('file-save-error', err.message)
+    }
+  })
 }
 
 // This method will be called when Electron has finished
