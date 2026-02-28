@@ -1,6 +1,6 @@
 # Plan: 基本的なファイル操作の実装
 
-## フェーズ 1: ファイル読み込み機能の実現
+## フェーズ 1: ファイル読み込み機能の実現 [checkpoint: fb9280d]
 
 - [x] Task: `ipcMain.on` ハンドラの準備 (f96f8eb)
     - [ ] メインプロセス (`main/index.ts`) にて、ファイルのオープン要求 (`open-file`) をリッスンする`ipcMain.on`ハンドラを定義する。
@@ -12,7 +12,7 @@
 - [x] Task: レンダラープロセスからのファイルオープン呼び出し (f96f8eb)
     - [ ] レンダラープロセス (`renderer/src/App.tsx`など) に、`ipcRenderer.invoke('open-file')`を呼び出すボタンまたはメニュー項目を実装する。
     - [ ] 返されたファイル内容をReactのステートに保存し、エディタコンポーネントに表示する。
-- [ ] Task: Conductor - User Manual Verification 'ファイル読み込み機能の実現' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'ファイル読み込み機能の実現' (Protocol in workflow.md)
 
 ## フェーズ 2: テキスト編集と新規保存機能の実装
 
