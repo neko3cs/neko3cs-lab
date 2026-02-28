@@ -5,7 +5,7 @@
 - [x] Task: Tailwind CSSのセットアップと基本設定 (5ff410a)
     - [ ] `postcss.config.js`と`tailwind.config.js`を作成し、プロジェクトにTailwind CSSを統合する。
     - [ ] `main.css`にTailwind CSSの`@tailwind`ディレクティブをインポートする。
-- [ ] Task: メインウィンドウの基本レイアウト定義
+- [x] Task: メインウィンドウの基本レイアウト定義 (add3f89)
     - [ ] `App.tsx`に、アプリケーションのルートとなる`div`要素を作成する。
     - [ ] その`div`要素内に、メニューバー、エディタ領域、ステータスバーのプレースホルダーとなる要素（例: `header`, `main`, `footer`タグなど）を配置する。
     - [ ] Tailwind CSSを使用して、これらの要素が画面上で適切に配置されるように基本的なスタイルを適用する。
