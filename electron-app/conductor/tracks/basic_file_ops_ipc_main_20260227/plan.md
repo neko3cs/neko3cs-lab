@@ -24,7 +24,7 @@
 - [x] Task: ファイル書き込みロジックの実装 (20b2912)
     - [ ] `ipcMain.on`ハンドラ内で、Node.jsの`fs`モジュールを使用してレンダラープロセスから受け取った内容を指定されたファイルに非同期で書き込む。
     - [ ] 書き込みの成功または失敗をレンダラープロセスに安全に返送する。
-- [ ] Task: レンダラープロセスからのファイル保存呼び出し
+- [x] Task: レンダラープロセスからのファイル保存呼び出し (aa11d3e)
     - [ ] レンダラープロセス (`renderer/src/App.tsx`など) に、`ipcRenderer.invoke('save-file', content, filePath)`を呼び出すボタンまたはメニュー項目を実装する。
     - [ ] 保存が成功した場合のUIフィードバック（例: 「保存しました」メッセージ）を表示する。
 - [ ] Task: Conductor - User Manual Verification 'テキスト編集と新規保存機能の実装' (Protocol in workflow.md)
