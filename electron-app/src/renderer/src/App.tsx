@@ -60,11 +60,11 @@ function App(): React.JSX.Element {
         </div>
       </div>
       {filePath && <p>Opened file: {filePath}</p>}
-      {fileContent && (
+      {fileContent !== undefined && (
         <textarea
           style={{ width: '80%', height: '200px', marginTop: '20px' }}
           value={fileContent}
-          readOnly
+          onChange={(e) => setFileContent(e.target.value)}
         ></textarea>
       )}
       <Versions></Versions>
