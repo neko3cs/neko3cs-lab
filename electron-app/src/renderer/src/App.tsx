@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
 
 function App(): React.JSX.Element {
   const [fileContent, setFileContent] = useState<string>('')
@@ -32,48 +31,51 @@ function App(): React.JSX.Element {
   }
 
   return (
-    <>
-      <img alt="logo" className="logo" src={electronLogo} />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-        &nbsp;and <span className="ts">TypeScript</span>
-      </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
+    <div className="flex flex-col h-screen bg-gray-50 text-gray-900">
+      {/* Menu Bar Placeholder */}
+      <header className="flex items-center px-4 h-12 bg-white border-b border-gray-200 shadow-sm">
+        <div className="flex space-x-4">
+          <button
+            onClick={handleNewFile}
+            className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            New
+          </button>
+          <button
+            onClick={handleOpenFile}
+            className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            Open
+          </button>
+          <button
+            onClick={handleSaveFile}
+            className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            Save
+          </button>
         </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={handleNewFile}>
-            New File
-          </a>
+      </header>
+
+      {/* Editor Area Placeholder */}
+      <main className="flex-1 overflow-hidden p-4">
+        <div className="h-full w-full bg-white rounded-lg border border-gray-200 shadow-inner p-4">
+          <textarea
+            className="w-full h-full resize-none focus:outline-none text-lg leading-relaxed"
+            placeholder="Start typing your notes here..."
+            value={fileContent}
+            onChange={(e) => setFileContent(e.target.value)}
+          ></textarea>
         </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={handleOpenFile}>
-            Open File
-          </a>
+      </main>
+
+      {/* Status Bar Placeholder */}
+      <footer className="flex items-center px-4 h-8 bg-gray-100 border-t border-gray-200 text-xs text-gray-500">
+        <div className="flex-1 truncate">{filePath ? `File: ${filePath}` : 'New File'}</div>
+        <div className="flex items-center space-x-4">
+          <Versions />
         </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={handleSaveFile}>
-            Save File
-          </a>
-        </div>
-      </div>
-      {filePath ? <p>File: {filePath}</p> : <p>New File</p>}
-      {fileContent !== undefined && (
-        <textarea
-          className="w-4/5 h-[200px] mt-5 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={fileContent}
-          onChange={(e) => setFileContent(e.target.value)}
-        ></textarea>
-      )}
-      <Versions></Versions>
-    </>
+      </footer>
+    </div>
   )
 }
 
