@@ -28,3 +28,6 @@
     - [ ] レンダラープロセス (`renderer/src/App.tsx`など) に、`ipcRenderer.invoke('save-file', content, filePath)`を呼び出すボタンまたはメニュー項目を実装する。
     - [ ] 保存が成功した場合のUIフィードバック（例: 「保存しました」メッセージ）を表示する。
 - [x] Task: Conductor - User Manual Verification 'テキスト編集と新規保存機能の実装' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (b564648)
