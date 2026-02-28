@@ -14,7 +14,7 @@
     - [ ] 返されたファイル内容をReactのステートに保存し、エディタコンポーネントに表示する。
 - [x] Task: Conductor - User Manual Verification 'ファイル読み込み機能の実現' (Protocol in workflow.md)
 
-## フェーズ 2: テキスト編集と新規保存機能の実装
+## フェーズ 2: テキスト編集と新規保存機能の実装 [checkpoint: f53544e]
 
 - [x] Task: エディタコンポーネントの準備 (37e81df)
     - [ ] テキスト内容を保持し、変更をリアルタイムで反映するReactのエディタコンポーネントを実装する。
@@ -27,4 +27,4 @@
 - [x] Task: レンダラープロセスからのファイル保存呼び出し (aa11d3e)
     - [ ] レンダラープロセス (`renderer/src/App.tsx`など) に、`ipcRenderer.invoke('save-file', content, filePath)`を呼び出すボタンまたはメニュー項目を実装する。
     - [ ] 保存が成功した場合のUIフィードバック（例: 「保存しました」メッセージ）を表示する。
-- [ ] Task: Conductor - User Manual Verification 'テキスト編集と新規保存機能の実装' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'テキスト編集と新規保存機能の実装' (Protocol in workflow.md)
