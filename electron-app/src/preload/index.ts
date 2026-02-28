@@ -9,6 +9,11 @@ const api = {
   openFile: (): void => ipcRenderer.send('open-file'),
   onFileOpened: (callback: (filePath: string, content: string) => void) => {
     ipcRenderer.on('file-opened', (_event, { filePath, content }) => callback(filePath, content))
+  },
+  saveFile: (content: string, filePath?: string): void =>
+    ipcRenderer.send('save-file', { content, filePath }),
+  onFileSaved: (callback: (filePath: string) => void) => {
+    ipcRenderer.on('file-saved', (_event, filePath) => callback(filePath))
   }
 }
 

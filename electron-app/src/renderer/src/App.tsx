@@ -11,10 +11,24 @@ function App(): React.JSX.Element {
       setFilePath(newFilePath)
       setFileContent(content)
     })
+
+    window.api.onFileSaved((savedPath) => {
+      setFilePath(savedPath)
+      alert(`File saved to: ${savedPath}`)
+    })
   }, [])
 
   const handleOpenFile = () => {
     window.api.openFile()
+  }
+
+  const handleSaveFile = () => {
+    window.api.saveFile(fileContent, filePath)
+  }
+
+  const handleNewFile = () => {
+    setFilePath('')
+    setFileContent('')
   }
 
   return (
@@ -35,22 +49,8 @@ function App(): React.JSX.Element {
           </a>
         </div>
         <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={window.api.ping}>
-            Send IPC
-          </a>
-        </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={() => window.api.sayHello('Electron')}>
-            Say Hello
-          </a>
-        </div>
-        <div className="action">
-          <a
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => window.api.printUser({ name: 'Alice', age: 30 })}
-          >
-            Print User
+          <a target="_blank" rel="noreferrer" onClick={handleNewFile}>
+            New File
           </a>
         </div>
         <div className="action">
@@ -58,8 +58,13 @@ function App(): React.JSX.Element {
             Open File
           </a>
         </div>
+        <div className="action">
+          <a target="_blank" rel="noreferrer" onClick={handleSaveFile}>
+            Save File
+          </a>
+        </div>
       </div>
-      {filePath && <p>Opened file: {filePath}</p>}
+      {filePath ? <p>File: {filePath}</p> : <p>New File</p>}
       {fileContent !== undefined && (
         <textarea
           style={{ width: '80%', height: '200px', marginTop: '20px' }}
