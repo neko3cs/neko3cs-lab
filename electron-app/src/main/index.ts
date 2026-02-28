@@ -1,4 +1,5 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
+import * as fs from 'fs/promises'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -45,6 +46,24 @@ function configureIpcHandlers(): void {
 
   ipcMain.on('print-user', (_event, user: { name: string; age: number }) => {
     console.log(`${user.name} age is ${user.age}!`)
+  })
+
+  ipcMain.on('open-file', async (event) => {
+    try {
+      const result = await dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [{ name: 'Text Files', extensions: ['txt', 'md'] }]
+      })
+
+      if (!result.canceled && result.filePaths.length > 0) {
+        const filePath = result.filePaths[0]
+        const content = await fs.readFile(filePath, { encoding: 'utf8' })
+        event.sender.send('file-opened', { filePath, content })
+      }
+    } catch (err) {
+      console.error('Failed to open file:', err)
+      event.sender.send('file-open-error', err.message)
+    }
   })
 }
 

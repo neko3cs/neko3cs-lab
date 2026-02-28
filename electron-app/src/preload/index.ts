@@ -5,7 +5,11 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   ping: (): void => ipcRenderer.send('ping'),
   sayHello: (name?: string) => ipcRenderer.send('say-hello', name),
-  printUser: (user: { name: string; age: number }) => ipcRenderer.send('print-user', user)
+  printUser: (user: { name: string; age: number }) => ipcRenderer.send('print-user', user),
+  openFile: (): void => ipcRenderer.send('open-file'),
+  onFileOpened: (callback: (filePath: string, content: string) => void) => {
+    ipcRenderer.on('file-opened', (_event, { filePath, content }) => callback(filePath, content))
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

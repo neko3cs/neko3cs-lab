@@ -1,7 +1,22 @@
+import { useState, useEffect } from 'react'
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
 
 function App(): React.JSX.Element {
+  const [fileContent, setFileContent] = useState<string>('')
+  const [filePath, setFilePath] = useState<string>('')
+
+  useEffect(() => {
+    window.api.onFileOpened((newFilePath, content) => {
+      setFilePath(newFilePath)
+      setFileContent(content)
+    })
+  }, [])
+
+  const handleOpenFile = () => {
+    window.api.openFile()
+  }
+
   return (
     <>
       <img alt="logo" className="logo" src={electronLogo} />
@@ -38,7 +53,20 @@ function App(): React.JSX.Element {
             Print User
           </a>
         </div>
+        <div className="action">
+          <a target="_blank" rel="noreferrer" onClick={handleOpenFile}>
+            Open File
+          </a>
+        </div>
       </div>
+      {filePath && <p>Opened file: {filePath}</p>}
+      {fileContent && (
+        <textarea
+          style={{ width: '80%', height: '200px', marginTop: '20px' }}
+          value={fileContent}
+          readOnly
+        ></textarea>
+      )}
       <Versions></Versions>
     </>
   )
