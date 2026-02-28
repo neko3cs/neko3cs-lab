@@ -2,14 +2,14 @@
 
 ## フェーズ 1: ファイル読み込み機能の実現
 
-- [ ] Task: `ipcMain.on` ハンドラの準備
+- [x] Task: `ipcMain.on` ハンドラの準備 (f96f8eb)
     - [ ] メインプロセス (`main/index.ts`) にて、ファイルのオープン要求 (`open-file`) をリッスンする`ipcMain.on`ハンドラを定義する。
     - [ ] ハンドラ内で`dialog.showOpenDialog`を呼び出し、ユーザーにファイル選択を促す。
     - [ ] 選択されたファイルのパスを返す。
-- [ ] Task: ファイル読み込みロジックの実装
+- [x] Task: ファイル読み込みロジックの実装 (f96f8eb)
     - [ ] `ipcMain.on`ハンドラ内で、Node.jsの`fs`モジュールを使用して選択されたファイルを非同期で読み込む。
     - [ ] 読み込んだファイルの内容をレンダラープロセスに安全に返送する。
-- [ ] Task: レンダラープロセスからのファイルオープン呼び出し
+- [x] Task: レンダラープロセスからのファイルオープン呼び出し (f96f8eb)
     - [ ] レンダラープロセス (`renderer/src/App.tsx`など) に、`ipcRenderer.invoke('open-file')`を呼び出すボタンまたはメニュー項目を実装する。
     - [ ] 返されたファイル内容をReactのステートに保存し、エディタコンポーネントに表示する。
 - [ ] Task: Conductor - User Manual Verification 'ファイル読み込み機能の実現' (Protocol in workflow.md)
