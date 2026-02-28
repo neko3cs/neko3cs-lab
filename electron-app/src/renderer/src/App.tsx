@@ -67,7 +67,7 @@ function App(): React.JSX.Element {
       {filePath ? <p>File: {filePath}</p> : <p>New File</p>}
       {fileContent !== undefined && (
         <textarea
-          style={{ width: '80%', height: '200px', marginTop: '20px' }}
+          className="w-4/5 h-[200px] mt-5 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={fileContent}
           onChange={(e) => setFileContent(e.target.value)}
         ></textarea>
