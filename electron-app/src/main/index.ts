@@ -62,7 +62,8 @@ function configureIpcHandlers(): void {
       }
     } catch (err) {
       console.error('Failed to open file:', err)
-      event.sender.send('file-open-error', err.message)
+      const errorMessage = err instanceof Error ? err.message : String(err)
+      event.sender.send('file-open-error', errorMessage)
     }
   })
 
@@ -82,7 +83,8 @@ function configureIpcHandlers(): void {
       }
     } catch (err) {
       console.error('Failed to save file:', err)
-      event.sender.send('file-save-error', err.message)
+      const errorMessage = err instanceof Error ? err.message : String(err)
+      event.sender.send('file-save-error', errorMessage)
     }
   })
 }
