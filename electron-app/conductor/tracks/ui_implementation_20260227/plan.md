@@ -2,7 +2,7 @@
 
 ## フェーズ 1: 基本UIレイアウトの構築
 
-- [ ] Task: Tailwind CSSのセットアップと基本設定
+- [x] Task: Tailwind CSSのセットアップと基本設定 (5ff410a)
     - [ ] `postcss.config.js`と`tailwind.config.js`を作成し、プロジェクトにTailwind CSSを統合する。
     - [ ] `main.css`にTailwind CSSの`@tailwind`ディレクティブをインポートする。
 - [ ] Task: メインウィンドウの基本レイアウト定義
