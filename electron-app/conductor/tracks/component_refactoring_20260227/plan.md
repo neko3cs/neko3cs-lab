@@ -6,7 +6,7 @@
     - [ ] `src/components`ディレクトリを作成し、コンポーネントのルートとする。
 - [x] Task: グローバルスタイルとTailwind CSSの調整 (48b0339)
     - [ ] アトムコンポーネントに影響しない範囲で、グローバルなCSS設定を調整し、Tailwind CSSが適切に機能するようにする。
-- [~] Task: アトムコンポーネントの抽出とテスト
+- [x] Task: アトムコンポーネントの抽出とテスト (86d8005)
     - [ ] `App.tsx`から、再利用可能な最小単位のUI要素（例: ボタン、入力フィールド、アイコン）をアトムコンポーネントとして抽出し、`src/components/atoms`に配置する。
     - [ ] 各アトムコンポーネントに対して、基本的な表示とインタラクションを検証するユニットテスト（Storybookなど）を実装する。
 - [ ] Task: Conductor - User Manual Verification 'ファイル構成とアトムコンポーネントの抽出' (Protocol in workflow.md)
