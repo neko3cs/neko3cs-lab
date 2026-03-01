@@ -18,5 +18,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: Fix remaining ESLint warnings in src/main/__mocks__/electron.ts**
-  *Link: [./tracks/fix_eslint_warnings_20260301/](./tracks/fix_eslint_warnings_20260301/)*
