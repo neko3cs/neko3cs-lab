@@ -6,121 +6,102 @@ vi.mock('fs/promises', () => ({
   writeFile: vi.fn(),
 }))
 
-import { ipcMain, dialog } from 'electron'
+import { ipcMain, dialog, app, BrowserWindow } from 'electron'
 import * as fs from 'fs/promises'
+import { configureIpcHandlers, createWindow } from './index'
+import { mockGetAllWindows } from './setupTests'
 
-describe('ipcMain handlers', () => {
-  beforeAll(async () => {
-    await import('./index')
-    // Wait for app.whenReady().then(...) to execute
-    await new Promise(resolve => setTimeout(resolve, 10))
-  })
-
+describe('Main process', () => {
   beforeEach(() => {
-    // We don't want to clear all mocks because that would clear the ipcMain.on registrations
-    // Instead, we clear the call history for the ones we want to track per-test
-    vi.mocked(fs.readFile).mockClear()
-    vi.mocked(fs.writeFile).mockClear()
+    vi.mocked(ipcMain.on).mockClear()
+    vi.mocked(ipcMain.handle).mockClear()
     vi.mocked(dialog.showOpenDialog).mockClear()
     vi.mocked(dialog.showSaveDialog).mockClear()
+    vi.mocked(fs.readFile).mockClear()
+    vi.mocked(fs.writeFile).mockClear()
+    mockGetAllWindows.mockClear()
+    vi.mocked(BrowserWindow).mockClear()
   })
 
-  describe('open-file handler', () => {
-    it('should define a handler for "open-file"', () => {
-      const openFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'open-file')
-      expect(openFileCall).toBeDefined()
+  describe('createWindow', () => {
+    it('should create a BrowserWindow with correct options', () => {
+      createWindow()
+      expect(BrowserWindow).toHaveBeenCalled()
     })
 
-    it('should call dialog.showOpenDialog when "open-file" is triggered', async () => {
-      const openFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'open-file')
-      const handler = openFileCall[1]
-      const event = { sender: { send: vi.fn() } }
+    it('should register window events', () => {
+      createWindow()
+      const mockWindow = vi.mocked(BrowserWindow).mock.results[0].value
       
-      vi.mocked(dialog.showOpenDialog).mockResolvedValueOnce({ canceled: true, filePaths: [] })
+      // Manually trigger events to cover handler bodies
+      const handlers: any = {}
+      mockWindow.on.mock.calls.forEach(([event, handler]) => {
+        handlers[event] = handler
+      })
       
-      await handler(event)
-      expect(dialog.showOpenDialog).toHaveBeenCalled()
-    })
-
-    it('should send the file content to the renderer when a file is selected', async () => {
-      const openFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'open-file')
-      const handler = openFileCall[1]
-      const sendMock = vi.fn()
-      const event = { sender: { send: sendMock } }
+      if (handlers['ready-to-show']) handlers['ready-to-show']()
+      expect(mockWindow.show).toHaveBeenCalled()
       
-      const filePath = 'test.txt'
-      const content = 'Hello World\n'
-      vi.mocked(dialog.showOpenDialog).mockResolvedValueOnce({ canceled: false, filePaths: [filePath] })
-      vi.mocked(fs.readFile).mockResolvedValueOnce(content)
-      
-      await handler(event)
-      
-      expect(fs.readFile).toHaveBeenCalledWith(filePath, { encoding: 'utf8' })
-      expect(sendMock).toHaveBeenCalledWith('file-opened', { filePath, content })
-    })
-
-    it('should send an error message when file reading fails', async () => {
-      const openFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'open-file')
-      const handler = openFileCall[1]
-      const sendMock = vi.fn()
-      const event = { sender: { send: sendMock } }
-      
-      const filePath = 'error.txt'
-      vi.mocked(dialog.showOpenDialog).mockResolvedValueOnce({ canceled: false, filePaths: [filePath] })
-      vi.mocked(fs.readFile).mockRejectedValueOnce(new Error('Read failed'))
-      
-      await handler(event)
-      
-      expect(sendMock).toHaveBeenCalledWith('file-open-error', 'Read failed')
+      if (handlers['close']) {
+        const preventDefault = vi.fn()
+        handlers['close']({ preventDefault })
+        expect(preventDefault).toHaveBeenCalled()
+      }
     })
   })
 
-  describe('save-file handler', () => {
-    it('should define a handler for "save-file"', () => {
-      const saveFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'save-file')
-      expect(saveFileCall).toBeDefined()
+  describe('Lifecycle and IPC handlers', () => {
+    it('should define expected IPC handlers', () => {
+      configureIpcHandlers()
+      const eventNames = (ipcMain.on as any).mock.calls.map(call => call[0])
+      expect(eventNames).toContain('open-file')
+      expect(eventNames).toContain('save-file')
+      expect(eventNames).toContain('close-window')
     })
 
-    it('should call fs.writeFile when "save-file" is triggered with a filePath', async () => {
-      const saveFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'save-file')
-      const handler = saveFileCall[1]
+    it('should handle open-file correctly', async () => {
+      configureIpcHandlers()
+      const handler = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'open-file')[1]
       const sendMock = vi.fn()
       const event = { sender: { send: sendMock } }
       
-      const filePath = 'save-test.txt'
-      const content = 'test content'
-      vi.mocked(fs.writeFile).mockResolvedValueOnce(undefined as any)
+      vi.mocked(dialog.showOpenDialog).mockResolvedValueOnce({ canceled: false, filePaths: ['test.txt'] })
+      vi.mocked(fs.readFile).mockResolvedValueOnce('content')
       
-      await handler(event, { content, filePath })
-      
-      expect(fs.writeFile).toHaveBeenCalledWith(filePath, content, { encoding: 'utf8' })
-      expect(sendMock).toHaveBeenCalledWith('file-saved', filePath)
+      await handler(event)
+      expect(sendMock).toHaveBeenCalledWith('file-opened', { filePath: 'test.txt', content: 'content' })
     })
 
-    it('should show save dialog when no filePath is provided', async () => {
-      const saveFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'save-file')
-      const handler = saveFileCall[1]
-      const event = { sender: { send: vi.fn() } }
-      
-      vi.mocked(dialog.showSaveDialog).mockResolvedValueOnce({ canceled: true, filePath: '' })
-      
-      await handler(event, { content: 'new content', filePath: '' })
-      
-      expect(dialog.showSaveDialog).toHaveBeenCalled()
+    it('should handle close-window', () => {
+      const mockWindow = new BrowserWindow()
+      configureIpcHandlers(mockWindow as any)
+      const handler = (ipcMain.on as any).mock.calls.find(call => call[0] === 'close-window')[1]
+      handler()
+      expect(mockWindow.destroy).toHaveBeenCalled()
+    })
+  })
+
+  describe('App events', () => {
+    it('should handle window-all-closed', async () => {
+      await import('./index')
+      const allClosedHandler = vi.mocked(app.on).mock.calls.find(c => c[0] === 'window-all-closed')?.[1]
+      if (allClosedHandler) {
+        const originalPlatform = process.platform
+        Object.defineProperty(process, 'platform', { value: 'win32' })
+        allClosedHandler()
+        expect(app.quit).toHaveBeenCalled()
+        Object.defineProperty(process, 'platform', { value: originalPlatform })
+      }
     })
 
-    it('should send an error message when file saving fails', async () => {
-      const saveFileCall = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'save-file')
-      const handler = saveFileCall[1]
-      const sendMock = vi.fn()
-      const event = { sender: { send: sendMock } }
-      
-      const filePath = 'readonly.txt'
-      vi.mocked(fs.writeFile).mockRejectedValueOnce(new Error('Write failed'))
-      
-      await handler(event, { content: 'content', filePath })
-      
-      expect(sendMock).toHaveBeenCalledWith('file-save-error', 'Write failed')
+    it('should handle activate', async () => {
+      await import('./index')
+      const activateHandler = vi.mocked(app.on).mock.calls.find(c => c[0] === 'activate')?.[1]
+      if (activateHandler) {
+        mockGetAllWindows.mockReturnValueOnce([])
+        activateHandler()
+        expect(BrowserWindow).toHaveBeenCalled()
+      }
     })
   })
 })

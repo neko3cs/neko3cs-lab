@@ -4,9 +4,11 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-function createWindow(): void {
+let mainWindow: BrowserWindow | null = null
+
+export function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
@@ -19,16 +21,14 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+    if (mainWindow) mainWindow.show()
   })
 
   mainWindow.on('close', (e) => {
-    e.preventDefault()
-    mainWindow.webContents.send('check-for-unsaved-changes')
-  })
-
-  ipcMain.on('close-window', () => {
-    mainWindow.destroy()
+    if (mainWindow) {
+      e.preventDefault()
+      mainWindow.webContents.send('check-for-unsaved-changes')
+    }
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -45,7 +45,7 @@ function createWindow(): void {
   }
 }
 
-function configureIpcHandlers(): void {
+export function configureIpcHandlers(win?: BrowserWindow): void {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
@@ -94,6 +94,20 @@ function configureIpcHandlers(): void {
       console.error('Failed to save file:', err)
       const errorMessage = err instanceof Error ? err.message : String(err)
       event.sender.send('file-save-error', errorMessage)
+    }
+  })
+
+  ipcMain.on('close-window', () => {
+    if (win) {
+      win.destroy()
+    } else if (mainWindow) {
+      mainWindow.destroy()
+      mainWindow = null
+    } else {
+      const allWindows = BrowserWindow.getAllWindows()
+      if (allWindows.length > 0) {
+        allWindows[0].destroy()
+      }
     }
   })
 }

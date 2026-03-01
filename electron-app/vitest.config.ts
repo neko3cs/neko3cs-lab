@@ -29,6 +29,14 @@ export default defineConfig({
       {
         test: {
           globals: true,
+          include: ['src/preload/**/*.test.ts'],
+          name: 'preload',
+          environment: 'happy-dom',
+        },
+      },
+      {
+        test: {
+          globals: true,
           include: ['src/renderer/src/**/*.test.{ts,tsx}'],
           name: 'renderer',
           environment: 'happy-dom',
