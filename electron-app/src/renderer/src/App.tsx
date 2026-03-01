@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { Button } from './components/atoms/Button'
+import { MenuBar } from './components/molecules/MenuBar'
 import { TextArea } from './components/atoms/TextArea'
+import { StatusBar } from './components/molecules/StatusBar'
 
 function App(): React.JSX.Element {
   const [fileContent, setFileContent] = useState<string>('')
@@ -61,11 +62,7 @@ function App(): React.JSX.Element {
     <div className="flex flex-col h-screen bg-gray-50 text-gray-900">
       {/* Menu Bar Placeholder */}
       <header className="flex items-center px-4 h-12 bg-white border-b border-gray-200 shadow-sm">
-        <div className="flex space-x-4">
-          <Button onClick={handleNewFile}>New</Button>
-          <Button onClick={handleOpenFile}>Open</Button>
-          <Button onClick={handleSaveFile}>Save</Button>
-        </div>
+        <MenuBar onNew={handleNewFile} onOpen={handleOpenFile} onSave={handleSaveFile} />
       </header>
 
       {/* Editor Area Placeholder */}
@@ -81,9 +78,7 @@ function App(): React.JSX.Element {
 
       {/* Status Bar Placeholder */}
       <footer className="flex items-center px-4 h-8 bg-gray-100 border-t border-gray-200 text-xs text-gray-500">
-        <div className="flex-1 truncate">
-          {filePath ? `File: ${filePath}` : 'New File'} {isDirty && '(Unsaved)'}
-        </div>
+        <StatusBar filePath={filePath} isDirty={isDirty} />
       </footer>
     </div>
   )
