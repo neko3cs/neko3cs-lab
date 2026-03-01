@@ -21,7 +21,7 @@
     - [ ] 各オーガニズムコンポーネントが内部のコンポーネントと適切に連携し、全体として期待される機能を提供することを検証する統合テストを実装する。
 - [x] Task: Conductor - User Manual Verification 'モレキュールおよびオーガニズムコンポーネントの構築' (Protocol in workflow.md)
 
-## フェーズ 3: `App.tsx`のリファクタリングとページコンポーネントの導入
+## フェーズ 3: `App.tsx`のリファクタリングとページコンポーネントの導入 [checkpoint: 02b6e5e]
 
 - [x] Task: `App.tsx`のクリーンアップ (95101a8)
     - [ ] `App.tsx`から全てのUIとロジックを抽出し、`pages`または`templates`レベルのコンポーネントとして再構成する。
@@ -29,8 +29,7 @@
 - [x] Task: ページコンポーネントの導入 (95101a8)
     - [ ] アプリケーションの主要な画面（例: `HomePage`または`MemoEditorPage`）をページコンポーネントとして`src/pages`に作成し、構築したオーガニズムコンポーネントを組み込む。
     - [ ] ページコンポーネントは、アプリケーション全体のレイアウトと、オーガニズムコンポーネント間のデータフローを管理する責任を持つ。
-- [ ] Task: コンポーネント間の状態とPropsの最適化
-    - [ ] コンポーネント分割後の状態管理が効率的であり、不要なProps Drillingが発生していないか確認し、必要に応じてContext APIなどを利用して最適化する。
-- [ ] Task: 既存機能のE2Eテストによる動作保証
+- [x] Task: コンポーネント間の状態とPropsの最適化 (cb6395f)
+- [x] Task: 既存機能のE2Eテストによる動作保証 (02b6e5e)
     - [ ] コンポーネント分割後も、既存のファイル操作ロジックやUIインタラクションがE2Eテストによって完全に動作することを検証する。
-- [ ] Task: Conductor - User Manual Verification 'App.tsxのリファクタリングとページコンポーネントの導入' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'App.tsxのリファクタリングとページコンポーネントの導入' (Protocol in workflow.md)
