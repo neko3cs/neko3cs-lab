@@ -1,0 +1,15 @@
+@model IEnumerable<AspNetCoreMvcHtmx.Models.City>
+
+@if (Model != null && Model.Any())
+{
+    <div class="mb-3 animate-in">
+        <label for="city" class="form-label">市区町村</label>
+        <select id="city" name="cityId" class="form-select">
+            <option value="">市区町村を選択してください</option>
+            @foreach (var city in Model)
+            {
+                <option value="@city.Id">@city.Name</option>
+            }
+        </select>
+    </div>
+}
