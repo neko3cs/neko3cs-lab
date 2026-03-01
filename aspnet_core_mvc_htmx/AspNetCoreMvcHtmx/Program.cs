@@ -17,13 +17,19 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var jsonPath = Path.Combine(app.Environment.WebRootPath, "data", "locations.json");
-    if (File.Exists(jsonPath))
+    if (File.Exists(jsonPath) && !context.Prefectures.Any())
     {
         var jsonContent = File.ReadAllText(jsonPath);
         var prefectures = JsonSerializer.Deserialize<List<Prefecture>>(jsonContent);
         if (prefectures != null)
         {
-            context.Prefectures.AddRange(prefectures);
+            foreach (var pref in prefectures)
+            {
+                if (!context.Prefectures.Any(p => p.Id == pref.Id))
+                {
+                    context.Prefectures.Add(pref);
+                }
+            }
             context.SaveChanges();
         }
     }
