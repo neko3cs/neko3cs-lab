@@ -1,10 +1,20 @@
 @model IEnumerable<AspNetCoreMvcHtmx.Models.City>
 
+@* 都道府県が変わった際にラベルをリセットするための OOB スワップ *@
+@if (ViewBag.ResetLabel == true)
+{
+    <span id="display-selection" hx-swap-oob="true" class="text-primary ml-2 h5">未選択</span>
+}
+
 @if (Model != null && Model.Any())
 {
     <div class="mb-3 animate-in">
-        <label for="city" class="form-label">市区町村</label>
-        <select id="city" name="cityId" class="form-select">
+        <label for="city" class="form-label font-weight-bold">市区町村</label>
+        <select id="city" name="cityId" class="form-select"
+                hx-get="/Home/SelectionLabel"
+                hx-target="#display-selection"
+                hx-include="#prefecture"
+                hx-trigger="change">
             <option value="">市区町村を選択してください</option>
             @foreach (var city in Model)
             {
