@@ -11,7 +11,7 @@
     - [ ] テスト実行とカバレッジレポートの生成を確認する。
 - [x] Task: Conductor - User Manual Verification 'ユニットテスト環境のセットアップと基盤テスト' (Protocol in workflow.md)
 
-## フェーズ 2: E2Eテスト環境のセットアップと基本的なUIテスト
+## フェーズ 2: E2Eテスト環境のセットアップと基本的なUIテスト [checkpoint: 9a56de4]
 
 - [x] Task: E2Eテストフレームワーク（Playwright）のインストールと設定 (9806aab)
     - [ ] `pnpm add -D playwright @playwright/test` を実行し、必要なパッケージをインストールする。
@@ -19,7 +19,7 @@
 - [x] Task: E2Eテストの記述（アプリケーション起動と初期UI表示） (de415cd)
     - [ ] アプリケーションが正しく起動し、主要なUI要素（メニューバー、エディタ、ステータスバー）が表示されることを検証するE2Eテストを記述する。
     - [ ] UIの一貫性（例: Tailwind CSSが適用されていること）もテストに含める。
-- [ ] Task: Conductor - User Manual Verification 'E2Eテスト環境のセットアップと基本的なUIテスト' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'E2Eテスト環境のセットアップと基本的なUIテスト' (Protocol in workflow.md)
 
 ## フェーズ 3: TDDに基づいたテストの拡充とカバレッジ目標達成
 
