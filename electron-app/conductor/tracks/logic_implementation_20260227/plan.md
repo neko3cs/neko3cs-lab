@@ -32,7 +32,7 @@
     - [ ] 保存が成功した場合、またはエラーが発生した場合にUIにフィードバックを表示する。
 - [x] Task: Conductor - User Manual Verification '新規ファイル作成・保存機能のロジック実装' (Protocol in workflow.md)
 
-## フェーズ 3: 既存ファイルの上書き保存機能と未保存変更の警告
+## フェーズ 3: 既存ファイルの上書き保存機能と未保存変更の警告 [checkpoint: e9b6753]
 
 - [x] Task: レンダラープロセスでの未保存変更の追跡
     - [ ] エディタの内容が変更された際に、未保存の変更があることを示すstateを管理する。
@@ -42,4 +42,4 @@
     - [ ] メインプロセス (`main/index.ts`) にて、ウィンドウが閉じられようとした際 (`window.on('close')`) に、レンダラープロセスに未保存変更の有無を問い合わせる。
     - [ ] レンダラープロセスは未保存変更がある場合、保存確認ダイアログを表示し、ユーザーの選択に応じて保存、破棄、キャンセルを処理する。
     - [ ] メインプロセスは、レンダラープロセスからの応答に基づいてウィンドウを閉じるか否かを決定する。
-- [ ] Task: Conductor - User Manual Verification '既存ファイルの上書き保存機能と未保存変更の警告' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification '既存ファイルの上書き保存機能と未保存変更の警告' (Protocol in workflow.md)
