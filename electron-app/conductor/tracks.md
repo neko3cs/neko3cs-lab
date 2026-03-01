@@ -15,5 +15,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: mainプロセスのmockにおける型エラーの修正**
+- [x] **Track: mainプロセスのmockにおける型エラーの修正**
   *Link: [./tracks/fix_mock_types_20260301/](./tracks/fix_mock_types_20260301/)*
