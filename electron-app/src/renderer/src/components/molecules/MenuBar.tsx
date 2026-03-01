@@ -1,10 +1,10 @@
-import React from 'react'
-import { Button } from '../atoms/Button'
+import React from 'react';
+import { Button } from '../atoms/Button';
 
 interface MenuBarProps {
-  onNew: () => void
-  onOpen: () => void
-  onSave: () => void
+  onNew: () => void;
+  onOpen: () => void;
+  onSave: () => void;
 }
 
 export const MenuBar: React.FC<MenuBarProps> = ({ onNew, onOpen, onSave }) => {
@@ -14,5 +14,5 @@ export const MenuBar: React.FC<MenuBarProps> = ({ onNew, onOpen, onSave }) => {
       <Button onClick={onOpen}>Open</Button>
       <Button onClick={onSave}>Save</Button>
     </div>
-  )
-}
+  );
+};

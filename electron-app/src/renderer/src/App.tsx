@@ -1,7 +1,7 @@
-import { MemoPage } from './pages/MemoPage'
+import { MemoPage } from './pages/MemoPage';
 
 function App(): React.JSX.Element {
-  return <MemoPage />
+  return <MemoPage />;
 }
 
-export default App
+export default App;

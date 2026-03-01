@@ -1,62 +1,62 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { AppHeader } from '../components/organisms/AppHeader'
-import { EditorPanel } from '../components/organisms/EditorPanel'
-import { AppFooter } from '../components/organisms/AppFooter'
+import React, { useState, useEffect, useRef } from 'react';
+import { AppHeader } from '../components/organisms/AppHeader';
+import { EditorPanel } from '../components/organisms/EditorPanel';
+import { AppFooter } from '../components/organisms/AppFooter';
 
 export const MemoPage: React.FC = () => {
-  const [fileContent, setFileContent] = useState<string>('')
-  const [filePath, setFilePath] = useState<string>('')
-  const [isDirty, setIsDirty] = useState<boolean>(false)
-  const isDirtyRef = useRef<boolean>(false)
+  const [fileContent, setFileContent] = useState<string>('');
+  const [filePath, setFilePath] = useState<string>('');
+  const [isDirty, setIsDirty] = useState<boolean>(false);
+  const isDirtyRef = useRef<boolean>(false);
 
   // Keep ref in sync with state
   useEffect(() => {
-    isDirtyRef.current = isDirty
-  }, [isDirty])
+    isDirtyRef.current = isDirty;
+  }, [isDirty]);
 
   useEffect(() => {
     window.api.onFileOpened((newFilePath, content) => {
-      setFilePath(newFilePath)
-      setFileContent(content)
-      setIsDirty(false)
-    })
+      setFilePath(newFilePath);
+      setFileContent(content);
+      setIsDirty(false);
+    });
 
     window.api.onFileSaved((savedPath) => {
-      setFilePath(savedPath)
-      setIsDirty(false)
-      alert(`File saved to: ${savedPath}`)
-    })
+      setFilePath(savedPath);
+      setIsDirty(false);
+      alert(`File saved to: ${savedPath}`);
+    });
 
     window.api.onCheckUnsavedChanges(() => {
       if (isDirtyRef.current) {
-        const choice = confirm('You have unsaved changes. Are you sure you want to quit?')
+        const choice = confirm('You have unsaved changes. Are you sure you want to quit?');
         if (choice) {
-          window.api.closeWindow()
+          window.api.closeWindow();
         }
       } else {
-        window.api.closeWindow()
+        window.api.closeWindow();
       }
-    })
-  }, [])
+    });
+  }, []);
 
   const handleOpenFile = () => {
-    window.api.openFile()
-  }
+    window.api.openFile();
+  };
 
   const handleSaveFile = () => {
-    window.api.saveFile(fileContent, filePath)
-  }
+    window.api.saveFile(fileContent, filePath);
+  };
 
   const handleNewFile = () => {
-    setFilePath('')
-    setFileContent('')
-    setIsDirty(false)
-  }
+    setFilePath('');
+    setFileContent('');
+    setIsDirty(false);
+  };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFileContent(e.target.value)
-    setIsDirty(true)
-  }
+    setFileContent(e.target.value);
+    setIsDirty(true);
+  };
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 text-gray-900">
@@ -72,5 +72,5 @@ export const MemoPage: React.FC = () => {
 
       <AppFooter filePath={filePath} isDirty={isDirty} />
     </div>
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
@@ -13,8 +13,8 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/**/*.css',
         'src/**/*.svg',
-        'src/**/*.png',
-      ],
+        'src/**/*.png'
+      ]
     },
     projects: [
       {
@@ -23,16 +23,16 @@ export default defineConfig({
           include: ['src/main/**/*.test.ts'],
           name: 'main',
           environment: 'node',
-          setupFiles: ['./src/main/setupTests.ts'],
-        },
+          setupFiles: ['./src/main/setupTests.ts']
+        }
       },
       {
         test: {
           globals: true,
           include: ['src/preload/**/*.test.ts'],
           name: 'preload',
-          environment: 'happy-dom',
-        },
+          environment: 'happy-dom'
+        }
       },
       {
         test: {
@@ -40,9 +40,9 @@ export default defineConfig({
           include: ['src/renderer/src/**/*.test.{ts,tsx}'],
           name: 'renderer',
           environment: 'happy-dom',
-          setupFiles: ['./src/renderer/src/setupTests.ts'],
-        },
-      },
-    ],
-  },
-})
+          setupFiles: ['./src/renderer/src/setupTests.ts']
+        }
+      }
+    ]
+  }
+});
