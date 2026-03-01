@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 export const app: {
   whenReady: () => Promise<boolean>;
-  on: (event: string, listener: (...args: any[]) => void) => void;
+  on: (event: string, listener: (...args: unknown[]) => void) => void;
   quit: () => void;
 } = {
   whenReady: vi.fn().mockResolvedValue(true),
@@ -17,7 +17,7 @@ export const shell: {
 };
 
 // BrowserWindow needs to be a constructor mock
-export const BrowserWindow: any = vi.fn().mockImplementation(() => ({
+export const BrowserWindow: unknown = vi.fn().mockImplementation(() => ({
   on: vi.fn(),
   show: vi.fn(),
   loadURL: vi.fn(),
@@ -28,8 +28,8 @@ export const BrowserWindow: any = vi.fn().mockImplementation(() => ({
 }));
 
 export const ipcMain: {
-  on: (channel: string, listener: (...args: any[]) => void) => void;
-  handle: (channel: string, listener: (...args: any[]) => Promise<any> | any) => void;
+  on: (channel: string, listener: (...args: unknown[]) => void) => void;
+  handle: (channel: string, listener: (...args: unknown[]) => Promise<unknown> | unknown) => void;
   eventNames: () => string[];
 } = {
   on: vi.fn(),
@@ -38,8 +38,8 @@ export const ipcMain: {
 };
 
 export const dialog: {
-  showOpenDialog: (options: any) => Promise<{ canceled: boolean; filePaths: string[] }>;
-  showSaveDialog: (options: any) => Promise<{ canceled: boolean; filePath: string }>;
+  showOpenDialog: (options: unknown) => Promise<{ canceled: boolean; filePaths: string[] }>;
+  showSaveDialog: (options: unknown) => Promise<{ canceled: boolean; filePath: string }>;
 } = {
   showOpenDialog: vi.fn().mockResolvedValue({ canceled: false, filePaths: ['test.txt'] }),
   showSaveDialog: vi.fn()
