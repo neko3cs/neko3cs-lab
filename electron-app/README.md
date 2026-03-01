@@ -1,34 +1,83 @@
-# electron-app
+# Electron Memo App
 
-An Electron application with React and TypeScript
+ReactとTypeScriptで構築された、シンプルで高機能なデスクトップメモアプリケーションです。
 
-## Recommended IDE Setup
+## 特徴
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- **高速な開発**: `electron-vite` を使用したHMR (Hot Module Replacement) 対応。
+- **モダンな UI**: Tailwind CSS 4を使用したクリーンでレスポンシブなデザイン。
+- **堅牢な設計**: TypeScriptによる型安全性の確保と、Atomic Designに基づいたコンポーネント設計。
+- **セキュアな IPC**: Context Bridgeを利用した安全なメイン・レンダラープロセス間通信。
 
-## Project Setup
+## 技術スタック
 
-### Install
+- **Framework**: Electron
+- **Frontend**: React 19
+- **Styling**: Tailwind CSS 4
+- **Language**: TypeScript
+- **Build Tool**: electron-vite
+- **Package Manager**: pnpm
+- **Testing**: Vitest, React Testing Library
+- **Linting/Formatting**: ESLint, Prettier
+
+## はじめに
+
+### 依存関係のインストール
 
 ```bash
-$ pnpm install
+pnpm install
 ```
 
-### Development
+### 開発モードでの起動
 
 ```bash
-$ pnpm dev
+pnpm dev
 ```
 
-### Build
+### プレビュー (ビルド後の動作確認)
 
 ```bash
-# For windows
-$ pnpm build:win
-
-# For macOS
-$ pnpm build:mac
-
-# For Linux
-$ pnpm build:linux
+pnpm start
 ```
+
+## テスト
+
+### すべてのテストを実行
+
+```bash
+pnpm test
+```
+
+### 特定のファイルのテストを実行
+
+```bash
+npx vitest run <ファイルのパス>
+```
+
+### カバレッジの確認
+
+```bash
+pnpm test:coverage
+```
+
+## ビルド
+
+アプリケーションをパッケージ化するには、OSに合わせたコマンドを実行します。
+
+```bash
+# Windows
+pnpm build:win
+
+# macOS
+pnpm build:mac
+
+# Linux
+pnpm build:linux
+```
+
+## プロジェクト構造
+
+- `src/main`: メインプロセスのロジック（ウィンドウ管理、IPCハンドリングなど）。
+- `src/preload`: プリロードスクリプト（レンダラーへの安全なAPI公開）。
+- `src/renderer`: レンダラープロセス（React UIコンポーネント）。
+- `resources`: アイコンなどの静的アセット。
