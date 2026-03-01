@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { MenuBar } from './components/molecules/MenuBar'
-import { TextArea } from './components/atoms/TextArea'
-import { StatusBar } from './components/molecules/StatusBar'
+import { AppHeader } from './components/organisms/AppHeader'
+import { EditorPanel } from './components/organisms/EditorPanel'
+import { AppFooter } from './components/organisms/AppFooter'
 
 function App(): React.JSX.Element {
   const [fileContent, setFileContent] = useState<string>('')
@@ -60,26 +60,17 @@ function App(): React.JSX.Element {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 text-gray-900">
-      {/* Menu Bar Placeholder */}
-      <header className="flex items-center px-4 h-12 bg-white border-b border-gray-200 shadow-sm">
-        <MenuBar onNew={handleNewFile} onOpen={handleOpenFile} onSave={handleSaveFile} />
-      </header>
+      <AppHeader onNew={handleNewFile} onOpen={handleOpenFile} onSave={handleSaveFile} />
 
-      {/* Editor Area Placeholder */}
       <main className="flex-1 overflow-hidden p-4">
-        <div className="h-full w-full bg-white rounded-lg border border-gray-200 shadow-inner p-4">
-          <TextArea
-            placeholder="Start typing your notes here..."
-            value={fileContent}
-            onChange={handleContentChange}
-          />
-        </div>
+        <EditorPanel
+          placeholder="Start typing your notes here..."
+          value={fileContent}
+          onChange={handleContentChange}
+        />
       </main>
 
-      {/* Status Bar Placeholder */}
-      <footer className="flex items-center px-4 h-8 bg-gray-100 border-t border-gray-200 text-xs text-gray-500">
-        <StatusBar filePath={filePath} isDirty={isDirty} />
-      </footer>
+      <AppFooter filePath={filePath} isDirty={isDirty} />
     </div>
   )
 }
