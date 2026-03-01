@@ -16,7 +16,7 @@
 - [x] Task: E2Eテストフレームワーク（Playwright）のインストールと設定 (9806aab)
     - [ ] `pnpm add -D playwright @playwright/test` を実行し、必要なパッケージをインストールする。
     - [ ] `playwright.config.ts` を作成し、E2Eテストの実行環境を設定する。
-- [ ] Task: E2Eテストの記述（アプリケーション起動と初期UI表示）
+- [x] Task: E2Eテストの記述（アプリケーション起動と初期UI表示） (de415cd)
     - [ ] アプリケーションが正しく起動し、主要なUI要素（メニューバー、エディタ、ステータスバー）が表示されることを検証するE2Eテストを記述する。
     - [ ] UIの一貫性（例: Tailwind CSSが適用されていること）もテストに含める。
 - [ ] Task: Conductor - User Manual Verification 'E2Eテスト環境のセットアップと基本的なUIテスト' (Protocol in workflow.md)
