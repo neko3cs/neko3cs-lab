@@ -21,7 +21,7 @@
     - [ ] UIの一貫性（例: Tailwind CSSが適用されていること）もテストに含める。
 - [x] Task: Conductor - User Manual Verification 'E2Eテスト環境のセットアップと基本的なUIテスト' (Protocol in workflow.md)
 
-## フェーズ 3: TDDに基づいたテストの拡充とカバレッジ目標達成
+## フェーズ 3: TDDに基づいたテストの拡充とカバレッジ目標達成 [checkpoint: 33337e6]
 
 - [x] Task: TDDサイクルを用いた新規UIコンポーネントのテスト実装 (85ae3a3)
     - [ ] 今後実装されるUIコンポーネント（例: ファイル選択ダイアログの表示、テキスト入力）に対し、TDDサイクル（Red-Green-Refactor）に従いユニットテストを記述する。
@@ -32,4 +32,4 @@
 - [x] Task: コードカバレッジの分析と改善 (85ae3a3)
     - [ ] 全体のコードカバレッジが90%に達しているか確認し、不足している部分があれば追加でテストを記述してカバレッジを向上させる。
     - [ ] 重要なビジネスロジックやUIパスが重点的にカバーされていることを確認する。
-- [ ] Task: Conductor - User Manual Verification 'TDDに基づいたテストの拡充とカバレッジ目標達成' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'TDDに基づいたテストの拡充とカバレッジ目標達成' (Protocol in workflow.md)
