@@ -7,6 +7,8 @@ const mockApi = {
   onFileSaved: vi.fn(),
   openFile: vi.fn(),
   saveFile: vi.fn(),
+  onCheckUnsavedChanges: vi.fn(),
+  closeWindow: vi.fn(),
 }
 
 // Mock window.electron
