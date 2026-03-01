@@ -13,7 +13,7 @@
 
 ## フェーズ 2: E2Eテスト環境のセットアップと基本的なUIテスト
 
-- [ ] Task: E2Eテストフレームワーク（Playwright）のインストールと設定
+- [x] Task: E2Eテストフレームワーク（Playwright）のインストールと設定 (9806aab)
     - [ ] `pnpm add -D playwright @playwright/test` を実行し、必要なパッケージをインストールする。
     - [ ] `playwright.config.ts` を作成し、E2Eテストの実行環境を設定する。
 - [ ] Task: E2Eテストの記述（アプリケーション起動と初期UI表示）
