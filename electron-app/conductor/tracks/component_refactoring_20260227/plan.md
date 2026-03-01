@@ -1,6 +1,6 @@
 # Plan: コンポーネント分割
 
-## フェーズ 1: ファイル構成とアトムコンポーネントの抽出
+## フェーズ 1: ファイル構成とアトムコンポーネントの抽出 [checkpoint: 5819e42]
 
 - [x] Task: `src/components`ディレクトリの作成 (48b0339)
     - [ ] `src/components`ディレクトリを作成し、コンポーネントのルートとする。
@@ -9,7 +9,7 @@
 - [x] Task: アトムコンポーネントの抽出とテスト (86d8005)
     - [ ] `App.tsx`から、再利用可能な最小単位のUI要素（例: ボタン、入力フィールド、アイコン）をアトムコンポーネントとして抽出し、`src/components/atoms`に配置する。
     - [ ] 各アトムコンポーネントに対して、基本的な表示とインタラクションを検証するユニットテスト（Storybookなど）を実装する。
-- [ ] Task: Conductor - User Manual Verification 'ファイル構成とアトムコンポーネントの抽出' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'ファイル構成とアトムコンポーネントの抽出' (Protocol in workflow.md)
 
 ## フェーズ 2: モレキュールおよびオーガニズムコンポーネントの構築
 
