@@ -9,7 +9,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: ロジックの実装：メモ帳としての機能を実装していきます。まだ、コンポーネント化はしません。**
+- [x] **Track: ロジックの実装：メモ帳としての機能を実装していきます。まだ、コンポーネント化はしません。**
   *Link: [./tracks/logic_implementation_20260227/](./tracks/logic_implementation_20260227/)*
 
 ---
