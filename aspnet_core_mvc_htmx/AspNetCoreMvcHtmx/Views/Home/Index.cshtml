@@ -1,0 +1,32 @@
+@model IEnumerable<AspNetCoreMvcHtmx.Models.Prefecture>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">都道府県・市区町村選択 (HTMX)</h1>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="prefecture" class="form-label">都道府県</label>
+                <select id="prefecture" name="prefectureId" class="form-select"
+                        hx-get="/Home/Cities" 
+                        hx-target="#city-container" 
+                        hx-trigger="change">
+                    <option value="">都道府県を選択してください</option>
+                    @foreach (var pref in Model)
+                    {
+                        <option value="@pref.Id">@pref.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div id="city-container">
+                @* ここに市区町村のドロップダウンがHTMXによって挿入されます *@
+            </div>
+        </div>
+    </div>
+</div>
