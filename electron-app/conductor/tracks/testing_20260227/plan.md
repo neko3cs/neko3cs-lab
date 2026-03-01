@@ -1,6 +1,6 @@
 # Plan: テスト実装
 
-## フェーズ 1: ユニットテスト環境のセットアップと基盤テスト
+## フェーズ 1: ユニットテスト環境のセットアップと基盤テスト [checkpoint: bd0e260]
 
 - [x] Task: ユニットテストフレームワーク（Vitest）のインストールと設定 (9b66857)
     - [ ] `pnpm add -D vitest @vitest/coverage-v8 jsdom` を実行し、必要なパッケージをインストールする。
@@ -9,7 +9,7 @@
     - [ ] 既存のファイル操作ロジックなど、UIに依存しないコアロジックに対してユニットテストを記述する。
     - [ ] BDDスタイルでテストケースを記述し、各テストが特定の仕様を検証することを明確にする。
     - [ ] テスト実行とカバレッジレポートの生成を確認する。
-- [ ] Task: Conductor - User Manual Verification 'ユニットテスト環境のセットアップと基盤テスト' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'ユニットテスト環境のセットアップと基盤テスト' (Protocol in workflow.md)
 
 ## フェーズ 2: E2Eテスト環境のセットアップと基本的なUIテスト
 
