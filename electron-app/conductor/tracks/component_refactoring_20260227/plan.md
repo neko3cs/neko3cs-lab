@@ -11,7 +11,7 @@
     - [ ] 各アトムコンポーネントに対して、基本的な表示とインタラクションを検証するユニットテスト（Storybookなど）を実装する。
 - [x] Task: Conductor - User Manual Verification 'ファイル構成とアトムコンポーネントの抽出' (Protocol in workflow.md)
 
-## フェーズ 2: モレキュールおよびオーガニズムコンポーネントの構築
+## フェーズ 2: モレキュールおよびオーガニズムコンポーネントの構築 [checkpoint: 5cd913d]
 
 - [x] Task: モレキュールコンポーネントの作成とテスト (20eacd2)
     - [ ] 抽出したアトムコンポーネントを組み合わせて、より複雑なUI要素（例: フォームグループ、ナビゲーションアイテム）をモレキュールコンポーネントとして`src/components/molecules`に作成する。
@@ -19,7 +19,7 @@
 - [x] Task: オーガニズムコンポーネントの作成とテスト (63cdaab)
     - [ ] モレキュールコンポーネントとアトムコンポーネントを組み合わせて、セクションや複合的なUI要素（例: メニューバー全体、エディタパネル）をオーガニズムコンポーネントとして`src/components/organisms`に作成する。
     - [ ] 各オーガニズムコンポーネントが内部のコンポーネントと適切に連携し、全体として期待される機能を提供することを検証する統合テストを実装する。
-- [ ] Task: Conductor - User Manual Verification 'モレキュールおよびオーガニズムコンポーネントの構築' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'モレキュールおよびオーガニズムコンポーネントの構築' (Protocol in workflow.md)
 
 ## フェーズ 3: `App.tsx`のリファクタリングとページコンポーネントの導入
 
