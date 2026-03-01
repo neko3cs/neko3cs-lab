@@ -11,6 +11,8 @@ declare global {
       onFileOpened: (callback: (filePath: string, content: string) => void) => void
       saveFile: (content: string, filePath?: string) => void
       onFileSaved: (callback: (filePath: string) => void) => void
+      onCheckUnsavedChanges: (callback: () => void) => void
+      closeWindow: () => void
     }
   }
 }

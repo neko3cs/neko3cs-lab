@@ -22,6 +22,15 @@ function createWindow(): void {
     mainWindow.show()
   })
 
+  mainWindow.on('close', (e) => {
+    e.preventDefault()
+    mainWindow.webContents.send('check-for-unsaved-changes')
+  })
+
+  ipcMain.on('close-window', () => {
+    mainWindow.destroy()
+  })
+
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }

@@ -14,7 +14,11 @@ const api = {
     ipcRenderer.send('save-file', { content, filePath }),
   onFileSaved: (callback: (filePath: string) => void) => {
     ipcRenderer.on('file-saved', (_event, filePath) => callback(filePath))
-  }
+  },
+  onCheckUnsavedChanges: (callback: () => void) => {
+    ipcRenderer.on('check-for-unsaved-changes', () => callback())
+  },
+  closeWindow: () => ipcRenderer.send('close-window')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

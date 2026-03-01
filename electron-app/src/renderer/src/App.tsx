@@ -4,18 +4,32 @@ import Versions from './components/Versions'
 function App(): React.JSX.Element {
   const [fileContent, setFileContent] = useState<string>('')
   const [filePath, setFilePath] = useState<string>('')
+  const [isDirty, setIsDirty] = useState<boolean>(false)
 
   useEffect(() => {
     window.api.onFileOpened((newFilePath, content) => {
       setFilePath(newFilePath)
       setFileContent(content)
+      setIsDirty(false)
     })
 
     window.api.onFileSaved((savedPath) => {
       setFilePath(savedPath)
+      setIsDirty(false)
       alert(`File saved to: ${savedPath}`)
     })
-  }, [])
+
+    window.api.onCheckUnsavedChanges(() => {
+      if (isDirty) {
+        const choice = confirm('You have unsaved changes. Are you sure you want to quit?')
+        if (choice) {
+          window.api.closeWindow()
+        }
+      } else {
+        window.api.closeWindow()
+      }
+    })
+  }, [isDirty])
 
   const handleOpenFile = () => {
     window.api.openFile()
@@ -28,6 +42,12 @@ function App(): React.JSX.Element {
   const handleNewFile = () => {
     setFilePath('')
     setFileContent('')
+    setIsDirty(false)
+  }
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFileContent(e.target.value)
+    setIsDirty(true)
   }
 
   return (
@@ -63,14 +83,16 @@ function App(): React.JSX.Element {
             className="w-full h-full resize-none focus:outline-none text-lg leading-relaxed"
             placeholder="Start typing your notes here..."
             value={fileContent}
-            onChange={(e) => setFileContent(e.target.value)}
+            onChange={handleContentChange}
           ></textarea>
         </div>
       </main>
 
       {/* Status Bar Placeholder */}
       <footer className="flex items-center px-4 h-8 bg-gray-100 border-t border-gray-200 text-xs text-gray-500">
-        <div className="flex-1 truncate">{filePath ? `File: ${filePath}` : 'New File'}</div>
+        <div className="flex-1 truncate">
+          {filePath ? `File: ${filePath}` : 'New File'} {isDirty && '(Unsaved)'}
+        </div>
         <div className="flex items-center space-x-4">
           <Versions />
         </div>
