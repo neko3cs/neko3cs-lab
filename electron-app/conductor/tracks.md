@@ -10,7 +10,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: コンポーネント分割：実装した機能を壊さないように、コード管理しやすい可読性の高いコンポーネント分割をおこないます**
+- [~] **Track: コンポーネント分割：実装した機能を壊さないように、コード管理しやすい可読性の高いコンポーネント分割をおこないます**
   *Link: [./tracks/component_refactoring_20260227/](./tracks/component_refactoring_20260227/)*
 
 ---

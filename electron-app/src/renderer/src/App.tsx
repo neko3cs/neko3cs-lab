@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import Versions from './components/Versions'
 
 function App(): React.JSX.Element {
   const [fileContent, setFileContent] = useState<string>('')
@@ -98,9 +97,6 @@ function App(): React.JSX.Element {
       <footer className="flex items-center px-4 h-8 bg-gray-100 border-t border-gray-200 text-xs text-gray-500">
         <div className="flex-1 truncate">
           {filePath ? `File: ${filePath}` : 'New File'} {isDirty && '(Unsaved)'}
-        </div>
-        <div className="flex items-center space-x-4">
-          <Versions />
         </div>
       </footer>
     </div>
