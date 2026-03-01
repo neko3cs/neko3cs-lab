@@ -43,3 +43,6 @@
     - [ ] レンダラープロセスは未保存変更がある場合、保存確認ダイアログを表示し、ユーザーの選択に応じて保存、破棄、キャンセルを処理する。
     - [ ] メインプロセスは、レンダラープロセスからの応答に基づいてウィンドウを閉じるか否かを決定する。
 - [x] Task: Conductor - User Manual Verification '既存ファイルの上書き保存機能と未保存変更の警告' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (0be5498)
