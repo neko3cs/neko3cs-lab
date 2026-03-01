@@ -19,7 +19,7 @@ class MockBrowserWindow {
 const BrowserWindowMock = vi.fn().mockImplementation(function () {
   return new MockBrowserWindow();
 });
-// @ts-ignore
+// @ts-ignore - getAllWindows is a static method on BrowserWindow
 BrowserWindowMock.getAllWindows = mockGetAllWindows;
 
 vi.mock('electron', () => {

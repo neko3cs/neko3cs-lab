@@ -39,21 +39,21 @@ export const MemoPage: React.FC = () => {
     });
   }, []);
 
-  const handleOpenFile = () => {
+  const handleOpenFile = (): void => {
     window.api.openFile();
   };
 
-  const handleSaveFile = () => {
+  const handleSaveFile = (): void => {
     window.api.saveFile(fileContent, filePath);
   };
 
-  const handleNewFile = () => {
+  const handleNewFile = (): void => {
     setFilePath('');
     setFileContent('');
     setIsDirty(false);
   };
 
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setFileContent(e.target.value);
     setIsDirty(true);
   };

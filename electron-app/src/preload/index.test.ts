@@ -37,11 +37,11 @@ const { contextBridge, ipcRenderer } = electron;
 describe('Preload script', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // @ts-ignore
+    // @ts-ignore - process.contextIsolated is a read-only property in Electron but we need to mock it for testing
     process.contextIsolated = true;
   });
 
-  it('should expose the api to the main world', async () => {
+  it('should expose the api to the main world when contextIsolated is true', async () => {
     vi.resetModules();
     await import('./index');
     expect(contextBridge.exposeInMainWorld).toHaveBeenCalledWith('api', expect.any(Object));
@@ -53,7 +53,7 @@ describe('Preload script', () => {
     const apiCall = vi
       .mocked(contextBridge.exposeInMainWorld)
       .mock.calls.find((call) => call[0] === 'api');
-    const exposedApi = apiCall![1] as any;
+    const exposedApi = apiCall![1] as Record<string, (...args: unknown[]) => unknown>;
 
     exposedApi.ping();
     expect(ipcRenderer.send).toHaveBeenCalledWith('ping');
@@ -80,18 +80,20 @@ describe('Preload script', () => {
   it('should handle onFileOpened callback', async () => {
     vi.resetModules();
     await import('./index');
-    const exposedApi = vi
+    const apiCall = vi
       .mocked(contextBridge.exposeInMainWorld)
-      .mock.calls.find((call) => call[0] === 'api')![1] as any;
+      .mock.calls.find((call) => call[0] === 'api');
+    const exposedApi = apiCall![1] as Record<string, (...args: unknown[]) => unknown>;
 
     const callback = vi.fn();
-    exposedApi.onFileOpened(callback);
+    const handler = exposedApi.onFileOpened as (cb: (...args: unknown[]) => void) => void;
+    handler(callback);
 
     expect(ipcRenderer.on).toHaveBeenCalledWith('file-opened', expect.any(Function));
 
     // Trigger the callback
     const onCall = vi.mocked(ipcRenderer.on).mock.calls.find((call) => call[0] === 'file-opened');
-    const internalCallback = onCall![1];
+    const internalCallback = onCall![1] as (event: unknown, data: unknown) => void;
     internalCallback({}, { filePath: 'test.txt', content: 'test' });
 
     expect(callback).toHaveBeenCalledWith('test.txt', 'test');
@@ -100,17 +102,19 @@ describe('Preload script', () => {
   it('should handle onFileSaved callback', async () => {
     vi.resetModules();
     await import('./index');
-    const exposedApi = vi
+    const apiCall = vi
       .mocked(contextBridge.exposeInMainWorld)
-      .mock.calls.find((call) => call[0] === 'api')![1] as any;
+      .mock.calls.find((call) => call[0] === 'api');
+    const exposedApi = apiCall![1] as Record<string, (...args: unknown[]) => unknown>;
 
     const callback = vi.fn();
-    exposedApi.onFileSaved(callback);
+    const handler = exposedApi.onFileSaved as (cb: (...args: unknown[]) => void) => void;
+    handler(callback);
 
     expect(ipcRenderer.on).toHaveBeenCalledWith('file-saved', expect.any(Function));
 
     const onCall = vi.mocked(ipcRenderer.on).mock.calls.find((call) => call[0] === 'file-saved');
-    const internalCallback = onCall![1];
+    const internalCallback = onCall![1] as (event: unknown, data: unknown) => void;
     internalCallback({}, 'saved.txt');
 
     expect(callback).toHaveBeenCalledWith('saved.txt');
@@ -119,21 +123,35 @@ describe('Preload script', () => {
   it('should handle onCheckUnsavedChanges callback', async () => {
     vi.resetModules();
     await import('./index');
-    const exposedApi = vi
+    const apiCall = vi
       .mocked(contextBridge.exposeInMainWorld)
-      .mock.calls.find((call) => call[0] === 'api')![1] as any;
+      .mock.calls.find((call) => call[0] === 'api');
+    const exposedApi = apiCall![1] as Record<string, (...args: unknown[]) => unknown>;
 
     const callback = vi.fn();
-    exposedApi.onCheckUnsavedChanges(callback);
+    const handler = exposedApi.onCheckUnsavedChanges as (cb: (...args: unknown[]) => void) => void;
+    handler(callback);
 
     expect(ipcRenderer.on).toHaveBeenCalledWith('check-for-unsaved-changes', expect.any(Function));
 
     const onCall = vi
       .mocked(ipcRenderer.on)
       .mock.calls.find((call) => call[0] === 'check-for-unsaved-changes');
-    const internalCallback = onCall![1];
+    const internalCallback = onCall![1] as (event: unknown) => void;
     internalCallback({});
 
     expect(callback).toHaveBeenCalled();
+  });
+
+  it('should expose the api to window when contextIsolated is false', async () => {
+    // @ts-ignore - process.contextIsolated is a read-only property in Electron but we need to mock it for testing
+    process.contextIsolated = false;
+    vi.resetModules();
+    await import('./index');
+
+    // @ts-ignore - window.api is defined when contextIsolated is false
+    expect(window.api).toBeDefined();
+    // @ts-ignore - window.api.ping is defined when contextIsolated is false
+    expect(window.api.ping).toBeDefined();
   });
 });

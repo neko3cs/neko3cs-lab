@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, beforeAll } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 // Mock fs/promises before importing ./index
 vi.mock('fs/promises', () => ({
@@ -34,17 +34,21 @@ describe('Main process', () => {
       const mockWindow = vi.mocked(BrowserWindow).mock.results[0].value;
 
       // Manually trigger events to cover handler bodies
-      const handlers: any = {};
-      mockWindow.on.mock.calls.forEach(([event, handler]) => {
-        handlers[event] = handler;
+      const handlers: Record<string, (...args: unknown[]) => unknown> = {};
+      vi.mocked(mockWindow.on).mock.calls.forEach(([event, handler]) => {
+        handlers[event] = handler as (...args: unknown[]) => unknown;
       });
 
-      if (handlers['ready-to-show']) handlers['ready-to-show']();
+      if (handlers['ready-to-show']) {
+        const handler = handlers['ready-to-show'] as () => void;
+        handler();
+      }
       expect(mockWindow.show).toHaveBeenCalled();
 
       if (handlers['close']) {
         const preventDefault = vi.fn();
-        handlers['close']({ preventDefault });
+        const handler = handlers['close'] as (e: { preventDefault: () => void }) => void;
+        handler({ preventDefault });
         expect(preventDefault).toHaveBeenCalled();
       }
     });
@@ -53,7 +57,7 @@ describe('Main process', () => {
   describe('Lifecycle and IPC handlers', () => {
     it('should define expected IPC handlers', () => {
       configureIpcHandlers();
-      const eventNames = (ipcMain.on as any).mock.calls.map((call) => call[0]);
+      const eventNames = vi.mocked(ipcMain.on).mock.calls.map((call) => call[0]);
       expect(eventNames).toContain('open-file');
       expect(eventNames).toContain('save-file');
       expect(eventNames).toContain('close-window');
@@ -61,7 +65,8 @@ describe('Main process', () => {
 
     it('should handle open-file correctly', async () => {
       configureIpcHandlers();
-      const handler = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'open-file')[1];
+      const openFileCall = vi.mocked(ipcMain.on).mock.calls.find((call) => call[0] === 'open-file');
+      const handler = openFileCall![1] as (event: unknown) => Promise<void>;
       const sendMock = vi.fn();
       const event = { sender: { send: sendMock } };
 
@@ -80,8 +85,12 @@ describe('Main process', () => {
 
     it('should handle close-window', () => {
       const mockWindow = new BrowserWindow();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       configureIpcHandlers(mockWindow as any);
-      const handler = (ipcMain.on as any).mock.calls.find((call) => call[0] === 'close-window')[1];
+      const closeWindowCall = vi
+        .mocked(ipcMain.on)
+        .mock.calls.find((call) => call[0] === 'close-window');
+      const handler = closeWindowCall![1] as () => void;
       handler();
       expect(mockWindow.destroy).toHaveBeenCalled();
     });
@@ -92,7 +101,7 @@ describe('Main process', () => {
       await import('./index');
       const allClosedHandler = vi
         .mocked(app.on)
-        .mock.calls.find((c) => c[0] === 'window-all-closed')?.[1];
+        .mock.calls.find((c) => c[0] === 'window-all-closed')?.[1] as (() => void) | undefined;
       if (allClosedHandler) {
         const originalPlatform = process.platform;
         Object.defineProperty(process, 'platform', { value: 'win32' });
@@ -104,7 +113,9 @@ describe('Main process', () => {
 
     it('should handle activate', async () => {
       await import('./index');
-      const activateHandler = vi.mocked(app.on).mock.calls.find((c) => c[0] === 'activate')?.[1];
+      const activateHandler = vi
+        .mocked(app.on)
+        .mock.calls.find((c) => (c[0] as string) === 'activate')?.[1] as (() => void) | undefined;
       if (activateHandler) {
         mockGetAllWindows.mockReturnValueOnce([]);
         activateHandler();

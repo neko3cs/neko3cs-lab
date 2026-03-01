@@ -1,7 +1,6 @@
 import { _electron as electron } from 'playwright';
 import { test, expect } from '@playwright/test';
 import path from 'path';
-import fs from 'fs';
 
 test('file operations basic e2e', async () => {
   const electronApp = await electron.launch({

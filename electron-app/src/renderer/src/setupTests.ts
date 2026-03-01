@@ -22,7 +22,7 @@ const mockElectron = {
   }
 };
 
-// @ts-ignore
+// @ts-ignore - window.api is defined in preload script
 window.api = mockApi;
-// @ts-ignore
+// @ts-ignore - window.electron is defined by @electron-toolkit/preload
 window.electron = mockElectron;
