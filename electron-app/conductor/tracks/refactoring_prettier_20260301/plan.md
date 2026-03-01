@@ -14,11 +14,11 @@
 
 - [x] Task: 現状の問題点の洗い出し
   - [x] `pnpm lint` および `pnpm typecheck` を実行し、現在発生しているエラー・警告の一覧を取得する。
-- [~] Task: Lintエラー・警告の修正
+- [x] Task: Lintエラー・警告の修正 (b4637c0)
   - [ ] ESLint で報告されるすべての問題を修正する。可能なものは `--fix` で自動修正し、残りは手動で修正する。
-- [ ] Task: 型エラー・警告の修正
+- [x] Task: 型エラー・警告の修正 (b4637c0)
   - [ ] TypeScript の型チェックで報告されるすべての問題を修正する。特に `any` の使用や、不適切な型推論を改善する。
-- [ ] Task: 最終的な静的解析パスの確認
+- [x] Task: 最終的な静的解析パスの確認 (b4637c0)
   - [ ] 再度 `pnpm lint` と `pnpm typecheck` を実行し、エラーがゼロであることを確認する。
 - [ ] Task: Conductor - User Manual Verification '静的解析エラーおよび警告の解消' (Protocol in workflow.md)
 
