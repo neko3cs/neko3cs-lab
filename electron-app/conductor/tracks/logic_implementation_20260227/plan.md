@@ -16,7 +16,7 @@
     - [ ] 読み込まれたコンテンツをReactのstateに設定し、エディタに表示する。
 - [ ] Task: Conductor - User Manual Verification 'ファイル読み込み機能のロジック実装' (Protocol in workflow.md)
 
-## フェーズ 2: 新規ファイル作成・保存機能のロジック実装
+## フェーズ 2: 新規ファイル作成・保存機能のロジック実装 [checkpoint: 65ef728]
 
 - [ ] Task: メインプロセスでファイル保存ダイアログを表示するIPCハンドラを実装
     - [ ] `ipcMain.handle` を使用して、レンダラープロセスからの保存要求を処理する。
@@ -26,11 +26,11 @@
     - [ ] `ipcMain.handle` を使用して、レンダラープロセスからのファイルパスとコンテンツを受け取り、ファイルに書き込む。
     - [ ] `fs.promises.writeFile` を使用して非同期でファイルを書き込む。
     - [ ] エラーハンドリング（書き込み権限がない、ディスク容量不足など）を実装し、適切なエラーメッセージを返す。
-- [ ] Task: レンダラープロセスから新規ファイル保存をトリッジする機能の実装
+- [x] Task: レンダラープロセスから新規ファイル保存をトリッジする機能の実装
     - [ ] `preload/index.ts` にて、 `ipcRenderer.invoke` を使用して `save-file-dialog` および `write-file-content` のIPC呼び出しを公開する。
     - [ ] `App.tsx` にて、メニュー項目やボタンからこれらのIPC呼び出しをトリッジする。
     - [ ] 保存が成功した場合、またはエラーが発生した場合にUIにフィードバックを表示する。
-- [ ] Task: Conductor - User Manual Verification '新規ファイル作成・保存機能のロジック実装' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification '新規ファイル作成・保存機能のロジック実装' (Protocol in workflow.md)
 
 ## フェーズ 3: 既存ファイルの上書き保存機能と未保存変更の警告
 
