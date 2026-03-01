@@ -24,6 +24,6 @@
 
 ## フェーズ 3: 最終検証と機能整合性の確認
 
-- [ ] Task: 自動テストスイートの実行
-  - [ ] すべてのユニットテスト (`pnpm test`) と E2E テスト (`npx playwright test`) を実行し、リファクタリングによる破損がないことを確認する。
+- [x] Task: 自動テストスイートの実行
+    - [x] すべてのユニットテスト (`pnpm test`) と E2E テスト (`npx playwright test`) を実行し、リファクタリングによる破損がないことを確認する。
 - [ ] Task: Conductor - User Manual Verification '最終検証と機能整合性の確認' (Protocol in workflow.md)
