@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import { Button } from './components/atoms/Button'
+import { TextArea } from './components/atoms/TextArea'
 
 function App(): React.JSX.Element {
   const [fileContent, setFileContent] = useState<string>('')
@@ -60,36 +62,20 @@ function App(): React.JSX.Element {
       {/* Menu Bar Placeholder */}
       <header className="flex items-center px-4 h-12 bg-white border-b border-gray-200 shadow-sm">
         <div className="flex space-x-4">
-          <button
-            onClick={handleNewFile}
-            className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-          >
-            New
-          </button>
-          <button
-            onClick={handleOpenFile}
-            className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-          >
-            Open
-          </button>
-          <button
-            onClick={handleSaveFile}
-            className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-          >
-            Save
-          </button>
+          <Button onClick={handleNewFile}>New</Button>
+          <Button onClick={handleOpenFile}>Open</Button>
+          <Button onClick={handleSaveFile}>Save</Button>
         </div>
       </header>
 
       {/* Editor Area Placeholder */}
       <main className="flex-1 overflow-hidden p-4">
         <div className="h-full w-full bg-white rounded-lg border border-gray-200 shadow-inner p-4">
-          <textarea
-            className="w-full h-full resize-none focus:outline-none text-lg leading-relaxed"
+          <TextArea
             placeholder="Start typing your notes here..."
             value={fileContent}
             onChange={handleContentChange}
-          ></textarea>
+          />
         </div>
       </main>
 
