@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Versions from './components/Versions'
 
 function App(): React.JSX.Element {
   const [fileContent, setFileContent] = useState<string>('')
   const [filePath, setFilePath] = useState<string>('')
   const [isDirty, setIsDirty] = useState<boolean>(false)
+  const isDirtyRef = useRef<boolean>(false)
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    isDirtyRef.current = isDirty
+  }, [isDirty])
 
   useEffect(() => {
     window.api.onFileOpened((newFilePath, content) => {
@@ -20,7 +26,7 @@ function App(): React.JSX.Element {
     })
 
     window.api.onCheckUnsavedChanges(() => {
-      if (isDirty) {
+      if (isDirtyRef.current) {
         const choice = confirm('You have unsaved changes. Are you sure you want to quit?')
         if (choice) {
           window.api.closeWindow()
@@ -29,7 +35,7 @@ function App(): React.JSX.Element {
         window.api.closeWindow()
       }
     })
-  }, [isDirty])
+  }, [])
 
   const handleOpenFile = () => {
     window.api.openFile()
