@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using AspNetCoreBlazorInMvc.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreBlazorInMvc.Controllers;
 
