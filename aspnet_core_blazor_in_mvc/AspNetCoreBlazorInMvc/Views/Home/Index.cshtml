@@ -1,49 +1,23 @@
 @{
-    ViewData["Title"] = "MVCとBlazorの共存";
+    ViewData["Title"] = "都道府県・市区町村選択";
 }
 
 <div class="container py-5">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <div class="text-center mb-5">
                 <h1 class="display-4 fw-bold">ASP.NET Core MVC & Blazor</h1>
-                <p class="lead text-muted">MVCのViewの中にBlazorコンポーネントを埋め込んで、インタラクティブなUIをC#のみで実現します。</p>
+                <p class="lead text-muted">Blazor コンポーネントによる連動ドロップダウンのサンプルです。</p>
             </div>
 
-            <div class="card mb-4 border-0 shadow-sm">
-                <div class="card-body bg-light rounded">
-                    <h5 class="card-title text-secondary border-bottom pb-2 mb-3">
-                        <i class="bi bi-server me-2"></i>ここはMVCのView領域
-                    </h5>
-                    <p class="card-text">
-                        このページ全体はコントローラーから返された <code>Index.cshtml</code> です。
-                        サーバーサイドでレンダリング（SSR）されています。
-                    </p>
-                </div>
+            <div class="blazor-wrapper">
+                <component type="typeof(AspNetCoreBlazorInMvc.Components.LocationSelector)" render-mode="ServerPrerendered" />
             </div>
 
-            <hr class="my-5" />
-
-            <div class="blazor-container shadow rounded-3 p-1 bg-white">
-                <div class="p-4">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="flex-shrink-0 bg-primary text-white rounded-circle p-2 me-3">
-                            <i class="bi bi-lightning-fill fs-4"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0">インタラクティブなBlazorコンポーネント</h3>
-                            <small class="text-muted">JavaScriptを一行も書かずに、C#のロジックで動作します。</small>
-                        </div>
-                    </div>
-                    
-                    <component type="typeof(AspNetCoreBlazorInMvc.Components.UserList)" render-mode="ServerPrerendered" />
-                </div>
-            </div>
-            
             <div class="mt-5 text-center text-muted small">
                 <p>
                     <i class="bi bi-info-circle me-1"></i>
-                    SignalR（<code>_framework/blazor.server.js</code>）を通じてサーバーと常時接続されています。
+                    このフォームは Blazor コンポーネント (SignalR) を使用して、C# のみで非同期通信と UI 更新を実現しています。
                 </p>
             </div>
         </div>
@@ -51,7 +25,9 @@
 </div>
 
 <style>
-    .blazor-container {
-        border-top: 4px solid #0d6efd;
+    .blazor-wrapper {
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
     }
 </style>
