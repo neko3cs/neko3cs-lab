@@ -1,0 +1,48 @@
+<div class="card shadow-sm border-0 bg-light rounded-3 overflow-hidden">
+    <div class="card-header bg-primary text-white p-3">
+        <h5 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>都道府県・市区町村選択 (Blazor)</h5>
+    </div>
+    <div class="card-body p-4">
+        <div class="mb-4">
+            <label for="prefecture" class="form-label fw-bold text-secondary">都道府県</label>
+            <select id="prefecture" class="form-select border-0 shadow-sm" @onchange="OnPrefectureChange">
+                <option value="">都道府県を選択してください</option>
+                @foreach (var pref in prefectures)
+                {
+                    <option value="@pref.Id">@pref.Name</option>
+                }
+            </select>
+        </div>
+
+        @if (selectedPrefectureId != null && cities.Any())
+        {
+            <div class="mb-4 animate-in">
+                <label for="city" class="form-label fw-bold text-secondary">市区町村</label>
+                <select id="city" class="form-select border-0 shadow-sm" @onchange="OnCityChange">
+                    <option value="">市区町村を選択してください</option>
+                    @foreach (var city in cities)
+                    {
+                        <option value="@city.Id" selected="@(city.Id == selectedCityId)">@city.Name</option>
+                    }
+                </select>
+            </div>
+        }
+
+        <hr class="my-4 opacity-10" />
+        
+        <div class="mt-4 p-3 bg-white rounded shadow-sm border-start border-primary border-4">
+            <span class="text-muted small d-block mb-1 text-uppercase fw-bold">選択中の場所:</span>
+            <span class="text-primary h5 fw-bold mb-0">@SelectionLabel</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .animate-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
