@@ -1,13 +1,15 @@
-using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using AspNetCoreBlazorInMvc.Components;
 using AspNetCoreBlazorInMvc.Data;
 using AspNetCoreBlazorInMvc.Models;
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddServerSideBlazor(); // Blazorサービスを追加
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents(); // Interactive Serverサービスを追加
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("LocationDb"));
@@ -51,9 +53,15 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// .NET 8 以降の Blazor Interactive Server では UseAntiforgery が必須です。
+// SignalR 通信時の CSRF 対策としてアンチフォージェリトークンの検証が行われます。
+app.UseAntiforgery();
+
 app.MapStaticAssets();
 
-app.MapBlazorHub(); // Blazorの通信用ハブを追加
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
