@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using AspNetCoreBlazorInMvc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreBlazorInMvc.Data
 {
