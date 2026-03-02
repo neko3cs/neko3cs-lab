@@ -1,3 +1,18 @@
+@using AspNetCoreBlazorInMvc.Data
+@using AspNetCoreBlazorInMvc.Models
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext Context
+
+<style>
+    .animate-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
 <div class="card shadow-sm border-0 bg-light rounded-3 overflow-hidden">
     <div class="card-header bg-primary text-white p-3">
         <h5 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>都道府県・市区町村選択 (Blazor)</h5>
@@ -37,12 +52,63 @@
     </div>
 </div>
 
-<style>
-    .animate-in {
-        animation: fadeIn 0.3s ease-out;
+@code {
+    private List<Prefecture> prefectures = new();
+    private List<City> cities = new();
+
+    private int? selectedPrefectureId;
+    private int? selectedCityId;
+
+    private string SelectionLabel => GetSelectionLabel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        prefectures = await Context.Prefectures.OrderBy(p => p.Id).ToListAsync();
     }
-    @@keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-5px); }
-        to { opacity: 1; transform: translateY(0); }
+
+    private async Task OnPrefectureChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var prefId))
+        {
+            selectedPrefectureId = prefId;
+            selectedCityId = null;
+            cities = await Context.Cities
+                .Where(c => c.PrefectureId == prefId)
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+        }
+        else
+        {
+            selectedPrefectureId = null;
+            selectedCityId = null;
+            cities = new();
+        }
     }
-</style>
+
+    private void OnCityChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var cityId))
+        {
+            selectedCityId = cityId;
+        }
+        else
+        {
+            selectedCityId = null;
+        }
+    }
+
+    private string GetSelectionLabel()
+    {
+        if (selectedPrefectureId == null) return "未選択";
+        
+        var pref = prefectures.FirstOrDefault(p => p.Id == selectedPrefectureId);
+        if (pref == null) return "未選択";
+
+        if (selectedCityId == null) return "未選択";
+        
+        var city = cities.FirstOrDefault(c => c.Id == selectedCityId);
+        if (city == null) return "未選択";
+
+        return $"{pref.Name} {city.Name}";
+    }
+}
