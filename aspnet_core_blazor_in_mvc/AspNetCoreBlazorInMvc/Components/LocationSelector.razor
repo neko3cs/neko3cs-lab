@@ -1,6 +1,8 @@
 @using AspNetCoreBlazorInMvc.Data
 @using AspNetCoreBlazorInMvc.Models
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.Web
+@rendermode @(new InteractiveServerRenderMode(prerender: true))
 @inject AppDbContext Context
 
 <style>
