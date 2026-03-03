@@ -6,8 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "functions-framework --target=app",
-    "prestart": "pnpm run build",
-    "gcp-build": "pnpm run build"
+    "gcp-build": "npm run build"
   },
   "dependencies": {
     "@google-cloud/functions-framework": "^3.3.0",
