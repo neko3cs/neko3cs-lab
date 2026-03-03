@@ -7,6 +7,12 @@ resource "google_sql_database_instance" "instance" {
 
   settings {
     tier = "db-f1-micro" # Minimum size for development
+    
+    user_labels = {
+      managed_by = "terraform"
+      stack_name = "gcloud-serverless-web-app"
+    }
+
     ip_configuration {
       ipv4_enabled    = false
       private_network = google_compute_network.vpc_network.id
