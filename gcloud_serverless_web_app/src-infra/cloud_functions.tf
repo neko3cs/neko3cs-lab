@@ -6,11 +6,25 @@ resource "google_storage_bucket" "bucket" {
   force_destroy               = true
 }
 
+# Create a simple dummy ZIP for initial deployment
+data "archive_file" "dummy_zip" {
+  type        = "zip"
+  output_path = "${path.module}/dummy-source.zip"
+  source {
+    content  = "{ \"name\": \"app\", \"version\": \"1.0.0\", \"main\": \"index.js\" }"
+    filename = "package.json"
+  }
+  source {
+    content  = "exports.app = (req, res) => res.send('Initializing...');"
+    filename = "index.js"
+  }
+}
+
 # Dummy source code to initialize the function
 resource "google_storage_bucket_object" "dummy_source" {
   name   = "dummy-source.zip"
   bucket = google_storage_bucket.bucket.name
-  content = "dummy content" # In a real scenario, this would be a zip with package.json and index.js
+  source = data.archive_file.dummy_zip.output_path
 }
 
 # Cloud Functions Service Account
@@ -43,7 +57,7 @@ resource "google_cloudfunctions2_function" "function" {
     service_account_email = google_service_account.function_sa.email
 
     vpc_connector = google_vpc_access_connector.connector.id
-    vpc_connector_egress_settings = "ALL_TRAFFIC"
+    vpc_connector_egress_settings = "PRIVATE_RANGES_ONLY"
     
     # Ingress limited to Internal + Load Balancer
     ingress_settings = "ALLOW_INTERNAL_AND_GCLB"

@@ -44,6 +44,10 @@ async function basicAuth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+app.get('/', (req, res) => {
+  res.send('API is running. Please use /conn-db with basic auth.');
+});
+
 app.get('/conn-db', basicAuth, async (req: Request, res: Response) => {
   let pool: Pool | undefined;
   try {
@@ -56,7 +60,7 @@ app.get('/conn-db', basicAuth, async (req: Request, res: Response) => {
       database: 'app-db',
       password: dbPassword,
       port: 5432,
-      ssl: false, // Internal connection over VPC
+      ssl: false,
     });
 
     const result = await pool.query('SELECT version();');
