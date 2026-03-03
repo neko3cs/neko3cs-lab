@@ -6,25 +6,19 @@ resource "google_storage_bucket" "bucket" {
   force_destroy               = true
 }
 
-# Create a simple dummy ZIP for initial deployment
-data "archive_file" "dummy_zip" {
+# Automatically package the application source code
+data "archive_file" "function_source" {
   type        = "zip"
-  output_path = "${path.module}/dummy-source.zip"
-  source {
-    content  = "{ \"name\": \"app\", \"version\": \"1.0.0\", \"main\": \"index.js\" }"
-    filename = "package.json"
-  }
-  source {
-    content  = "exports.app = (req, res) => res.send('Initializing...');"
-    filename = "index.js"
-  }
+  output_path = "${path.module}/function-source.zip"
+  source_dir  = "${path.module}/../src-app"
+  excludes    = ["node_modules", ".git", ".gcloudignore", "deploy.sh", "dist", "pnpm-lock.yaml"]
 }
 
-# Dummy source code to initialize the function
-resource "google_storage_bucket_object" "dummy_source" {
-  name   = "dummy-source.zip"
+# Upload the ZIP to GCS with a name based on its content hash to trigger updates
+resource "google_storage_bucket_object" "source_zip" {
+  name   = "source-${data.archive_file.function_source.output_md5}.zip"
   bucket = google_storage_bucket.bucket.name
-  source = data.archive_file.dummy_zip.output_path
+  source = data.archive_file.function_source.output_path
 }
 
 # Cloud Functions Service Account
@@ -45,7 +39,7 @@ resource "google_cloudfunctions2_function" "function" {
     source {
       storage_source {
         bucket = google_storage_bucket.bucket.name
-        object = google_storage_bucket_object.dummy_source.name
+        object = google_storage_bucket_object.source_zip.name
       }
     }
   }
