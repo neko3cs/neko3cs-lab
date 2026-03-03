@@ -67,7 +67,17 @@ resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' = {
   properties: {
     administratorLogin: 'sqladmin'
     administratorLoginPassword: 'Password123!' // 実際は Key Vault から取得すべき
-    publicNetworkAccess: 'Disabled'
+    publicNetworkAccess: 'Enabled' // Azure サービスからのアクセスを許可するために有効化
+  }
+}
+
+// 「Azure サービスおよびリソースにこのサーバーへのアクセスを許可する」をオンにする
+resource allowAzureServices 'Microsoft.Sql/servers/firewallRules@2023-08-01-preview' = {
+  parent: sqlServer
+  name: 'AllowAzureServices'
+  properties: {
+    startIpAddress: '0.0.0.0'
+    endIpAddress: '0.0.0.0'
   }
 }
 
@@ -97,6 +107,39 @@ resource sqlPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
           groupIds: [
             'sqlServer'
           ]
+        }
+      }
+    ]
+  }
+}
+
+// Private DNS Zone for SQL (閉域網での名前解決用)
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.database.windows.net'
+  location: 'global'
+}
+
+resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: privateDnsZone
+  name: '${projectName}-vnet-link'
+  location: 'global'
+  properties: {
+    registrationEnabled: false
+    virtualNetwork: {
+      id: vnet.id
+    }
+  }
+}
+
+resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01' = {
+  parent: sqlPrivateEndpoint
+  name: 'default'
+  properties: {
+    privateDnsZoneConfigs: [
+      {
+        name: 'sqlConfig'
+        properties: {
+          privateDnsZoneId: privateDnsZone.id
         }
       }
     ]
@@ -283,3 +326,8 @@ resource wafPolicy 'Microsoft.Network/ApplicationGatewayWebApplicationFirewallPo
     }
   }
 }
+
+output keyVaultName string = kv.name
+output sqlServerFqdn string = sqlServer.properties.fullyQualifiedDomainName
+output sqlDbName string = sqlDb.name
+output sqlAdminLogin string = sqlServer.properties.administratorLogin

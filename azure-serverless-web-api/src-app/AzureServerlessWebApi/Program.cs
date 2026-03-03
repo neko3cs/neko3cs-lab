@@ -40,4 +40,14 @@ builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
     .ConfigureFunctionsApplicationInsights();
 
-builder.Build().Run();
+var host = builder.Build();
+
+// Code First: データベースの自動作成 (Migration を使わないシンプルな初期化)
+using (var scope = host.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    // データベースが存在しない場合は作成し、スキーマを適用する
+    await dbContext.Database.EnsureCreatedAsync();
+}
+
+host.Run();
