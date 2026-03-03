@@ -63,28 +63,3 @@ resource "google_cloudfunctions2_function" "function" {
     ingress_settings = "ALLOW_INTERNAL_AND_GCLB"
   }
 }
-
-# Permissions for Service Account
-resource "google_secret_manager_secret_iam_member" "db_password_access" {
-  secret_id = google_secret_manager_secret.db_password.id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.function_sa.email}"
-}
-
-resource "google_secret_manager_secret_iam_member" "db_host_access" {
-  secret_id = google_secret_manager_secret.db_host.id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.function_sa.email}"
-}
-
-resource "google_secret_manager_secret_iam_member" "app_username_access" {
-  secret_id = google_secret_manager_secret.app_username.id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.function_sa.email}"
-}
-
-resource "google_secret_manager_secret_iam_member" "app_password_access" {
-  secret_id = google_secret_manager_secret.app_password.id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.function_sa.email}"
-}

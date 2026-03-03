@@ -44,10 +44,7 @@ async function basicAuth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-app.get('/', (req, res) => {
-  res.send('API is running. Please use /conn-db with basic auth.');
-});
-
+// Database connection endpoint
 app.get('/conn-db', basicAuth, async (req: Request, res: Response) => {
   let pool: Pool | undefined;
   try {
