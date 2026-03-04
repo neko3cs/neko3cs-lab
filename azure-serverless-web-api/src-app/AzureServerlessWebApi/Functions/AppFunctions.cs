@@ -6,7 +6,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace AzureServerlessWebApi;
+namespace AzureServerlessWebApi.Functions;
 
 public class AppFunctions(ILogger<AppFunctions> logger, AppDbContext dbContext)
 {
@@ -24,7 +24,7 @@ public class AppFunctions(ILogger<AppFunctions> logger, AppDbContext dbContext)
             var results = await _dbContext.Database
                 .SqlQueryRaw<string>("SELECT @@VERSION")
                 .ToListAsync();
-
+            
             var version = results.FirstOrDefault();
 
             var response = req.CreateResponse(HttpStatusCode.OK);
@@ -54,7 +54,7 @@ public class AppFunctions(ILogger<AppFunctions> logger, AppDbContext dbContext)
             var json = JsonSerializer.Serialize(users);
             await response.WriteStringAsync(json);
             response.Headers.Add("Content-Type", "application/json; charset=utf-8");
-
+            
             return response;
         }
         catch (Exception ex)

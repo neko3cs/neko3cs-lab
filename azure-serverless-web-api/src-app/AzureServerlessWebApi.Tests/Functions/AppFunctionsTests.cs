@@ -1,13 +1,15 @@
 using System.Net;
 using AzureServerlessWebApi.Data;
+using AzureServerlessWebApi.Functions;
 using AzureServerlessWebApi.Tests.Fake;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
+using Xunit;
 
-namespace AzureServerlessWebApi.Tests;
+namespace AzureServerlessWebApi.Tests.Functions; // 名前空間を更新
 
 public class AppFunctionsTests
 {
@@ -57,7 +59,6 @@ public class AppFunctionsTests
         var request = new FakeHttpRequestData(contextMock.Object);
 
         // Act & Assert
-        // InMemory プロバイダーでは SqlQueryRaw が例外を投げるため、InternalServerError になることを確認
         var response = await functions.GetDatabaseVersion(request);
         
         response.ShouldNotBeNull();
