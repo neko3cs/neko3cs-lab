@@ -1,9 +1,14 @@
+// --------------------------------------------------------------------------------
+// 公開層（ゲートウェイ）モジュール
+// Application Gateway と WAF ポリシーを定義し、外部からのアクセスを制御します。
+// --------------------------------------------------------------------------------
+
 param location string
 param projectName string
 param appGatewaySubnetId string
 param functionAppDefaultHostName string
 
-// Application Gateway + WAF
+// Public IP: Application Gateway がインターネットから通信を受け取るための固定IPです。
 resource publicIp 'Microsoft.Network/publicIPAddresses@2023-11-01' = {
   name: '${projectName}-pip'
   location: location
@@ -15,17 +20,20 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2023-11-01' = {
   }
 }
 
+// WAF (Web Application Firewall) Policy: 
+// 悪意のある攻撃（SQLインジェクションなど）から API を保護するルールセットです。
 resource wafPolicy 'Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies@2023-11-01' = {
   name: '${projectName}-wafpolicy'
   location: location
   properties: {
     policySettings: {
       state: 'Enabled'
-      mode: 'Prevention'
+      mode: 'Prevention' // 攻撃を検知した際にブロックするモードです。
     }
     managedRules: {
       managedRuleSets: [
         {
+          // 標準的な攻撃パターンを網羅した OWASP ルールセットを使用します。
           ruleSetType: 'OWASP'
           ruleSetVersion: '3.2'
         }
@@ -34,6 +42,8 @@ resource wafPolicy 'Microsoft.Network/ApplicationGatewayWebApplicationFirewallPo
   }
 }
 
+// Application Gateway: 
+// WAF を備えたロードバランサーとして機能し、Functions へリクエストを中継します。
 resource appGateway 'Microsoft.Network/applicationGateways@2023-11-01' = {
   name: '${projectName}-agw'
   location: location
@@ -76,6 +86,7 @@ resource appGateway 'Microsoft.Network/applicationGateways@2023-11-01' = {
     ]
     backendAddressPools: [
       {
+        // バックエンドとして Azure Functions のホスト名を指定します。
         name: 'funcBackendPool'
         properties: {
           backendAddresses: [
@@ -93,7 +104,7 @@ resource appGateway 'Microsoft.Network/applicationGateways@2023-11-01' = {
           port: 443
           protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
-          pickHostNameFromBackendAddress: true
+          pickHostNameFromBackendAddress: true // バックエンドのホスト名を自動解決します。
         }
       }
     ]
@@ -117,6 +128,7 @@ resource appGateway 'Microsoft.Network/applicationGateways@2023-11-01' = {
     ]
     requestRoutingRules: [
       {
+        // 受け取ったリクエストを Functions のバックエンドプールに振り分けます。
         name: 'rule1'
         properties: {
           ruleType: 'Basic'
