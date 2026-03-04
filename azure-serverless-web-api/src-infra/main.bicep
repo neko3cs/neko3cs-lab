@@ -1,9 +1,15 @@
 param location string = resourceGroup().location
-param projectName string = 'az-srv-api'
+param projectName string = 'webapi'
 param vnetAddressPrefix string = '10.0.0.0/16'
 param funcSubnetPrefix string = '10.0.1.0/24'
 param sqlSubnetPrefix string = '10.0.2.0/24'
 param gatewaySubnetPrefix string = '10.0.3.0/24'
+@secure()
+param sqlPassword string
+
+var suffix = uniqueString(resourceGroup().id)
+var sqlServerName = take('sql-${projectName}-${suffix}', 24)
+var storageAccountName = take('stg${projectName}${suffix}', 24)
 
 // VNet
 resource vnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
@@ -22,9 +28,9 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
           addressPrefix: funcSubnetPrefix
           delegations: [
             {
-              name: 'serverfarmDelegation'
+              name: 'flexDelegation'
               properties: {
-                serviceName: 'Microsoft.Web/serverFarms'
+                serviceName: 'Microsoft.App/environments'
               }
             }
           ]
@@ -37,7 +43,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
         }
       }
       {
-        name: 'GatewaySubnet'
+        name: 'AppGatewaySubnet'
         properties: {
           addressPrefix: gatewaySubnetPrefix
         }
@@ -46,32 +52,17 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
   }
 }
 
-// Key Vault
-resource kv 'Microsoft.KeyVault/vaults@2023-07-01' = {
-  name: '${projectName}-kv'
-  location: location
-  properties: {
-    sku: {
-      family: 'A'
-      name: 'standard'
-    }
-    tenantId: subscription().tenantId
-    enableRbacAuthorization: true
-  }
-}
-
 // SQL Server & Database
 resource sqlServer 'Microsoft.Sql/servers@2023-08-01-preview' = {
-  name: '${projectName}-sqlsvr'
+  name: sqlServerName
   location: location
   properties: {
     administratorLogin: 'sqladmin'
-    administratorLoginPassword: 'Password123!' // 実際は Key Vault から取得すべき
-    publicNetworkAccess: 'Enabled' // Azure サービスからのアクセスを許可するために有効化
+    administratorLoginPassword: sqlPassword
+    publicNetworkAccess: 'Enabled'
   }
 }
 
-// 「Azure サービスおよびリソースにこのサーバーへのアクセスを許可する」をオンにする
 resource allowAzureServices 'Microsoft.Sql/servers/firewallRules@2023-08-01-preview' = {
   parent: sqlServer
   name: 'AllowAzureServices'
@@ -83,7 +74,7 @@ resource allowAzureServices 'Microsoft.Sql/servers/firewallRules@2023-08-01-prev
 
 resource sqlDb 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   parent: sqlServer
-  name: '${projectName}-db'
+  name: '${projectName}db'
   location: location
   sku: {
     name: 'Basic'
@@ -91,9 +82,9 @@ resource sqlDb 'Microsoft.Sql/servers/databases@2023-08-01-preview' = {
   }
 }
 
-// Private Endpoint for SQL
+// Private Endpoint for SQL (名前をユニーク化して衝突を回避)
 resource sqlPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
-  name: '${projectName}-sql-pe'
+  name: '${projectName}-sql-pe-${suffix}'
   location: location
   properties: {
     subnet: {
@@ -113,9 +104,9 @@ resource sqlPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
   }
 }
 
-// Private DNS Zone for SQL (閉域網での名前解決用)
+// Private DNS Zone for SQL
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.database.windows.net'
+  name: 'privatelink${environment().suffixes.sqlServerHostname}'
   location: 'global'
 }
 
@@ -148,7 +139,7 @@ resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneG
 
 // Storage Account for Functions
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: '${projectName}stg'
+  name: storageAccountName
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -156,15 +147,23 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   kind: 'StorageV2'
 }
 
+// デプロイ用コンテナ
+resource deploymentContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
+  name: '${storage.name}/default/deployment'
+}
+
 // App Service Plan
 resource asp 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: '${projectName}-asp'
   location: location
   sku: {
-    name: 'EP1'
-    tier: 'ElasticPremium'
+    name: 'FC1'
+    tier: 'FlexConsumption'
   }
-  kind: 'elastic'
+  kind: 'functionapp'
+  properties: {
+    reserved: true
+  }
 }
 
 // Azure Functions App
@@ -172,8 +171,32 @@ resource funcApp 'Microsoft.Web/sites@2023-12-01' = {
   name: '${projectName}-func'
   location: location
   kind: 'functionapp,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: asp.id
+    functionAppConfig: {
+      runtime: {
+        name: 'dotnet-isolated'
+        version: '9.0'
+      }
+      // Flex では deployment 設定が必要
+      deployment: {
+        storage: {
+          type: 'blobContainer'
+          value: '${storage.properties.primaryEndpoints.blob}deployment'
+          authentication: {
+            type: 'StorageAccountConnectionString'
+            storageAccountConnectionStringName: 'DEPLOYMENT_STORAGE_CONNECTION_STRING'
+          }
+        }
+      }
+      scaleAndConcurrency: {
+        instanceMemoryMB: 2048
+        maximumInstanceCount: 100
+      }
+    }
     siteConfig: {
       appSettings: [
         {
@@ -181,16 +204,12 @@ resource funcApp 'Microsoft.Web/sites@2023-12-01' = {
           value: 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
         }
         {
-          name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~4'
+          name: 'DEPLOYMENT_STORAGE_CONNECTION_STRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
         }
         {
-          name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet-isolated'
-        }
-        {
-          name: 'KEY_VAULT_URL'
-          value: kv.properties.vaultUri
+          name: 'DbConnectionString'
+          value: 'Server=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433;Initial Catalog=${sqlDb.name};User ID=${sqlServer.properties.administratorLogin};Password=${sqlPassword};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
         }
       ]
     }
@@ -278,7 +297,11 @@ resource appGateway 'Microsoft.Network/applicationGateways@2023-11-01' = {
         name: 'appGatewayHttpListener'
         properties: {
           frontendIPConfiguration: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', '${projectName}-agw', 'appGatewayFrontendIp')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+              '${projectName}-agw',
+              'appGatewayFrontendIp'
+            )
           }
           frontendPort: {
             id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', '${projectName}-agw', 'port_80')
@@ -293,13 +316,25 @@ resource appGateway 'Microsoft.Network/applicationGateways@2023-11-01' = {
         properties: {
           ruleType: 'Basic'
           httpListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', '${projectName}-agw', 'appGatewayHttpListener')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/httpListeners',
+              '${projectName}-agw',
+              'appGatewayHttpListener'
+            )
           }
           backendAddressPool: {
-            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', '${projectName}-agw', 'funcBackendPool')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/backendAddressPools',
+              '${projectName}-agw',
+              'funcBackendPool'
+            )
           }
           backendHttpSettings: {
-            id: resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', '${projectName}-agw', 'funcHttpSettings')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+              '${projectName}-agw',
+              'funcHttpSettings'
+            )
           }
           priority: 1
         }
@@ -327,7 +362,6 @@ resource wafPolicy 'Microsoft.Network/ApplicationGatewayWebApplicationFirewallPo
   }
 }
 
-output keyVaultName string = kv.name
 output sqlServerFqdn string = sqlServer.properties.fullyQualifiedDomainName
 output sqlDbName string = sqlDb.name
 output sqlAdminLogin string = sqlServer.properties.administratorLogin
