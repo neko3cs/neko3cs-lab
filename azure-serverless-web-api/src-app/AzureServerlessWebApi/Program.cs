@@ -1,4 +1,5 @@
 using AzureServerlessWebApi.Data;
+using AzureServerlessWebApi.Middleware;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,10 @@ using Microsoft.Extensions.Hosting;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
-builder.ConfigureFunctionsWebApplication();
+// API キー認証ミドルウェアを直接登録
+builder.UseMiddleware<ApiKeyMiddleware>();
 
-// DbContext の登録 (環境変数 DbConnectionString から直接取得)
+// DbContext の登録
 var connectionString = builder.Configuration["DbConnectionString"];
 
 builder.Services.AddDbContextPool<AppDbContext>(options =>
@@ -35,11 +37,8 @@ var host = builder.Build();
 using (var scope = host.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    
-    // データベースが存在しない場合は作成し、スキーマを適用する
     var isCreated = await dbContext.Database.EnsureCreatedAsync();
     
-    // データが空の場合のみ、サンプルデータを投入
     if (isCreated || !await dbContext.Users.AnyAsync())
     {
         dbContext.Users.AddRange(new List<User>

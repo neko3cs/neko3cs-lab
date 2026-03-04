@@ -83,6 +83,10 @@ resource funcApp 'Microsoft.Web/sites@2023-12-01' = {
           name: 'DbConnectionString'
           value: 'Server=tcp:${sqlServerFqdn},1433;Initial Catalog=${sqlDbName};User ID=${sqlAdminLogin};Password=${sqlPassword};Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
         }
+        {
+          name: 'WebApiApiKey'
+          value: 'DefaultApiKey123'
+        }
       ]
     }
     virtualNetworkSubnetId: functionSubnetId
