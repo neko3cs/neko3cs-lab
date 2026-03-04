@@ -15,6 +15,6 @@ az group create --name $resourceGroupName --location $location
 # Bicep のデプロイ
 az deployment group create `
     --resource-group $resourceGroupName `
-    --template-file ./main.bicep `
+    --template-file ./Main.bicep `
     --parameters sqlPassword=$sqlPassword `
     --query "properties.outputs" -o json
