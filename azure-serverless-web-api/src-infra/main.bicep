@@ -1,3 +1,9 @@
+// --------------------------------------------------------------------------------
+// メインオーケストレーター
+// 各リソース（ネットワーク、データベース、アプリケーション等）のモジュールを呼び出し、
+// システム全体のインフラを構築します。
+// --------------------------------------------------------------------------------
+
 param location string = resourceGroup().location
 param projectName string = 'webapi'
 param vnetAddressPrefix string = '10.0.0.0/16'
@@ -8,9 +14,10 @@ param gatewaySubnetPrefix string = '10.0.3.0/24'
 @secure()
 param sqlPassword string
 
+// リソース名が重複しないようにリソースグループのIDから一意の文字列を生成します。
 var suffix = uniqueString(resourceGroup().id)
 
-// 1. Network Module (VNet, Subnets)
+// 1. ネットワーク層の構築 (VNet, サブネット)
 module network './Network.bicep' = {
   name: 'networkDeployment'
   params: {
@@ -23,7 +30,7 @@ module network './Network.bicep' = {
   }
 }
 
-// 2. Database Module (SQL Server, DB, Private Endpoint, Private DNS)
+// 2. データベース層の構築 (SQL Server, SQL Database, Private Endpoint)
 module database './Database.bicep' = {
   name: 'databaseDeployment'
   params: {
@@ -36,7 +43,7 @@ module database './Database.bicep' = {
   }
 }
 
-// 3. Application Module (Storage, ASP, Function App)
+// 3. アプリケーション層の構築 (Functions, App Service Plan, Storage Account)
 module application './Application.bicep' = {
   name: 'applicationDeployment'
   params: {
@@ -51,7 +58,8 @@ module application './Application.bicep' = {
   }
 }
 
-// 4. App Gateway Module (WAF, App Gateway) - Dependencies resolved
+// 4. 公開層（ゲートウェイ）の構築 (Application Gateway + WAF)
+// 最後に構築することで、Functions のホスト名を安全に受け取ることができます。
 module appGateway './AppGateway.bicep' = {
   name: 'appGatewayDeployment'
   params: {
@@ -62,6 +70,7 @@ module appGateway './AppGateway.bicep' = {
   }
 }
 
+// 他のツール（Deploy.ps1等）で利用するために必要な情報を出力します。
 output sqlServerFqdn string = database.outputs.sqlServerFqdn
 output sqlDbName string = database.outputs.sqlDbName
 output sqlAdminLogin string = database.outputs.sqlAdminLogin
