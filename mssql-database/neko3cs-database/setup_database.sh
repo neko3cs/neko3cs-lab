@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-docker-compose up --detach
+docker compose up --detach
 sqlcmd \
   -S 'localhost' -d 'master' -U 'sa' -P "P@ssword!" \
   -Q 'DROP DATABASE IF EXISTS [Neko3csDatabase]; CREATE DATABASE [Neko3csDatabase];'
