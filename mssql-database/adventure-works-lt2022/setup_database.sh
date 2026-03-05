@@ -4,7 +4,7 @@ if [ ! -f $PWD/AdventureWorksLT2022.bak ]; then
   curl -fsSOL https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksLT2022.bak
 fi
 
-docker compose up --detach
+docker compose up --detach --wait
 sqlcmd \
   -S localhost -d master -U sa -P P@ssword! \
   -i ./RestoreDatabase.sql
