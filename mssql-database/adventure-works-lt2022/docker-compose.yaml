@@ -11,3 +11,21 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=P@ssword!
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/opt/mssql-tools18/bin/sqlcmd",
+          "-S",
+          "localhost",
+          "-U",
+          "sa",
+          "-P",
+          "P@ssword!",
+          "-Q",
+          "SELECT 1",
+          "-C",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
