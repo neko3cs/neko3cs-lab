@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 #Requires -PSEdition Core
 $ErrorActionPreference = 'Stop'
 
