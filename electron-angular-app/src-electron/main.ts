@@ -24,7 +24,10 @@ function createWindow() {
 }
 
 function configureIPCHandlers() {
-  ipcMain.handle("ping", () => console.log("pong"));
+  ipcMain.handle("ping", () => {
+    console.log("pong");
+    return "pong";
+  });
 }
 
 app.whenReady().then(() => {
