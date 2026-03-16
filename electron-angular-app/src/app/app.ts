@@ -1,19 +1,45 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  standalone: true,
+  imports: [MatButtonModule, MatSnackBarModule],
   template: `
-    <h1>Hello, {{ title() }}</h1>
-    
-    <button (click)="ping()">Ping</button>
+    <main class="flex min-h-screen flex-col items-center justify-center gap-10 text-center">
+
+      <h1 class="text-5xl font-semibold tracking-tight">
+        {{ title() }}
+      </h1>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="px-6 py-3 text-lg"
+        (click)="ping()"
+      >
+        Ping Electron
+      </button>
+
+    </main>
   `,
-  styles: [],
 })
 export class App {
-  protected readonly title = signal('electron-angular-app');
+  protected readonly title = signal('Electron Angular App');
+  private snackBar = inject(MatSnackBar);
 
-  ping() {
-    window.electronAPI.ping();
+  async ping() {
+    const response = await window.electronAPI.ping();
+
+    this.snackBar.open(
+      `Electron: ${response}`,
+      'OK',
+      {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      }
+    );
   }
 }
