@@ -1,59 +1,272 @@
-# ElectronAngularApp
+# Angular + Electron (TypeScript) Setup
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.2.
+Angularアプリを **Electronデスクトップアプリ**として動作させる最小構成。
+開発モードでは **Angular dev server + Electron を同時起動**します。
 
-## Development server
+ElectronはWebアプリをデスクトップアプリとして実行できるフレームワークです。([GeeksforGeeks][1])
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+# Requirements
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Node.js 20+
+- pnpm
+- Angular CLI
 
 ```bash
-ng generate component component-name
+pnpm add -g @angular/cli
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
+
+# 1. Angular プロジェクト作成
 
 ```bash
-ng generate --help
+ng new electron-angular-app
+cd electron-angular-app
 ```
 
-## Building
+---
 
-To build the project run:
+# 2. Electron関連パッケージ
 
 ```bash
-ng build
+pnpm add -D \
+electron \
+electron-builder \
+concurrently \
+wait-on \
+cross-env \
+typescript \
+@types/node
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+# 3. Electron用ディレクトリ作成
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+```text
+src-electron/
+  main.ts
+  preload.ts
+```
+
+---
+
+# 4. Electron main process
+
+`src-electron/main.ts`
+
+```ts
+import { app, BrowserWindow, ipcMain } from 'electron';
+import path from 'path';
+
+function createWindow() {
+  const win = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  });
+
+  if (process.env.NODE_ENV === 'dev') {
+    win.loadURL('http://localhost:4200');
+  } else {
+    win.loadFile(path.join(__dirname, '../dist/electron-angular-app/browser/index.html'));
+  }
+}
+
+app.whenReady().then(createWindow);
+
+ipcMain.handle('ping', async () => {
+  return 'pong';
+});
+```
+
+---
+
+# 5. preload
+
+`src-electron/preload.ts`
+
+```ts
+import { contextBridge, ipcRenderer } from 'electron';
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  ping: () => ipcRenderer.invoke('ping'),
+});
+```
+
+---
+
+# 6. Electron TypeScript config
+
+`tsconfig.electron.json`
+
+```json
+{
+  "compilerOptions": {
+    "outDir": "dist-electron",
+    "module": "commonjs",
+    "target": "es2020",
+    "types": ["node"],
+    "esModuleInterop": true
+  },
+  "include": ["src-electron/**/*.ts"]
+}
+```
+
+---
+
+# 7. Angular側 型定義
+
+`src/types/preload.d.ts`
+
+```ts
+export {};
+
+declare global {
+  interface Window {
+    electronAPI: {
+      ping: () => Promise<string>;
+    };
+  }
+}
+```
+
+---
+
+# 8. package.json scripts
+
+```json
+{
+  "main": "dist-electron/main.js",
+
+  "scripts": {
+    "start": "ng serve",
+
+    "build:electron": "tsc -p tsconfig.electron.json",
+
+    "electron:dev": "concurrently \"ng serve\" \"wait-on http://localhost:4200 && cross-env NODE_ENV=dev pnpm build:electron && electron .\"",
+
+    "build": "ng build && pnpm build:electron",
+
+    "electron:build": "pnpm build && electron-builder"
+  }
+}
+```
+
+---
+
+# 9. Electron Builder設定
+
+`package.json`
+
+```json
+{
+  "build": {
+    "appId": "com.example.electronangular",
+    "files": ["dist/**/*", "dist-electron/**/*", "package.json"],
+    "directories": {
+      "buildResources": "build"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
+```
+
+---
+
+# 10. 開発起動
 
 ```bash
-ng test
+pnpm electron:dev
 ```
 
-## Running end-to-end tests
+起動フロー
 
-For end-to-end (e2e) testing, run:
+```text
+Angular dev server
+        ↓
+http://localhost:4200
+        ↓
+Electron BrowserWindow
+```
+
+---
+
+# 11. ビルド
 
 ```bash
-ng e2e
+pnpm electron:build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+生成
 
-## Additional Resources
+```text
+dist/
+dist-electron/
+release/
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+OSごとの実行ファイル
+
+```text
+Mac    → dmg
+Windows → exe
+Linux   → AppImage
+```
+
+---
+
+# プロジェクト構造
+
+```text
+.
+├─ src/                # Angular
+├─ src-electron/       # Electron main/preload
+│   ├─ main.ts
+│   └─ preload.ts
+├─ dist/               # Angular build
+├─ dist-electron/      # Electron build
+├─ angular.json
+├─ package.json
+└─ tsconfig.electron.json
+```
+
+---
+
+# IPC Example
+
+Angular
+
+```ts
+const result = await window.electronAPI.ping();
+```
+
+Electron
+
+```ts
+ipcMain.handle('ping', async () => 'pong');
+```
+
+---
+
+# 開発構成
+
+```text
+Renderer  → Angular
+Main      → Electron
+Bridge    → preload
+```
+
+---
