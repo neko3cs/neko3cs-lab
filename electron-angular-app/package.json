@@ -8,30 +8,11 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:angular": "ng build",
+    "install:electron": "node ./node_modules/electron/install.js",
+    "build:angular": "ng build --base-href ./",
     "build:electron": "tsc -p tsconfig.electron.json",
-    "electron:dev": "concurrently \"ng serve\" \"wait-on http://localhost:4200 && cross-env NODE_ENV=dev pnpm build:electron && electron .\"",
+    "electron:dev": "pnpm build:angular && pnpm build:electron && electron .",
     "electron:build": "pnpm build:angular && pnpm build:electron && electron-builder"
-  },
-  "build": {
-    "appId": "com.example.angular-electron",
-    "productName": "AngularElectronApp",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "dist/**/*",
-      "dist-electron/**/*"
-    ],
-    "win": {
-      "target": "nsis"
-    },
-    "mac": {
-      "target": "dmg"
-    },
-    "linux": {
-      "target": "AppImage"
-    }
   },
   "private": true,
   "packageManager": "pnpm@10.32.1",
@@ -54,8 +35,6 @@
     "@tailwindcss/postcss": "^4.1.12",
     "@types/electron": "^1.6.12",
     "@types/node": "^25.5.0",
-    "concurrently": "^9.2.1",
-    "cross-env": "^10.1.0",
     "electron": "^41.0.2",
     "electron-builder": "^26.8.1",
     "jsdom": "^28.0.0",
@@ -63,7 +42,6 @@
     "prettier": "^3.8.1",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.8",
-    "wait-on": "^9.0.4"
+    "vitest": "^4.0.8"
   }
 }

@@ -1,0 +1,13 @@
+appId: com.example.angular-electron
+productName: AngularElectronApp
+directories:
+  output: release
+files:
+  - dist/**/*
+  - dist-electron/**/*
+win:
+  target: nsis
+mac:
+  target: dmg
+linux:
+  target: AppImage
