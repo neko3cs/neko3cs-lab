@@ -11,16 +11,9 @@ function createWindow() {
     },
   });
 
-  const devUrl = "http://localhost:4200";
-
-  win.loadURL(devUrl).catch(() => {
-    win.loadFile(
-      path.join(
-        __dirname,
-        "../dist/electron-angular-app/browser/index.html"
-      )
-    );
-  });
+  win.loadFile(
+    path.join(__dirname, "../dist/electron-angular-app/browser/index.html")
+  );
 }
 
 function configureIPCHandlers() {
