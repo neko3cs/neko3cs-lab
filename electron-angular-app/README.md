@@ -1,65 +1,61 @@
-# Angular + Electron (TypeScript) Setup
+# Angular + Electron Setup
 
-Angularアプリを **Electronデスクトップアプリ**として動作させる最小構成。
-開発モードでは **Angular dev server + Electron を同時起動**します。
+`ng new` 直後のAngularプロジェクトを、Electronで動かせるようにする手順です。
 
-ElectronはWebアプリをデスクトップアプリとして実行できるフレームワークです。([GeeksforGeeks][1])
+このREADMEでは、Angularアプリを先にビルドし、その成果物をElectronから読み込む構成を作ります。`concurrently` や `wait-on` を使ったdev server連携ではなく、構成が単純なビルドベース方式です。
 
----
+## 前提条件
 
-# Requirements
-
-- Node.js 20+
+- Node.js 20以上
 - pnpm
 - Angular CLI
 
-```bash
-pnpm add -g @angular/cli
-```
-
----
-
-# 1. Angular プロジェクト作成
+## 1. Angular プロジェクトを作成する
 
 ```bash
-ng new electron-angular-app
+ng new electron-angular-app --package-manager pnpm
 cd electron-angular-app
 ```
 
----
+以降は、この `electron-angular-app` をベースに説明します。
 
-# 2. Electron関連パッケージ
+## 2. Electron 関連パッケージを追加する
 
 ```bash
-pnpm add -D \
-electron \
-electron-builder \
-concurrently \
-wait-on \
-cross-env \
-typescript \
-@types/node
+pnpm add -D electron electron-builder typescript @types/node @types/electron
 ```
 
----
+必要に応じてElectronのバイナリ取得用スクリプトも使えるようにしておくと便利です。
 
-# 3. Electron用ディレクトリ作成
+## 3. Electron 用ディレクトリを作成する
+
+```bash
+mkdir -p src-electron
+touch src-electron/main.ts src-electron/preload.ts src-electron/preload.d.ts
+```
+
+最終的な構成イメージは以下です。
 
 ```text
-src-electron/
-  main.ts
-  preload.ts
+.
+├─ src/
+├─ src-electron/
+│  ├─ main.ts
+│  ├─ preload.ts
+│  └─ preload.d.ts
+├─ angular.json
+├─ electron-builder.yaml
+├─ package.json
+└─ tsconfig.electron.json
 ```
 
----
+## 4. `src-electron/main.ts` を作成する
 
-# 4. Electron main process
-
-`src-electron/main.ts`
+Electronのメインプロセスです。ビルド済みのAngularアプリを読み込みます。
 
 ```ts
 import { app, BrowserWindow, ipcMain } from 'electron';
-import path from 'path';
+import * as path from 'path';
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -67,28 +63,36 @@ function createWindow() {
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
     },
   });
 
-  if (process.env.NODE_ENV === 'dev') {
-    win.loadURL('http://localhost:4200');
-  } else {
-    win.loadFile(path.join(__dirname, '../dist/electron-angular-app/browser/index.html'));
-  }
+  win.loadFile(path.join(__dirname, '../dist/electron-angular-app/browser/index.html'));
 }
 
-app.whenReady().then(createWindow);
+function configureIPCHandlers() {
+  ipcMain.handle('ping', () => {
+    return 'pong';
+  });
+}
 
-ipcMain.handle('ping', async () => {
-  return 'pong';
+app.whenReady().then(() => {
+  configureIPCHandlers();
+  createWindow();
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 ```
 
----
+`loadFile()` のパスにある `electron-angular-app` は、`ng new` で作成したプロジェクト名に合わせてください。
 
-# 5. preload
+## 5. `src-electron/preload.ts` を作成する
 
-`src-electron/preload.ts`
+レンダラープロセスへ安全にAPIを公開するpreloadです。
 
 ```ts
 import { contextBridge, ipcRenderer } from 'electron';
@@ -98,34 +102,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
 });
 ```
 
----
+## 6. `src-electron/preload.d.ts` を作成する
 
-# 6. Electron TypeScript config
-
-`tsconfig.electron.json`
-
-```json
-{
-  "compilerOptions": {
-    "outDir": "dist-electron",
-    "module": "commonjs",
-    "target": "es2020",
-    "types": ["node"],
-    "esModuleInterop": true
-  },
-  "include": ["src-electron/**/*.ts"]
-}
-```
-
----
-
-# 7. Angular側 型定義
-
-`src/types/preload.d.ts`
+Angular側で `window.electronAPI` を型付きで使えるようにします。
 
 ```ts
-export {};
-
 declare global {
   interface Window {
     electronAPI: {
@@ -133,84 +114,123 @@ declare global {
     };
   }
 }
+
+export {};
 ```
 
----
+## 7. `tsconfig.electron.json` を作成する
 
-# 8. package.json scripts
+Electron側コードを `dist-electron/` へ出力するためのTypeScript設定です。
+
+```json
+{
+  "compilerOptions": {
+    "outDir": "./dist-electron",
+    "module": "commonjs",
+    "target": "es2020",
+    "types": ["node", "electron"]
+  },
+  "include": ["src-electron/**/*.ts"]
+}
+```
+
+## 8. `tsconfig.app.json` を更新する
+
+Angularアプリ側からpreloadの型定義を読めるように、`include` に `src-electron/**/*.d.ts` を追加します。
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "include": ["src/**/*.ts", "src-electron/**/*.d.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}
+```
+
+## 9. `package.json` を更新する
+
+`main` とElectron用スクリプトを追加します。既存の `start` や `test` は残したままで構いません。
 
 ```json
 {
   "main": "dist-electron/main.js",
-
   "scripts": {
     "start": "ng serve",
-
+    "build": "ng build",
+    "test": "ng test",
+    "install:electron": "node ./node_modules/electron/install.js",
+    "build:angular": "ng build --base-href ./",
     "build:electron": "tsc -p tsconfig.electron.json",
-
-    "electron:dev": "concurrently \"ng serve\" \"wait-on http://localhost:4200 && cross-env NODE_ENV=dev pnpm build:electron && electron .\"",
-
-    "build": "ng build && pnpm build:electron",
-
-    "electron:build": "pnpm build && electron-builder"
+    "electron:dev": "pnpm build:angular && pnpm build:electron && electron .",
+    "electron:build": "pnpm build:angular && pnpm build:electron && electron-builder"
   }
 }
 ```
 
----
+ポイント:
 
-# 9. Electron Builder設定
+- `build:angular` で `--base-href ./` を付けると、Electronがローカルファイルとして読み込みやすくなります。
+- `electron:dev` はAngular dev serverを使わず、ビルド済みファイルを読み込んで起動します。
 
-`package.json`
+## 10. `electron-builder.yaml` を作成する
 
-```json
-{
-  "build": {
-    "appId": "com.example.electronangular",
-    "files": ["dist/**/*", "dist-electron/**/*", "package.json"],
-    "directories": {
-      "buildResources": "build"
-    },
-    "mac": {
-      "target": "dmg"
-    },
-    "win": {
-      "target": "nsis"
-    },
-    "linux": {
-      "target": "AppImage"
-    }
-  }
-}
+配布ビルド設定を `package.json` ではなく別ファイルに切り出します。
+
+```yaml
+appId: com.example.angular-electron
+productName: AngularElectronApp
+directories:
+  output: release
+files:
+  - dist/**/*
+  - dist-electron/**/*
+win:
+  target: nsis
+mac:
+  target: dmg
+linux:
+  target: AppImage
 ```
 
----
+## 11. Angular 側から Electron API を呼ぶ
 
-# 10. 開発起動
+任意のAngularコンポーネントから、以下のようにpreload経由のAPIを呼べます。
+
+```ts
+const response = await window.electronAPI.ping();
+console.log(response); // "pong"
+```
+
+## 12. 動作確認する
+
+### Angular 単体で確認
+
+```bash
+pnpm start
+```
+
+### Electron アプリとして起動
 
 ```bash
 pnpm electron:dev
 ```
 
-起動フロー
+実行順:
 
-```text
-Angular dev server
-        ↓
-http://localhost:4200
-        ↓
-Electron BrowserWindow
-```
+1. Angularをビルド
+2. Electron用TypeScriptをビルド
+3. Electronを起動
 
----
-
-# 11. ビルド
+### 配布物を作成
 
 ```bash
 pnpm electron:build
 ```
 
-生成
+主な出力先:
 
 ```text
 dist/
@@ -218,55 +238,8 @@ dist-electron/
 release/
 ```
 
-OSごとの実行ファイル
+## 補足
 
-```text
-Mac    → dmg
-Windows → exe
-Linux   → AppImage
-```
-
----
-
-# プロジェクト構造
-
-```text
-.
-├─ src/                # Angular
-├─ src-electron/       # Electron main/preload
-│   ├─ main.ts
-│   └─ preload.ts
-├─ dist/               # Angular build
-├─ dist-electron/      # Electron build
-├─ angular.json
-├─ package.json
-└─ tsconfig.electron.json
-```
-
----
-
-# IPC Example
-
-Angular
-
-```ts
-const result = await window.electronAPI.ping();
-```
-
-Electron
-
-```ts
-ipcMain.handle('ping', async () => 'pong');
-```
-
----
-
-# 開発構成
-
-```text
-Renderer  → Angular
-Main      → Electron
-Bridge    → preload
-```
-
----
+- この手順は、Angular dev serverとElectronの同時起動構成ではありません。
+- `main.ts` の `dist/electron-angular-app/browser/index.html` は、Angularのプロジェクト名に応じて読み替えてください。
+- Electron Builderの設定は `electron-builder.yaml` に置いています。
