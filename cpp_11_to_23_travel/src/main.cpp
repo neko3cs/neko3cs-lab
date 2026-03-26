@@ -1,12 +1,12 @@
-#include <expected>
-#include <optional>
-#include <print>
-#include <ranges>
-#include <string>
-#include <string_view>
-#include <vector>
-// ↓xmakeではまだ未対応っぽい...、llvmをインストールすれば使えるかも
-// import std;
+// #include <expected>
+// #include <optional>
+// #include <print>
+// #include <ranges>
+// #include <string>
+// #include <string_view>
+// #include <vector>
+import std;
+import hello;
 
 #ifdef _WIN32
 #define PLATFORM "Windows"
@@ -83,7 +83,7 @@ struct Builder {
 
 struct Matrix {
   float data[4][4];
-  float &operator[](size_t i, size_t j) { return data[i][j]; }
+  float &operator[](std::size_t i, std::size_t j) { return data[i][j]; }
 };
 
 void chapter8() {
@@ -94,7 +94,7 @@ void chapter8() {
 
 void chapter9() { std::println("Platform: {}", PLATFORM); }
 
-void chapter10() { std::println("Hello, Modules!"); }
+void chapter10() { hello(); }
 
 int main(int argc, char **argv) {
   std::println("=== chapter1 ===");
