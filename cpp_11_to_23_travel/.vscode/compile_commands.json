@@ -1,0 +1,16 @@
+[
+{
+  "directory": "/Users/neko3cs/src/neko3cs-lab/cpp_11_to_23_travel",
+  "arguments": ["/usr/local/Cellar/llvm/22.1.1/bin/clang++", "-c", "-Qunused-arguments", "-m64", "-target", "x86_64-apple-macos15.7", "-isysroot", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++23", "-mmacosx-version-min=15.0", "-DNDEBUG", "-x", "c++-module", "--precompile", "-Wno-include-angled-in-module-purview", "-Wno-reserved-module-identifier", "-Wno-deprecated-declarations", "-o", "build/.gens/main/macosx/x86_64/release/rules/bmi/cache/interfaces/e831372cb2c74802/std.pcm", "/usr/local/Cellar/llvm/22.1.1/share/libc++/v1/std.cppm"],
+  "file": "/usr/local/Cellar/llvm/22.1.1/share/libc++/v1/std.cppm"
+},
+{
+  "directory": "/Users/neko3cs/src/neko3cs-lab/cpp_11_to_23_travel",
+  "arguments": ["/usr/local/Cellar/llvm/22.1.1/bin/clang++", "-c", "-Qunused-arguments", "-m64", "-target", "x86_64-apple-macos15.7", "-isysroot", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++23", "-mmacosx-version-min=15.0", "-DNDEBUG", "-Wno-include-angled-in-module-purview", "-Wno-reserved-module-identifier", "-Wno-deprecated-declarations", "-o", "build/.objs/main/macosx/x86_64/release/usr/local/Cellar/llvm/22.1.1/share/libc++/v1/std.cppm.o", "/usr/local/Cellar/llvm/22.1.1/share/libc++/v1/std.cppm"],
+  "file": "/usr/local/Cellar/llvm/22.1.1/share/libc++/v1/std.cppm"
+},
+{
+  "directory": "/Users/neko3cs/src/neko3cs-lab/cpp_11_to_23_travel",
+  "arguments": ["/usr/local/Cellar/llvm/22.1.1/bin/clang++", "-c", "-Qunused-arguments", "-m64", "-target", "x86_64-apple-macos15.7", "-isysroot", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk", "-fvisibility=hidden", "-fvisibility-inlines-hidden", "-O3", "-std=c++23", "-mmacosx-version-min=15.0", "-DNDEBUG", "-fmodule-file=std=build/.gens/main/macosx/x86_64/release/rules/bmi/cache/interfaces/e831372cb2c74802/std.pcm", "-o", "build/.objs/main/macosx/x86_64/release/src/main.cpp.o", "src/main.cpp"],
+  "file": "src/main.cpp"
+}]
