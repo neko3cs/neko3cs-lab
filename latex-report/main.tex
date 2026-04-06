@@ -1,0 +1,52 @@
+\documentclass[a4paper, 11pt]{article}
+
+% --- パッケージ ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{titling}
+\usepackage{xcolor}
+
+% --- 余白を狭めに ---
+\geometry{top=15mm, bottom=15mm, left=20mm, right=20mm}
+
+% --- タイトルの上の余白を詰める ---
+\setlength{\droptitle}{-2em}
+
+% ==============================
+\begin{document}
+
+% --- ヘッダ部分 ---
+\begin{center}
+  \hrule height 1.5pt \vspace{6pt}
+  {\LARGE\bfseries 作業報告書}\\[3pt]
+  {\small 山田 太郎 / ○○部門 / \today}
+  \vspace{6pt}\hrule height 1.5pt
+\end{center}
+
+% --- 本文 ---
+\section{背景・目的}
+ここに背景と目的を簡潔に書きます。
+
+\section{内容・結果}
+調査・作業の内容と結果を記載します。
+
+% 表が必要な場合
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+  \toprule
+  項目 & 値A & 値B \\
+  \midrule
+  項目1 & 100 & 200 \\
+  項目2 & 150 & 180 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\section{まとめ・所見}
+結論や今後の対応などを書きます。
+
+\end{document}
