@@ -1,0 +1,125 @@
+\documentclass[unicode,10pt,aspectratio=169]{beamer} 
+% aspectratio=169 でワイド画面(16:9)になります
+
+% --- 日本語設定 (LuaLaTeX推奨) ---
+\usepackage{luatexja}
+\usepackage[ipaex]{luatexja-preset} % フォント設定
+
+% --- テーマ・カラー選択 ---
+\usetheme{metropolis}    % モダンで人気のテーマ
+\usecolortheme{default}
+\usefonttheme{professionalfonts} 
+
+% --- パッケージ ---
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs} % 表を綺麗にする
+\usepackage{url}
+
+% --- 表紙の情報 ---
+\title{Beamer主要機能 詰め合わせサンプル}
+\subtitle{これ一冊でスライド作成の基礎をマスター}
+\author{Gemini}
+\institute{AI Academy}
+\date{\today}
+\titlegraphic{\hfill\includegraphics[width=2cm]{example-grid-100x100pt}} % ロゴなど
+
+\begin{document}
+
+% 1. 表紙
+\begin{frame}[plain] % plainでヘッダー・フッターを隠す
+    \titlepage
+\end{frame}
+
+% 2. 目次（自動生成）
+\begin{frame}{全体の流れ}
+    \tableofcontents
+\end{frame}
+
+\section{基本の構造}
+
+% 3. 箇条書きと逐次表示
+\begin{frame}{箇条書きのテクニック}
+    \begin{itemize}
+        \item 普通の箇条書きです
+        \pause % ここでクリック待ち
+        \item \textbf{強調}したい項目
+        \item \alert{警告色}にしたい項目
+        \item <3-> 3枚目から表示される項目
+    \end{itemize}
+    \vfill % 余白の調整
+    \begin{enumerate}
+        \item 番号付きも
+        \item 同様です
+    \end{enumerate}
+\end{frame}
+
+\section{視覚的な装飾}
+
+% 4. ブロック環境（枠囲み）
+\begin{frame}{情報の整理（ブロック）}
+    \begin{block}{通常のブロック}
+        定義や公式などを書くのに便利です。
+    \end{block}
+    
+    \begin{exampleblock}{例題ブロック}
+        具体例を挙げる際に使います。
+    \end{exampleblock}
+    
+    \begin{alertblock}{重要・注意ブロック}
+        ここがテストに出ます！
+    \end{alertblock}
+\end{frame}
+
+% 5. 2カラムレイアウト
+\begin{frame}{2カラム（左右分割）と画像}
+    \begin{columns}[T] % [T]で上揃え
+        \begin{column}{0.45\textwidth}
+            \begin{itemize}
+                \item 左側に説明文
+                \item 右側に図解
+                \item 文理問わず多用します
+            \end{itemize}
+        \end{column}
+        
+        \begin{column}{0.45\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{example-image-a}
+            \captionof{figure}{サンプルの図}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\section{数式と表}
+
+% 6. 数式
+\begin{frame}{数式の表示}
+    中央揃えの数式：
+    \begin{equation}
+        i\hbar \frac{\partial}{\partial t} \psi(x,t) = \left[ -\frac{\hbar^2}{2m}\frac{\partial^2}{\partial x^2} + V(x,t) \right] \psi(x,t)
+    \end{equation}
+    
+    インライン数式も綺麗です： $\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$
+\end{frame}
+
+% 7. 表
+\begin{frame}{綺麗な表の作成}
+    \centering
+    \begin{tabular}{lcr}
+        \toprule
+        名前 & 役割 & スキル \\
+        \midrule
+        Alice & リーダー & LaTeX \\
+        Bob & メンバー & Python \\
+        \bottomrule
+    \end{tabular}
+\end{frame}
+
+\section*{付録} % 目次に載せない
+
+% 8. 終わりのスライド
+\begin{frame}[standout] % metropolisテーマ特有の強調スライド
+    ご清聴ありがとうございました！
+\end{frame}
+
+\end{document}
