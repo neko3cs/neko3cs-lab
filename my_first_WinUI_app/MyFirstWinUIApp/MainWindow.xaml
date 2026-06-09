@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="MyFirstWinUIApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyFirstWinUIApp"
+    xmlns:models="using:MyFirstWinUIApp.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="社員名簿サンプル (WinUI + MVVM)">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid Padding="24" RowSpacing="16" ColumnSpacing="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ===== ヘッダー ===== -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Spacing="4">
+            <TextBlock Text="社員名簿" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock Style="{StaticResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                <Run Text="WinUI 3 + CommunityToolkit.Mvvm による MVVM サンプル　／　現在の登録人数: " />
+                <Run Text="{x:Bind ViewModel.PeopleCount, Mode=OneWay}" />
+                <Run Text=" 名" />
+            </TextBlock>
+        </StackPanel>
+
+        <!-- ===== 左: 入力フォーム ===== -->
+        <Border Grid.Row="1" Grid.Column="0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1" CornerRadius="8" Padding="16">
+            <StackPanel Spacing="14">
+                <TextBlock Text="新規登録" Style="{StaticResource SubtitleTextBlockStyle}" />
+
+                <!-- TextBox: UpdateSourceTrigger=PropertyChanged で 1 文字ごとに反映し、
+                     ボタンの有効/無効をリアルタイムに切り替える -->
+                <TextBox Header="氏名" PlaceholderText="例: 田中 次郎"
+                         Text="{x:Bind ViewModel.NewName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!-- ComboBox: 選択肢は ViewModel.Departments から供給 -->
+                <ComboBox Header="部署" HorizontalAlignment="Stretch"
+                          ItemsSource="{x:Bind ViewModel.Departments}"
+                          SelectedItem="{x:Bind ViewModel.NewDepartment, Mode=TwoWay}" />
+
+                <!-- NumberBox: 数値入力。スピンボタン付き -->
+                <NumberBox Header="年齢" SpinButtonPlacementMode="Inline"
+                           Minimum="18" Maximum="80" SmallChange="1"
+                           Value="{x:Bind ViewModel.NewAge, Mode=TwoWay}" />
+
+                <!-- CalendarDatePicker: 日付選択 -->
+                <CalendarDatePicker Header="入社日" HorizontalAlignment="Stretch"
+                                    Date="{x:Bind ViewModel.NewJoinedDate, Mode=TwoWay}" />
+
+                <!-- ToggleSwitch: ON/OFF の二択 -->
+                <ToggleSwitch Header="在籍状況" OnContent="在籍中" OffContent="退職"
+                              IsOn="{x:Bind ViewModel.NewIsActive, Mode=TwoWay}" />
+
+                <!-- Button: コマンドにバインド。CanExecute が false の間は自動で無効化される -->
+                <Button Content="リストに追加" HorizontalAlignment="Stretch"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Command="{x:Bind ViewModel.AddPersonCommand}" />
+            </StackPanel>
+        </Border>
+
+        <!-- ===== 右: 一覧 + 詳細 ===== -->
+        <Grid Grid.Row="1" Grid.Column="1" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- ListView: 一覧表示。SelectedItem を ViewModel と双方向バインド -->
+            <Border Grid.Row="0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1" CornerRadius="8">
+                <ListView ItemsSource="{x:Bind ViewModel.People}"
+                          SelectedItem="{x:Bind ViewModel.SelectedPerson, Mode=TwoWay}"
+                          SelectionMode="Single" Padding="4">
+                    <ListView.ItemTemplate>
+                        <!-- x:DataType で各行のデータ型を指定すると、行内でも x:Bind が使える -->
+                        <DataTemplate x:DataType="models:Person">
+                            <Grid Padding="8,10" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Spacing="2">
+                                    <TextBlock Text="{x:Bind Name, Mode=OneWay}"
+                                               Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                                        <Run Text="{x:Bind Department, Mode=OneWay}" />
+                                        <Run Text="　" />
+                                        <Run Text="{x:Bind Age, Mode=OneWay}" />
+                                        <Run Text="歳" />
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                           Text="{x:Bind JoinedDateText, Mode=OneWay}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+                                <Border Grid.Column="2" VerticalAlignment="Center"
+                                        Background="{ThemeResource ControlFillColorSecondaryBrush}"
+                                        CornerRadius="4" Padding="8,2">
+                                    <TextBlock Text="{x:Bind StatusText, Mode=OneWay}"
+                                               Style="{StaticResource CaptionTextBlockStyle}" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Border>
+
+            <!-- 選択中の社員の詳細 + 削除操作 -->
+            <Border Grid.Row="1"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1" CornerRadius="8" Padding="16">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Spacing="4">
+                        <TextBlock Text="選択中の社員" Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <TextBlock>
+                            <Run Text="氏名: " Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <Run Text="{x:Bind ViewModel.SelectedPerson.Name, Mode=OneWay}" />
+                            <Run Text="　部署: " Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <Run Text="{x:Bind ViewModel.SelectedPerson.Department, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Text="左の一覧から行を選ぶと、ここに詳細が表示されます。"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+
+                    <!-- 削除コマンド。未選択のときは CanExecute=false で自動的に無効化される -->
+                    <Button Grid.Column="1" VerticalAlignment="Center"
+                            Content="選択した社員を削除"
+                            Command="{x:Bind ViewModel.RemovePersonCommand}" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
