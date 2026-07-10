@@ -6,24 +6,29 @@ Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルで
 
 ### 1. 設定の見直し
 
-`Deploy-VirtualMachine.ps1` を開き、設定用変数を見直す。
+リソースグループ名・リージョンは `Deploy-VirtualMachine.ps1` の変数を、VM本体のパラメータは `CreateWindowsServerVirtualMachine.bicepparam` を見直す。
 
-デフォルト値は以下の通り。
+`Deploy-VirtualMachine.ps1` のデフォルト値は以下の通り。
 
 ```
 $ResourceGroup = "rg-azurevm-dev-japaneast-001"
 $Location = "japaneast"
-$AdminUsername = "azureuser"
-$AdminPassword = "P@ssword!123"
-$OSVersion = "2022-datacenter-g2"
-$IsDesktop = $false
-$VMSize = "Standard_D2s_v5"
-$VMName = "vm-azurevm-dev-001"
-$ComputerName = "VM-AZUREVM-DEV-001"
-$DiskSizeGB = 256
 ```
 
-`$IsDesktop` を `$true` にし、 `$OSVersion` をWindows 11のものに変更すれば、Windows 11として起動できる。
+`CreateWindowsServerVirtualMachine.bicepparam` のデフォルト値は以下の通り。
+
+```
+param adminUsername = 'azureuser'
+param adminPassword = 'P@ssword!123'
+param OSVersion = '2022-datacenter-g2'
+param isDesktop = false
+param vmSize = 'Standard_D2s_v5'
+param vmName = 'azurevm-dev-001'
+param computerName = 'AZUREVM-DEV-001'
+param diskSizeGB = 256
+```
+
+`isDesktop` を `true` にし、 `OSVersion` をWindows 11のものに変更すれば、Windows 11として起動できる。
 
 ### 2. 仮想マシンのデプロイ
 
@@ -102,6 +107,10 @@ az vm list-sizes --location japaneast | ConvertFrom-Json | where numberOfCores -
 ### COMPUTER_NAME
 
 15文字以内
+
+### DISK_SIZE_GB
+
+127以上2048以下
 
 ## 参考文献
 
