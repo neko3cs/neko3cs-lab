@@ -1,9 +1,12 @@
 #!/usr/bin/env pwsh
 #Requires -PSEdition Core
-$ErrorActionPreference = 'Stop'
 
-$ResourceGroup = "rg-azurevm-dev-japaneast-001"
-$Location = "japaneast"
+param (
+  [string]$ResourceGroup = "rg-azurevm-dev-japaneast-001",
+  [string]$Location = "japaneast"
+)
+
+$ErrorActionPreference = 'Stop'
 
 az group create --name $ResourceGroup --location $Location --output table
 
