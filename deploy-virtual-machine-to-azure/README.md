@@ -26,9 +26,12 @@ param vmSize = 'Standard_D2s_v5'
 param vmName = 'azurevm-dev-001'
 param computerName = 'AZUREVM-DEV-001'
 param diskSizeGB = 256
+param onPremisesAddressPrefix = '203.0.113.0/24'
 ```
 
 `isDesktop` を `true` にし、 `OSVersion` をWindows 11のものに変更すれば、Windows 11として起動できる。
+
+`onPremisesAddressPrefix` は、ExpressRoute/VPN等の専用線経由でオンプレミスからVMへ直接RDP接続する場合に、接続元となるオンプレミス側のアドレス範囲(CIDR)を指定する。専用線を利用しない場合も必須パラメータのため、到達し得ない適当なCIDR(例のドキュメント用アドレス`203.0.113.0/24`等)を設定しておく。
 
 ### 2. 仮想マシンのデプロイ
 
@@ -55,11 +58,17 @@ param diskSizeGB = 256
 
 ## 接続方法
 
+### Azure Bastion経由
+
 Azure Bastionを利用してログインする。
 
 Azure BastionはAzure Portalから作成したVirtual Machineを開き、`[概要] > [接続] > [Bastion]`からログインする。
 
 ログインに成功すると操作用のタブが開く。
+
+### 専用線(ExpressRoute/VPN)経由
+
+`onPremisesAddressPrefix` に指定したアドレス範囲からは、VMのプライベートIPアドレスに対して直接RDP接続(3389番ポート)できる。Bastionを経由しないため、通常のRDPクライアントを使用する。
 
 ## 設定値について
 
@@ -111,6 +120,10 @@ az vm list-sizes --location japaneast | ConvertFrom-Json | where numberOfCores -
 ### DISK_SIZE_GB
 
 127以上2048以下
+
+### ONPREMISES_ADDRESS_PREFIX
+
+ExpressRoute/VPN等の専用線経由でRDP接続を許可する、オンプレミス側のアドレス範囲(CIDR形式)。専用線を利用しない場合は、到達し得ないアドレス範囲(例: `203.0.113.0/24`)を設定しておく。
 
 ## 参考文献
 
