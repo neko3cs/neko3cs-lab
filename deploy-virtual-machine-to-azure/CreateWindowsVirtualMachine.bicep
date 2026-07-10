@@ -22,8 +22,8 @@ param computerName string
 @minValue(127)
 @maxValue(2048)
 param diskSizeGB int
-@description('ExpressRoute/VPN等の専用線経由でVMに直接RDP接続することを許可するオンプレミス側のアドレス範囲(CIDR)。')
-param onPremisesAddressPrefix string
+@description('trueの場合、VM用サブネットとBastionサブネットにNSGを作成する。既存の共有VNet配下等、NSGの作成権限がない環境ではfalseにする。')
+param deployNetworkSecurityGroup bool = true
 
 // Variables ----------------------------------------------------------------------------------------------------------
 var location = resourceGroup().location
@@ -69,7 +69,7 @@ resource bootDiagStorageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' =
     allowBlobPublicAccess: false
   }
 }
-resource subnetNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+resource subnetNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = if (deployNetworkSecurityGroup) {
   name: subnetNsgName
   location: location
   properties: {
@@ -84,19 +84,6 @@ resource subnetNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
           sourcePortRange: '*'
           destinationPortRange: '3389'
           sourceAddressPrefix: bastionAddressPrefix
-          destinationAddressPrefix: '*'
-        }
-      }
-      {
-        name: 'AllowRdpFromOnPremises'
-        properties: {
-          priority: 110
-          direction: 'Inbound'
-          access: 'Allow'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          destinationPortRange: '3389'
-          sourceAddressPrefix: onPremisesAddressPrefix
           destinationAddressPrefix: '*'
         }
       }
@@ -116,7 +103,7 @@ resource subnetNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
     ]
   }
 }
-resource bastionNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
+resource bastionNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = if (deployNetworkSecurityGroup) {
   name: bastionNsgName
   location: location
   properties: {
@@ -287,18 +274,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
         name: subnetName
         properties: {
           addressPrefix: subnetPrefix
-          networkSecurityGroup: {
-            id: subnetNsg.id
-          }
+          networkSecurityGroup: deployNetworkSecurityGroup ? { id: subnetNsg.id } : null
         }
       }
       {
         name: bastionSubnetName
         properties: {
           addressPrefix: bastionAddressPrefix
-          networkSecurityGroup: {
-            id: bastionNsg.id
-          }
+          networkSecurityGroup: deployNetworkSecurityGroup ? { id: bastionNsg.id } : null
         }
       }
     ]
