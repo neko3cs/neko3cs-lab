@@ -11,3 +11,4 @@ param vmName = 'azurevm-dev-001'
 param computerName = 'AZUREVM-DEV-001'
 param diskSizeGB = 256
 param deployNetworkSecurityGroup = true
+param existingSubnetId = ''
