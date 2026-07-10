@@ -22,6 +22,8 @@ param computerName string
 @minValue(127)
 @maxValue(2048)
 param diskSizeGB int
+@description('ExpressRoute/VPN等の専用線経由でVMに直接RDP接続することを許可するオンプレミス側のアドレス範囲(CIDR)。')
+param onPremisesAddressPrefix string
 
 // Variables ----------------------------------------------------------------------------------------------------------
 var location = resourceGroup().location
@@ -82,6 +84,19 @@ resource subnetNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = {
           sourcePortRange: '*'
           destinationPortRange: '3389'
           sourceAddressPrefix: bastionAddressPrefix
+          destinationAddressPrefix: '*'
+        }
+      }
+      {
+        name: 'AllowRdpFromOnPremises'
+        properties: {
+          priority: 110
+          direction: 'Inbound'
+          access: 'Allow'
+          protocol: 'Tcp'
+          sourcePortRange: '*'
+          destinationPortRange: '3389'
+          sourceAddressPrefix: onPremisesAddressPrefix
           destinationAddressPrefix: '*'
         }
       }
