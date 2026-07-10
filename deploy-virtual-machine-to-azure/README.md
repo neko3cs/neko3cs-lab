@@ -51,10 +51,9 @@ param onPremisesAddressPrefix = '203.0.113.0/24'
 
 実行後、自動的に再起動され、日本語化される。
 
-> [!WARNING]
-> 2024年8月現在、PowerShellの `Add-WindowsCapability` コマンドは不完全なようで、一部GUIでの対応が必要になっている。
-> 設定アプリの `[Time & Language] > [Language] > [Preferred languages] > [Japanese] > [Options]` を開き、ダウンロードされていないパッケージをダウンロードする。
-> ※大体Language Packがされていない。
+> [!NOTE]
+> `Add-WindowsCapability` はダウンロードサイズが大きい`Language.Speech`や`Language.OCR`等で一時的に失敗することがあるため、スクリプト内で自動リトライ(3回、15秒間隔)する。
+> それでも失敗したパックがある場合は、再起動前にコンソールへ警告として一覧が出力される。その場合は、設定アプリの `[Time & Language] > [Language] > [Preferred languages] > [Japanese] > [Options]` を開き、該当パッケージを手動でダウンロードする。
 
 ## 接続方法
 
