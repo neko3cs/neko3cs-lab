@@ -1,4 +1,4 @@
-#Requires -PSEdition Desktop
+﻿#Requires -PSEdition Desktop
 $ErrorActionPreference = "Stop"
 
 $OSCaption = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
