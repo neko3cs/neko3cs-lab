@@ -6,24 +6,35 @@ Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルで
 
 ### 1. 設定の見直し
 
-`Deploy-VirtualMachine.ps1` を開き、設定用変数を見直す。
+リソースグループ名・リージョンは `Deploy-VirtualMachine.ps1` の変数を、VM本体のパラメータは `CreateWindowsVirtualMachine.bicepparam` を見直す。
 
-デフォルト値は以下の通り。
+`Deploy-VirtualMachine.ps1` のデフォルト値は以下の通り。
 
 ```
 $ResourceGroup = "rg-azurevm-dev-japaneast-001"
 $Location = "japaneast"
-$AdminUsername = "azureuser"
-$AdminPassword = "P@ssword!123"
-$OSVersion = "2022-datacenter-g2"
-$IsDesktop = $false
-$VMSize = "Standard_D2s_v5"
-$VMName = "vm-azurevm-dev-001"
-$ComputerName = "VM-AZUREVM-DEV-001"
-$DiskSizeGB = 256
 ```
 
-`$IsDesktop` を `$true` にし、 `$OSVersion` をWindows 11のものに変更すれば、Windows 11として起動できる。
+`CreateWindowsVirtualMachine.bicepparam` のデフォルト値は以下の通り。
+
+```
+param adminUsername = 'azureuser'
+param adminPassword = 'P@ssword!123'
+param OSVersion = '2022-datacenter-g2'
+param isDesktop = false
+param vmSize = 'Standard_D2s_v5'
+param vmName = 'azurevm-dev-001'
+param computerName = 'AZUREVM-DEV-001'
+param diskSizeGB = 256
+param deployNetworkSecurityGroup = true
+param existingSubnetId = ''
+```
+
+`isDesktop` を `true` にし、 `OSVersion` をWindows 11のものに変更すれば、Windows 11として起動できる。
+
+`deployNetworkSecurityGroup` を `false` にすると、VM用サブネット・BastionサブネットへのNSG作成をスキップする。既存の共有VNetにデプロイする場合等、NSGの作成権限がない環境向け。
+
+`existingSubnetId` に既存サブネットのリソースIDを指定すると、VNet・BastionパブリックIP・Bastionの新規作成をスキップし、指定サブネットにVMを配置する(VNet作成権限がない環境向け)。空文字のままなら、従来通り新規にVNet・Bastionを作成する。この場合、あわせて `deployNetworkSecurityGroup` も `false` にしておくのが基本(NSGも既存VNet側で管理されているため)。
 
 ### 2. 仮想マシンのデプロイ
 
@@ -43,18 +54,23 @@ $DiskSizeGB = 256
 
 実行後、自動的に再起動され、日本語化される。
 
-> [!WARNING]
-> 2024年8月現在、PowerShellの `Add-WindowsCapability` コマンドは不完全なようで、一部GUIでの対応が必要になっている。
-> 設定アプリの `[Time & Language] > [Language] > [Preferred languages] > [Japanese] > [Options]` を開き、ダウンロードされていないパッケージをダウンロードする。
-> ※大体Language Packがされていない。
+> [!NOTE]
+> `Add-WindowsCapability` はダウンロードサイズが大きい`Language.Speech`や`Language.OCR`等で一時的に失敗することがあるため、スクリプト内で自動リトライ(3回、15秒間隔)する。
+> それでも失敗したパックがある場合は、再起動前にコンソールへ警告として一覧が出力される。その場合は、設定アプリの `[Time & Language] > [Language] > [Preferred languages] > [Japanese] > [Options]` を開き、該当パッケージを手動でダウンロードする。
 
 ## 接続方法
+
+### Azure Bastion経由
 
 Azure Bastionを利用してログインする。
 
 Azure BastionはAzure Portalから作成したVirtual Machineを開き、`[概要] > [接続] > [Bastion]`からログインする。
 
 ログインに成功すると操作用のタブが開く。
+
+### 既存の共有VNetにデプロイする場合
+
+`existingSubnetId` を指定してデプロイした場合、Bastionは作成されない(パブリックIPも作成できないため)。接続可否は、デプロイ先の既存VNet/サブネットに設定されているNSGルールに従う。RDP接続要件については、当該VNetを管理するネットワーク担当者に確認する。
 
 ## 設定値について
 
@@ -102,6 +118,10 @@ az vm list-sizes --location japaneast | ConvertFrom-Json | where numberOfCores -
 ### COMPUTER_NAME
 
 15文字以内
+
+### DISK_SIZE_GB
+
+127以上2048以下
 
 ## 参考文献
 
