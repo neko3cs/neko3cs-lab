@@ -27,11 +27,14 @@ param vmName = 'azurevm-dev-001'
 param computerName = 'AZUREVM-DEV-001'
 param diskSizeGB = 256
 param deployNetworkSecurityGroup = true
+param existingSubnetId = ''
 ```
 
 `isDesktop` を `true` にし、 `OSVersion` をWindows 11のものに変更すれば、Windows 11として起動できる。
 
 `deployNetworkSecurityGroup` を `false` にすると、VM用サブネット・BastionサブネットへのNSG作成をスキップする。既存の共有VNetにデプロイする場合等、NSGの作成権限がない環境向け。
+
+`existingSubnetId` に既存サブネットのリソースIDを指定すると、VNet・BastionパブリックIP・Bastionの新規作成をスキップし、指定サブネットにVMを配置する(VNet作成権限がない環境向け)。空文字のままなら、従来通り新規にVNet・Bastionを作成する。この場合、あわせて `deployNetworkSecurityGroup` も `false` にしておくのが基本(NSGも既存VNet側で管理されているため)。
 
 ### 2. 仮想マシンのデプロイ
 
@@ -64,6 +67,10 @@ Azure Bastionを利用してログインする。
 Azure BastionはAzure Portalから作成したVirtual Machineを開き、`[概要] > [接続] > [Bastion]`からログインする。
 
 ログインに成功すると操作用のタブが開く。
+
+### 既存の共有VNetにデプロイする場合
+
+`existingSubnetId` を指定してデプロイした場合、Bastionは作成されない(パブリックIPも作成できないため)。接続可否は、デプロイ先の既存VNet/サブネットに設定されているNSGルールに従う。RDP接続要件については、当該VNetを管理するネットワーク担当者に確認する。
 
 ## 設定値について
 

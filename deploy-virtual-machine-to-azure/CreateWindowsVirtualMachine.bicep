@@ -24,8 +24,11 @@ param computerName string
 param diskSizeGB int
 @description('trueの場合、VM用サブネットとBastionサブネットにNSGを作成する。既存の共有VNet配下等、NSGの作成権限がない環境ではfalseにする。')
 param deployNetworkSecurityGroup bool = true
+@description('デプロイ先の既存サブネットのリソースID。指定した場合、VNet/BastionパブリックIP/Bastionの新規作成をスキップし、指定サブネットにVMを配置する。空文字の場合は新規にVNet・Bastionを作成する。')
+param existingSubnetId string = ''
 
 // Variables ----------------------------------------------------------------------------------------------------------
+var useExistingNetwork = !empty(existingSubnetId)
 var location = resourceGroup().location
 var bootDiagStorageAccountName = 'bootdiags${uniqueString(resourceGroup().id)}'
 var nicName = '${vmName}-VMNic'
@@ -250,7 +253,7 @@ resource bastionNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = if (d
     ]
   }
 }
-resource bastionPublicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
+resource bastionPublicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = if (!useExistingNetwork) {
   name: bastionPublicIpName
   location: location
   sku: {
@@ -260,7 +263,7 @@ resource bastionPublicIp 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
     publicIPAllocationMethod: bastionPublicIPAllocationMethod
   }
 }
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = if (!useExistingNetwork) {
   name: virtualNetworkName
   location: location
   properties: {
@@ -297,7 +300,7 @@ resource nic 'Microsoft.Network/networkInterfaces@2023-09-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: virtualNetwork.properties.subnets[0].id
+            id: useExistingNetwork ? existingSubnetId : virtualNetwork.properties.subnets[0].id
           }
         }
       }
@@ -381,7 +384,7 @@ resource vmExtension 'Microsoft.Compute/virtualMachines/extensions@2023-09-01' =
     }
   }
 }
-resource bastion 'Microsoft.Network/bastionHosts@2023-09-01' = {
+resource bastion 'Microsoft.Network/bastionHosts@2023-09-01' = if (!useExistingNetwork) {
   name: bastionName
   location: location
   properties: {
@@ -406,5 +409,5 @@ resource bastion 'Microsoft.Network/bastionHosts@2023-09-01' = {
 output vmResourceId string = vm.id
 @description('VMのプライベートIPアドレス。')
 output vmPrivateIpAddress string = nic.properties.ipConfigurations[0].properties.privateIPAddress
-@description('BastionのパブリックIPアドレス。')
-output bastionPublicIpAddress string = bastionPublicIp.properties.ipAddress
+@description('BastionのパブリックIPアドレス。既存サブネットを使用した場合(Bastion未作成)は空文字。')
+output bastionPublicIpAddress string = useExistingNetwork ? '' : bastionPublicIp.properties.ipAddress
