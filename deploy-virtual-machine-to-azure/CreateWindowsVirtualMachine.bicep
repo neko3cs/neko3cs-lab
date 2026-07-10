@@ -70,6 +70,10 @@ resource bootDiagStorageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' =
     minimumTlsVersion: 'TLS1_2'
     supportsHttpsTrafficOnly: true
     allowBlobPublicAccess: false
+    networkAcls: {
+      defaultAction: 'Deny'
+      bypass: 'AzureServices'
+    }
   }
 }
 resource subnetNsg 'Microsoft.Network/networkSecurityGroups@2023-09-01' = if (deployNetworkSecurityGroup) {
