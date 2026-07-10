@@ -9,5 +9,5 @@ az group create --name $ResourceGroup --location $Location --output table
 
 az deployment group create `
   --resource-group $ResourceGroup `
-  --parameters ./CreateWindowsServerVirtualMachine.bicepparam `
+  --parameters ./CreateWindowsVirtualMachine.bicepparam `
   --output table

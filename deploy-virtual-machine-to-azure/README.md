@@ -6,7 +6,7 @@ Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルで
 
 ### 1. 設定の見直し
 
-リソースグループ名・リージョンは `Deploy-VirtualMachine.ps1` の変数を、VM本体のパラメータは `CreateWindowsServerVirtualMachine.bicepparam` を見直す。
+リソースグループ名・リージョンは `Deploy-VirtualMachine.ps1` の変数を、VM本体のパラメータは `CreateWindowsVirtualMachine.bicepparam` を見直す。
 
 `Deploy-VirtualMachine.ps1` のデフォルト値は以下の通り。
 
@@ -15,7 +15,7 @@ $ResourceGroup = "rg-azurevm-dev-japaneast-001"
 $Location = "japaneast"
 ```
 
-`CreateWindowsServerVirtualMachine.bicepparam` のデフォルト値は以下の通り。
+`CreateWindowsVirtualMachine.bicepparam` のデフォルト値は以下の通り。
 
 ```
 param adminUsername = 'azureuser'

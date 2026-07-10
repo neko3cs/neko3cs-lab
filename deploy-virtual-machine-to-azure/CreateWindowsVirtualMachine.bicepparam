@@ -1,4 +1,4 @@
-using './CreateWindowsServerVirtualMachine.bicep'
+using './CreateWindowsVirtualMachine.bicep'
 
 param adminUsername = 'azureuser'
 param adminPassword = 'P@ssword!123'
