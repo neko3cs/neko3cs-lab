@@ -116,6 +116,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
       computerName: computerName
       adminUsername: adminUsername
       adminPassword: adminPassword
+      windowsConfiguration: {
+        provisionVMAgent: true
+      }
     }
     storageProfile: {
       imageReference: isDesktop
