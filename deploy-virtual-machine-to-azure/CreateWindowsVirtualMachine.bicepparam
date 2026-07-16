@@ -1,7 +1,7 @@
 using './CreateWindowsVirtualMachine.bicep'
 
 param adminUsername = 'azureuser'
-param adminPassword = 'P@ssword!123'
+param adminPassword = 'P@ssw0rd!123'
 param OSVersion = '2022-datacenter-g2'
 param isDesktop = false
 // param OSVersion = 'win11-25h2-pro'
