@@ -6,14 +6,17 @@ Azure CLIとBicepを用いたAzure Virtual MachineのIaCコードサンプルで
 
 ### 1. 設定の見直し
 
-リソースグループ名・リージョンは `Deploy-VirtualMachine.ps1` の変数を、VM本体のパラメータは `CreateWindowsVirtualMachine.bicepparam` を見直す。
+デプロイ先サブスクリプション・リソースグループ名・リージョンは `Deploy-VirtualMachine.ps1` のパラメータで指定する。VM本体のパラメータは `CreateWindowsVirtualMachine.bicepparam` を見直す。
 
-`Deploy-VirtualMachine.ps1` のデフォルト値は以下の通り。
+`Deploy-VirtualMachine.ps1` のパラメータとデフォルト値は以下の通り。
 
 ```
+$SubscriptionName          # 未指定時はAzure CLIの既定サブスクリプションにデプロイする
 $ResourceGroup = "rg-azurevm-dev-japaneast-001"
 $Location = "japaneast"
 ```
+
+リソースグループは存在チェックを行い、無い場合のみ作成する。既に存在する場合は作成をスキップするため、リソースグループの作成権限がない環境(中央管理されたサブスクリプション等)でも、払い出し済みのリソースグループを指定すれば実行できる。
 
 `CreateWindowsVirtualMachine.bicepparam` のデフォルト値は以下の通り。
 
@@ -39,6 +42,12 @@ param existingSubnetId = ''
 ### 2. 仮想マシンのデプロイ
 
 `Deploy-VirtualMachine.ps1` を実行する。
+
+```pwsh
+./Deploy-VirtualMachine.ps1 -SubscriptionName <サブスクリプション名> -ResourceGroup <リソースグループ名>
+```
+
+パラメータを省略した場合はスクリプト内のデフォルト値(サブスクリプションはAzure CLIの既定)が使われる。
 
 ### 3. 日本語環境の設定
 
@@ -168,7 +177,7 @@ az network nsg show --ids $nsgId --query "securityRules[?direction=='Inbound' &&
 表示された `dst` に、デプロイ先サブネットのアドレス範囲が含まれていることを確認する。含まれていなければ、そのサブネットにVMを置いてもRDP接続できない。
 
 > [!WARNING]
-> `Deploy-VirtualMachine.ps1` は `--subscription` を指定していないため、Azure CLIの既定サブスクリプションにデプロイされる。`existingSubnetId` に別サブスクリプションのサブネットを指定する場合は、事前に `az account set --subscription <サブスクリプション名>` で切り替えておく。現在の既定は `az account show --query name --output tsv` で確認できる。
+> `existingSubnetId` に指定したサブネットとVMのデプロイ先サブスクリプションが食い違わないよう注意する。`Deploy-VirtualMachine.ps1` に `-SubscriptionName` を指定しない場合、Azure CLIの既定サブスクリプションにデプロイされる。現在の既定は `az account show --query name --output tsv` で確認できる。
 
 ## 参考文献
 
