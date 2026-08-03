@@ -34,7 +34,7 @@ param existingSubnetId = ''
 
 `deployNetworkSecurityGroup` を `false` にすると、VM用サブネット・BastionサブネットへのNSG作成をスキップする。既存の共有VNetにデプロイする場合等、NSGの作成権限がない環境向け。
 
-`existingSubnetId` に既存サブネットのリソースIDを指定すると、VNet・BastionパブリックIP・Bastionの新規作成をスキップし、指定サブネットにVMを配置する(VNet作成権限がない環境向け)。空文字のままなら、従来通り新規にVNet・Bastionを作成する。この場合、あわせて `deployNetworkSecurityGroup` も `false` にしておくのが基本(NSGも既存VNet側で管理されているため)。
+`existingSubnetId` に既存サブネットのリソースIDを指定すると、VNet・BastionパブリックIP・Bastionの新規作成をスキップし、指定サブネットにVMを配置する(VNet作成権限がない環境向け)。空文字のままなら、従来通り新規にVNet・Bastionを作成する。この場合、あわせて `deployNetworkSecurityGroup` も `false` にしておくのが基本(NSGも既存VNet側で管理されているため)。リソースIDの調べ方は [EXISTING_SUBNET_ID](#existing_subnet_id) を参照。
 
 ### 2. 仮想マシンのデプロイ
 
@@ -122,6 +122,53 @@ az vm list-sizes --location japaneast | ConvertFrom-Json | where numberOfCores -
 ### DISK_SIZE_GB
 
 127以上2048以下
+
+### EXISTING_SUBNET_ID
+
+サブネットの**フルリソースID**を指定する。VNet名だけでは不足で、以下のように `/subnets/<サブネット名>` まで含める必要がある(NICの `subnet.id` にそのまま渡すため)。
+
+```
+/subscriptions/<サブスクリプションID>/resourceGroups/<VNetのRG名>/providers/Microsoft.Network/virtualNetworks/<VNet名>/subnets/<サブネット名>
+```
+
+VNetのリソースグループ名・VNet名が分かっている場合は、以下でサブネット一覧とそのIDを取得する。
+
+```pwsh
+az network vnet subnet list --subscription <サブスクリプション名> --resource-group <VNetのRG名> --vnet-name <VNet名> --query "[].[name, addressPrefix, id]" --output tsv
+```
+
+> [!NOTE]
+> `--output table` では `id` 列が省略されてしまうため、`tsv` か `json` を使う。
+
+VNetがどのサブスクリプション・RGにあるか分からない場合は、Azure Resource Graphで全サブスクリプションを横断検索する(`az extension add --name resource-graph` が必要)。
+
+```pwsh
+az graph query -q "Resources | where type =~ 'microsoft.network/virtualnetworks' | mv-expand subnet=properties.subnets | project vnet=name, rg=resourceGroup, subnet=tostring(subnet.name), prefix=subnet.properties.addressPrefix, id=tostring(subnet.id)" --first 500 --output json
+```
+
+> [!NOTE]
+> Resource Graphは `--output table` だと件数しか表示されないため、`json` を使う。
+
+アクセスできるサブスクリプション名の一覧は以下で確認する。
+
+```pwsh
+az account list --all --query "[].name" --output tsv
+```
+
+#### RDP接続できるサブネットかを事前に確認する
+
+ハブスポーク構成の共有VNetでは、NSGのRDP許可ルールの**宛先が特定のサブネットに限定されている**ことがある。同じVNet・同じNSG配下でも、選んだサブネットによってはRDPが通らない。デプロイ先を決める前に、対象サブネットが許可ルールの宛先に含まれるかを確認する。
+
+```pwsh
+$subnetId = "<サブネットのリソースID>"
+$nsgId = az network vnet subnet show --ids $subnetId --query "networkSecurityGroup.id" --output tsv
+az network nsg show --ids $nsgId --query "securityRules[?direction=='Inbound' && access=='Allow' && (destinationPortRange=='3389' || contains(to_string(destinationPortRanges),'3389'))].{priority:priority, name:name, dst:destinationAddressPrefix}" --output tsv
+```
+
+表示された `dst` に、デプロイ先サブネットのアドレス範囲が含まれていることを確認する。含まれていなければ、そのサブネットにVMを置いてもRDP接続できない。
+
+> [!WARNING]
+> `Deploy-VirtualMachine.ps1` は `--subscription` を指定していないため、Azure CLIの既定サブスクリプションにデプロイされる。`existingSubnetId` に別サブスクリプションのサブネットを指定する場合は、事前に `az account set --subscription <サブスクリプション名>` で切り替えておく。現在の既定は `az account show --query name --output tsv` で確認できる。
 
 ## 参考文献
 
