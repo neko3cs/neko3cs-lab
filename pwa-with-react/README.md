@@ -2,6 +2,20 @@
 
 React と Vite で作った、PWA のインストールとオフライン動作を試す小さなアプリです。
 
+## 今回の学習要点
+
+**一番確かめたかったことは、Web ページ内の独自ボタンから PWA のインストール画面を開けるか**です。対応するブラウザーでは、次の流れで実現できます。
+
+1. ブラウザーが manifest などを見てインストール可能と判断すると、`beforeinstallprompt` イベントを発火します。アプリ側からこのイベントを強制的に発火させることはできません。
+2. アプリはイベントで `preventDefault()` を呼び、イベントオブジェクトを保存して独自ボタンを有効にします。
+3. ユーザーがボタンを押したとき、保存したイベントの `prompt()` を呼ぶとブラウザーのインストール確認画面が開きます。実際にインストールするかはユーザーが選びます。`prompt()` を呼べるのは、そのイベントにつき一度だけです。
+
+`beforeinstallprompt` が発火しないことは、「インストール済み」を意味しません。未対応のブラウザーやインストール条件を満たさない場合にも発火しないためです。対応ブラウザーでは `getInstalledRelatedApps()` を使い、確認できた場合だけ「アプリインストール済み」と表示します。
+
+**Service Worker が有効であることと、オフラインで使えることは別です。** `pnpm dev` ではインストール操作を試せますが、オフラインでの再読み込みは `pnpm build` → `pnpm preview` で確かめます。カードの枚数は `localStorage` に保存し、リセットでは値を 0 に書き換える代わりにキーを削除します。
+
+参考: [MDN: インストール画面を開く](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt)、[Vite PWA: 開発モード](https://vite-pwa-org.netlify.app/guide/development)、[Chrome: インストール済みアプリの検知](https://developer.chrome.com/docs/capabilities/get-installed-related-apps)
+
 ## 起動
 
 Node.js と pnpm を用意し、このディレクトリで実行します。
