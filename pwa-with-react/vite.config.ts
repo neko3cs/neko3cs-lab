@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [react(), VitePWA({
     registerType: 'autoUpdate',
+    devOptions: { enabled: true },
     includeAssets: ['favicon.svg'],
     manifest: {
       name: 'PWA LAB - インストール実験',
