@@ -109,9 +109,9 @@ function App() {
         <div className="status-grid">
           <div className="status-item"><span>表示モード</span><strong>{installed ? 'アプリ画面' : 'ブラウザー'}</strong></div>
           <div className="status-item"><span>ネットワーク</span><strong>{online ? 'オンライン' : 'オフライン'}</strong></div>
-          <div className="status-item"><span>オフライン対応</span><strong>{controlled ? '有効' : '準備中'}</strong></div>
+          <div className="status-item"><span>Service Worker</span><strong>{controlled ? '有効' : '準備中'}</strong></div>
         </div>
-        <p className="hint">Service Worker は初回表示後に有効化されます。「準備中」の場合は一度再読み込みしてください。</p>
+        <p className="hint">Service Worker は初回表示後に有効化されます。「準備中」の場合は一度再読み込みしてください。{import.meta.env.DEV && 'オフラインでの再読み込みは pnpm build → pnpm preview で確認してください。'}</p>
       </section>
 
       <section className="panel" aria-labelledby="offline-heading">
