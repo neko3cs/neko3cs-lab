@@ -128,7 +128,7 @@ function App() {
   return (
     <main className="page">
       <header className="hero">
-        <div className="brand"><span className="brand-mark">P</span> PWA LAB</div>
+        <div className="brand"><span className="brand-mark">P</span> BeforeInstallPrompt 動作確認PWA</div>
         <div className="hero-content">
           <span className="eyebrow">INSTALL · OFFLINE · STANDALONE</span>
           <h1>ブラウザーから、<br /><span>アプリへ。</span></h1>
@@ -172,7 +172,7 @@ function App() {
         <button className="secondary-button reset-button" type="button" onClick={resetCards}>カードをリセット <span aria-hidden="true">↺</span></button>
         <p className="hint">リセットすると localStorage の「{storageKey}」キーを削除します。</p>
       </section>
-      <footer>React + Vite + Service Worker <span>·</span> PWA LAB</footer>
+      <footer>React + Vite + Service Worker <span>·</span> BeforeInstallPrompt 動作確認PWA</footer>
     </main>
   )
 }
