@@ -11,9 +11,9 @@ export default defineConfig(({ command }) => ({
     includeAssets: ['favicon.svg'],
     manifest: {
       id: '/',
-      name: 'PWA LAB - インストール実験',
-      short_name: 'PWA LAB',
-      description: 'PWA のインストールとオフライン動作を確かめるアプリ',
+      name: 'BeforeInstallPrompt 動作確認PWA',
+      short_name: 'BeforeInstallPrompt',
+      description: 'beforeinstallprompt を使った PWA インストールの動作確認アプリ',
       theme_color: '#12243d',
       background_color: '#eef2f6',
       lang: 'ja',

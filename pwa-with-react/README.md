@@ -1,6 +1,6 @@
-# PWA LAB
+# BeforeInstallPrompt 動作確認PWA
 
-React と Vite で作った、PWA のインストールとオフライン動作を試す小さなアプリです。
+React と Vite で作った、`beforeinstallprompt` を使う PWA のインストールとオフライン動作を試す小さなアプリです。
 
 ## 今回の学習要点
 
