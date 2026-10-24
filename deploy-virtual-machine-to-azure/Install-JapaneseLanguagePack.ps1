@@ -34,14 +34,12 @@ if ($OSCaption -match "Microsoft Windows Server 2016") {
 else {
   # After Windows Server 2016 OS
   $Capabilities = @(
-    "Language.Pack~~~ja-JP~0.0.1.0"
     "Language.Basic~~~ja-JP~0.0.1.0"
-    "Language.Basic.Typing~~~ja-JP~0.0.1.0"
+    "Language.Fonts.Jpan~~~und-JPAN~0.0.1.0"
     "Language.Handwriting~~~ja-JP~0.0.1.0"
     "Language.OCR~~~ja-JP~0.0.1.0"
     "Language.Speech~~~ja-JP~0.0.1.0"
     "Language.TextToSpeech~~~ja-JP~0.0.1.0"
-    "Language.Fonts.Japanese~~~ja-JP~0.0.1.0"
   )
 
   $FailedCapabilities = @()
